@@ -48,13 +48,24 @@ if __name__ == '__main__':
             title TEXT,
             description TEXT,
             code TEXT,
-            number_likes INT
+            number_likes INT,
+            post_creation_date DATETIME
+        );
+    """
+    );
+    cur.execute(
+    """
+        CREATE TABLE IF NOT EXISTS users
+        (
+            user_id INT AUTO_INCREMENT PRIMARY KEY, 
+            name TEXT
         );
     """
     );
     cur.execute("""INSERT INTO posts (description) VALUES (%s);""",(fake.text(),))
     con.commit()
-    cur.execute("""SELECT * FROM posts""")
+    cur.execute("""INSERT INTO users (name) VALUES (%s);""",(fake.name(),))
+    con.commit()
 
     res = cur.fetchall()
     for row in res:

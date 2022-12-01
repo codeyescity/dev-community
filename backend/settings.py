@@ -1,6 +1,5 @@
 
-
 host='localhost'
-database='world'
+database='DevCommunityTest'
 user='root'
 password='root'
