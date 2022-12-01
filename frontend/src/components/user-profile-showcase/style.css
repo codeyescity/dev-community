@@ -1,0 +1,15 @@
+.profile {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    gap: .8em;
+    cursor: pointer;
+}
+
+.profile .profile-img {
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%;
+    border: 1px solid #fff; 
+    background:lightseagreen ;
+}

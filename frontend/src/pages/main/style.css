@@ -1,0 +1,161 @@
+section.main {}
+
+section.main section.timeline .profile {
+    width: fit-content;
+}
+
+section.main > .container {
+    display: flex; 
+    /* justify-content: space-between; */
+    justify-content: center; /* For Testing */
+}
+
+section.main nav.main-nav,
+section.main section.meet-people {
+    flex-basis: 22%;
+    position: sticky;
+    top: var(--header-height);
+    height: var(--header-height);
+    display: none;
+}
+
+section.main nav.main-nav {
+    border-right: 1px solid var(--grey-clr-200);
+}
+
+section.main section.meet-people {
+    border-left: 1px solid var(--grey-clr-200);
+}
+
+section.main section.timeline {
+    padding: 15px 55px;
+    /* flex: 1 */
+    width: 100%; /* For Testing */
+}
+
+/* For Testing Meia Queries */
+
+@media (min-width: 768px) {
+    section.main section.timeline {
+        width: 80%;
+    }
+}
+
+@media (min-width: 1000px) {
+    section.main section.timeline {
+        width: 70%
+    }
+}
+
+@media (min-width: 1200px) {
+    section.main section.timeline {
+        width: 56%
+    }
+}
+
+/* For Testing Meia Queries */
+
+section.main section.timeline .timeline-container {
+    background: var(--blue-clr-400);
+    padding: 0 30px;
+}
+
+section.main section.timeline section.share-post {
+    padding: 30px 0;
+}
+
+section.main section.timeline section.share-post textarea.main-textarea {
+    margin: 20px 0;
+    width: 100%;
+    min-height: 100px;
+    resize: none;
+    font-size: 1.15em;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--grey-clr-200);
+}
+
+section.main section.timeline section.share-post textarea.main-textarea:focus {
+    outline: none;
+}
+
+section.main section.timeline section.share-post .functionalities {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+section.main section.timeline section.posts {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+
+}
+
+section.main section.timeline section.posts .post {
+    padding: 15px;
+    background-color: var(--blue-clr-300);
+    border: 1px solid var(--grey-clr-300);
+}
+
+section.main section.timeline section.posts .post .profile {
+    display: grid; 
+    grid-row-gap: 0;
+    grid-template-columns: auto 1fr;
+}
+
+section.main section.timeline section.posts .post .profile .profile-img {
+    grid-row: span 2; 
+}
+
+section.main section.timeline section.posts .post .profile p.post-date {
+    color: var(--grey-clr-100);
+}
+
+section.main section.timeline section.posts .post p.post-content {
+    margin: 20px 0 30px;
+    padding: 0 20px;
+}
+
+section.main section.timeline section.posts .post .functionalities {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--grey-clr-200);
+}
+
+section.main section.timeline section.posts .post .functionalities button {
+    background: none;
+    color: var(--white);
+}
+
+section.main section.timeline section.posts .post form.comment {
+    display: flex; 
+    align-items: center;
+    margin-top: 20px;
+    background: var(--blue-clr-400);
+}
+
+
+section.main section.timeline section.posts .post form.comment textarea {
+    flex: 1;
+    resize: none;
+    background: none;
+    border: none;
+}
+
+section.main section.timeline section.posts .post form.comment textarea:focus {
+    outline: none;
+}
+
+section.main section.timeline section.posts .post form.comment button.submit-comment {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    color: var(--white);
+    background: none;
+    font-size: 2rem;
+}
