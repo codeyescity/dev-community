@@ -1,9 +1,8 @@
 button.main-button {
     padding: .6em 3em; 
-    background: var(--green-clr-300); 
+    background: var(--blue-clr-200); 
     color: var(--fixed-white);  
     font-weight: bold;
-    border-radius: var(--rounded-border-1);
     transition: var(--fast-transition); 
 }
 
@@ -11,15 +10,16 @@ button.main-button {
     filter: brightness(1.2); 
 }
 
-input.main-input {
+input.main-input,
+textarea.main-textarea {
     padding: 10px;
     background: var(--blue-clr-300); 
-    border-radius: var(--rounded-border-1);
     color: var(--white); 
     border: 1px solid var(--grey-clr-200);
 }
 
-input.main-input:focus {
+input.main-input:focus,
+textarea.main-textarea:focus {
     outline: 1px solid var(--blue-clr-100); 
 }
 

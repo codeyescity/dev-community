@@ -36,6 +36,8 @@
   --rounded-border-1: 4px; 
   --rounded-border-2: 10px; 
   --rounded-border-3: 20px; 
+
+  --header-height: 59.59px;
 }
 
 :root[theme="light"] {
@@ -63,35 +65,39 @@ body {
   background: var(--blue-clr-300);
   color: var(--white);
   font-size: 1.4rem;
-  height: 100vh; 
 }
 
 #root {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   height: 100%; 
 }
 
 .container {
   padding: 0 15px;
   margin: 0 auto;
+  width: 97%;
 }
 
-@media (min-width: 768px) {
+/* Mobile */
+@media (max-width: 767px) {
   .container {
-    width: 750px;
+      width: 100%; 
+  }
+}
+
+/* @media (min-width: 768px) {
+  .container {
+      width: 750px;
   }
 }
 
 @media (min-width: 992px) {
   .container {
-    width: 992px;
+      width: 970px;
   }
 }
 
 @media (min-width: 1200px) {
   .container {
-    width: 1200px;
+      width: 1170px;
   }
-}
+} */
