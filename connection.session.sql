@@ -66,8 +66,8 @@ INSERT INTO users (user_name) VALUES
 
 INSERT INTO posts (user_id,type,description,number_likes,post_creation_date) VALUES
 (1,"post","despcription 1",20,NOW()),
-(1,"post","despcription 2",3,NOW()),
-(2,"post","despcription 2",5,NOW())
+(2,"post","despcription 2",3,NOW()),
+(3,"post","despcription 2",5,NOW())
 ;
 
 INSERT INTO postscomments (user_id, comment_text,comment_likes,comment_creation_date) VALUES
@@ -75,6 +75,10 @@ INSERT INTO postscomments (user_id, comment_text,comment_likes,comment_creation_
 (2,"comment 2",2,NOW()),
 (3,"comment 3",1,NOW());
 
+INSERT INTO postlikes (user_id, post_id, post_like_date) VALUES
+(1,1,NOW()),
+(1,2,NOW()),
+(2,3,NOW())
 
 --@block
 SELECT * FROM users;
@@ -84,3 +88,6 @@ SELECT * FROM posts;
 
 --@block
 SELECT * FROM postscomments;
+
+--@block
+SELECT * FROM postlikes;
