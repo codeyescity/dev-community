@@ -1,12 +1,16 @@
 from fastapi import FastAPI
+import sqlite3
 import uvicorn
-
+# importing routes from other files
+from routes import posts
 
 app = FastAPI()
+app.include_router(posts.app)
+
 
 @app.get("/")
 def read_root():
-    return {"data":"hello"}
+    return {"data":"data"}
 
 
 
