@@ -2,8 +2,15 @@ button.main-button {
     padding: .6em 3em; 
     background: var(--blue-clr-200); 
     color: var(--fixed-white);  
-    font-weight: bold;
+    font-weight: 400;
     transition: var(--fast-transition); 
+}
+
+.secondary-button {
+    padding: .6em 3em;
+    color: var(--white); 
+    background: var(--blue-clr-400); 
+    border: 1px solid var(--blue-clr-100);
 }
 
 .main-button:hover {
@@ -13,7 +20,7 @@ button.main-button {
 input.main-input,
 textarea.main-textarea {
     padding: 10px;
-    background: var(--blue-clr-300); 
+    background: var(--blue-clr-400); 
     color: var(--white); 
     border: 1px solid var(--grey-clr-200);
 }
@@ -56,4 +63,9 @@ textarea.main-textarea:focus {
 
 .main-form-wrapper form.main-form button {
     margin-top: 10px;
+}
+
+.after-profile-content {
+    margin: .7em 0 2.15em;
+    padding: 0 1.42em 0 calc(.8em + 3em);
 }

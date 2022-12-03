@@ -1,0 +1,50 @@
+.overlay {
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0 0 0 / .8);
+    z-index: 10000;
+}
+.model {
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    z-index: 10000; 
+    background: var(--grey-clr-300);
+    border: 1px solid var(--grey-clr-200);  
+    padding: 1.2em;
+    width: 500px;
+}
+
+.model .model-container {
+    margin: .8em 0 1.5em;
+    padding: 0 .5em;
+
+}
+
+.model .model-functionalities {
+    display: flex; 
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1em;
+}
+
+.model button.main-button {
+    padding-right: 1.3em;
+    padding-left: 10px;
+}
+
+.model button.main-button.cancel-button {
+    background: var(--grey-clr-200);
+}
+
+.model textarea.main-textarea {
+    width: 100%;
+    resize: none;
+    font-size: 1.15em;
+    border: none;
+    border: 1px solid var(--grey-clr-200);
+}

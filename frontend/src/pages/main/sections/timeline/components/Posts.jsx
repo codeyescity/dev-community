@@ -38,7 +38,7 @@ export default function Posts() {
                 posts.map((post, idx) => {
                     let { userId: postOwnerId, id: postId, title, body } = post;
                     postOwnerId = Number(genId() + postOwnerId + genId());
-                    return <Post key={idx} postOwnerId={postOwnerId} postId={postId} title={title} body={body} date={genDate()} />
+                    return <Post key={idx} postOwnerId={postOwnerId} postId={postId} body={`${title}\n${body}`} date={genDate()} />
                 })
 
             }

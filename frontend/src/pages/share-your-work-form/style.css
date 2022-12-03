@@ -1,0 +1,123 @@
+form.share-work-form {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    width: 700px;
+    margin: 150px auto 70px;
+}
+
+form.share-work-form > input, 
+form.share-work-form > textarea,
+form.share-work-form > .project-links,
+form.share-work-form > .project-technologies {
+    margin-bottom: 1.1em;
+    margin-top: .5em;
+}
+
+form.share-work-form textarea {
+    resize: none;
+}
+
+form.share-work-form > button {
+    width: fit-content; 
+    align-self: flex-end;
+}
+
+form.share-work-form .project-links,
+form.share-work-form .project-technologies {
+    display: flex; 
+    flex-direction: column;
+    gap: .8em;
+}
+
+form.share-work-form .project-links button.add-link-button {
+    padding: .5em 0;
+    background: var(--grey-clr-300);
+    filter: brightness(1.3);
+    border: 1px solid var(--grey-clr-200);
+    color: var(--white);
+}
+
+
+form.share-work-form .project-links .link {
+    display: flex; 
+    align-items: center;
+    justify-content: space-between;
+}
+
+form.share-work-form .project-links .link input.link-type {
+    width: 20%;
+    border: none;
+}
+
+form.share-work-form .project-links .link input.the-link {
+    width: 75%;
+}
+
+button.times-button {
+    height: 20px;
+    width: 20px;
+    font-size: .9em;
+    background: var(--grey-clr-300);
+    filter: brightness(1.3);
+    color: var(--grey-clr-100); 
+    border-radius: 50%;
+    border: 1px solid var(--grey-clr-200);
+    position: relative;
+}
+
+button.times-button svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+form.share-work-form .project-technologies .project-technologies-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5em;
+    background: var(--blue-clr-400);
+    border: 1px solid var(--grey-clr-200);
+    padding: 10px;
+}
+
+form.share-work-form .project-technologies .technologies-tags {
+    display: flex; 
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .6em;
+}
+
+form.share-work-form .project-technologies .technologies-tags .technology {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+    padding: .5em;
+    background: var(--grey-clr-300);
+    filter: brightness(1.3);
+    border: 1px solid var(--grey-clr-200);
+    font-size: .8em;
+}
+
+form.share-work-form .project-technologies .technologies-tags input {
+    flex: 1; 
+    border: none;
+}
+
+form.share-work-form .project-technologies .technologies-tags input:focus {
+    outline: none; 
+}
+
+form.share-work-form .project-technologies li {
+    padding: 10px; 
+    cursor: pointer; 
+}
+
+form.share-work-form .project-technologies li:hover {
+    background: var(--grey-clr-300);
+    filter: brightness(1.3);
+}
+
