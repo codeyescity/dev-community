@@ -6,6 +6,7 @@ CREATE DATABASE DevCommunityTest;
 USE DevCommunityTest;
 
 --@block
+USE DevCommunityTest;
 CREATE TABLE IF NOT EXISTS users
 (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -22,7 +23,7 @@ CREATE TABLE IF NOT EXISTS posts
     code TEXT,
     number_likes INT,
     post_creation_date DATETIME,
-    FOREIGN KEY(user_id) REFERENCES users(user_id)
+    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS postscomments
@@ -33,8 +34,8 @@ CREATE TABLE IF NOT EXISTS postscomments
     comment_text TEXT,
     comment_likes INT,
     comment_creation_date DATETIME,
-    FOREIGN KEY(user_id) REFERENCES users(user_id),
-    FOREIGN KEY(post_id) REFERENCES posts(post_id)
+    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY(post_id) REFERENCES posts(post_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS postlikes
@@ -43,8 +44,8 @@ CREATE TABLE IF NOT EXISTS postlikes
     user_id INT,
     post_like_date DATETIME,
     PRIMARY KEY(post_id,user_id),
-    FOREIGN KEY(post_id) REFERENCES posts(post_id),
-    FOREIGN KEY(user_id) REFERENCES users(user_id)
+    FOREIGN KEY(post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS commentlikes
@@ -53,11 +54,12 @@ CREATE TABLE IF NOT EXISTS commentlikes
     user_id INT,
     comment_like_date DATETIME,
     PRIMARY KEY(comment_id,user_id),
-    FOREIGN KEY(comment_id) REFERENCES postscomments(comment_id),
-    FOREIGN KEY(user_id) REFERENCES users(user_id)
+    FOREIGN KEY(comment_id) REFERENCES postscomments(comment_id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 --@block
+USE DevCommunityTest;
 INSERT INTO users (user_name) VALUES
 ("salim"),
 ("hakim"),

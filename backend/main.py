@@ -1,10 +1,11 @@
 from fastapi import FastAPI
-import sqlite3
 import uvicorn
+
 # importing routes from other files
 from routes import posts,comments
 
 app = FastAPI()
+
 app.include_router(posts.app)
 app.include_router(comments.app)
 

@@ -1,5 +1,4 @@
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
-from run import connect
 # tags are just for the ui
 app = APIRouter(tags=['comments'])
 
