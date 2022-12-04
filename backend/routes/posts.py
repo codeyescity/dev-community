@@ -14,7 +14,30 @@ class Post(BaseModel):
 
 @app.get("/posts", status_code=200)
 def get_posts():
-    res = runSQL("""SELECT * FROM posts""")
+
+    #res = runSQL("""SELECT * FROM posts""")
+    #for post in res:
+    #    comments = runSQL("""SELECT * FROM postscomments WHERE post_id = %s""",(post["post_id"],))
+    #    post["comments"] = comments
+
+    sql = """ select 
+        
+        c.post_id AS "post_id",
+        c.user_id AS "user_id",
+        c.description AS 'description',
+        
+         json_arrayagg( 
+
+            json_object(
+                'comment_id', p.comment_id, 
+                'post_id', p.post_id,
+                'comment_text',p.comment_text
+            )) AS 'comments'
+        from posts c
+        inner join postscomments p on p.post_id = c.post_id
+        group by c.post_id
+        ; """
+    res = runSQL(sql)
     return res
 
 @app.get("/posts/{id}", status_code=200)

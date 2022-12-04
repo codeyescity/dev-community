@@ -72,10 +72,10 @@ INSERT INTO posts (user_id,type,description,number_likes,post_creation_date) VAL
 (3,"post","despcription 2",5,NOW())
 ;
 
-INSERT INTO postscomments (user_id, comment_text,comment_likes,comment_creation_date) VALUES
-(1,"comment 1",5,NOW()),
-(2,"comment 2",2,NOW()),
-(3,"comment 3",1,NOW());
+INSERT INTO postscomments (user_id, post_id, comment_text,comment_likes,comment_creation_date) VALUES
+(1,1,"comment 1",5,NOW()),
+(2,1,"comment 2",2,NOW()),
+(3,2,"comment 3",1,NOW());
 
 INSERT INTO postlikes (user_id, post_id, post_like_date) VALUES
 (1,1,NOW()),
@@ -93,3 +93,19 @@ SELECT * FROM postscomments;
 
 --@block
 SELECT * FROM postlikes;
+--@block
+select     
+        c.post_id AS "post_id",
+        c.user_id AS "user_id",
+        c.description AS 'description',
+        json_arrayagg( 
+
+            json_object(
+                'comment_id', p.comment_id, 
+                'post_id', p.post_id,
+                'comment_text',p.comment_text
+            )) AS 'comments'
+        from posts c
+        inner join postscomments p on p.post_id = c.post_id
+        group by c.post_id
+        ; 
