@@ -1,6 +1,7 @@
 import Header from '../../sections/header/Header';
 import NavSideBar from './sections/nav-side-bar/NavSideBar'
-import MeetPeople from './sections/meet-people/MeetPeople'
+import WorkingRooms from './sections/working-rooms/WorkingRooms';
+import Model from '../../components/model/Model'
 import './style.css'
 
 export default function Main({ children }) {
@@ -12,7 +13,7 @@ export default function Main({ children }) {
                 <div className="container">
                     <NavSideBar />
                     {children}
-                    <MeetPeople />
+                    <WorkingRooms />
                 </div>
             </section>
         </>

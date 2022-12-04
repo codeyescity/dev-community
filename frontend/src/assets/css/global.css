@@ -37,7 +37,9 @@
   --rounded-border-2: 10px; 
   --rounded-border-3: 20px; 
 
-  --header-height: 59.59px;
+  --header-height: 61.59px;
+
+  --main-clr: #445979;
 }
 
 :root[theme="light"] {

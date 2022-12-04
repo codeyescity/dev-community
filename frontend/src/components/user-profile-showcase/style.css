@@ -6,9 +6,9 @@
     cursor: pointer;
 }
 
-.profile .profile-img {
-    width: 40px; 
-    height: 40px; 
+.profile-img {
+    width: 3em; 
+    height: 3em; 
     border-radius: 50%;
     border: 1px solid #fff; 
     background:lightseagreen ;
