@@ -10,7 +10,9 @@ USE DevCommunityTest;
 CREATE TABLE IF NOT EXISTS users
 (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_name TEXT
+    user_name TEXT,
+    user_password TEXT
+
 );
 
 CREATE TABLE IF NOT EXISTS posts
@@ -94,18 +96,24 @@ SELECT * FROM postscomments;
 --@block
 SELECT * FROM postlikes;
 --@block
-select     
-        c.post_id AS "post_id",
-        c.user_id AS "user_id",
-        c.description AS 'description',
-        json_arrayagg( 
-
-            json_object(
-                'comment_id', p.comment_id, 
-                'post_id', p.post_id,
-                'comment_text',p.comment_text
-            )) AS 'comments'
+select 
+        c.post_id,
+        c.post_creation_date,
+        u.user_id,
+        u.user_name,
+        c.description,
+        c.number_likes,
+        json_arrayagg( json_object
+                                ( 
+                                'comment_id', p.comment_id, 
+                                'user_id', u.user_id,
+                                'user_name', u.user_name,
+                                'comment_text', p.comment_text,
+                                'comment_likes', p.comment_likes
+                                )  
+                        ) AS 'comments'
         from posts c
         inner join postscomments p on p.post_id = c.post_id
+        inner join users u ON u.user_id = c.user_id
         group by c.post_id
-        ; 
+        ;

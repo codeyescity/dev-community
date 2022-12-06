@@ -1,4 +1,6 @@
 fastapi
 uvicorn[standard]
 mysql-connector-python
-Faker
+python-multipart
+python-jose[cryptography]
+passlib[bcrypt]

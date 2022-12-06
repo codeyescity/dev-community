@@ -21,20 +21,24 @@ def get_posts():
     #    post["comments"] = comments
 
     sql = """ select 
-        
-        c.post_id AS "post_id",
-        c.user_id AS "user_id",
-        c.description AS 'description',
-        
-         json_arrayagg( 
-
-            json_object(
-                'comment_id', p.comment_id, 
-                'post_id', p.post_id,
-                'comment_text',p.comment_text
-            )) AS 'comments'
+        c.post_id,
+        c.post_creation_date,
+        u.user_id,
+        u.user_name,
+        c.description,
+        c.number_likes,
+        json_arrayagg( json_object
+                                ( 
+                                'comment_id', p.comment_id, 
+                                'user_id', u.user_id,
+                                'user_name', u.user_name,
+                                'comment_text', p.comment_text,
+                                'comment_likes', p.comment_likes
+                                )  
+                        ) AS 'comments'
         from posts c
         inner join postscomments p on p.post_id = c.post_id
+        inner join users u ON u.user_id = c.user_id
         group by c.post_id
         ; """
     res = runSQL(sql)
@@ -42,7 +46,7 @@ def get_posts():
 
 @app.get("/posts/{id}", status_code=200)
 def get_post(id : int):
-    res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(id,))
+    res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(id,))     
     return res
 
 @app.post("/posts", status_code = status.HTTP_201_CREATED)
