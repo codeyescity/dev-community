@@ -38,7 +38,6 @@ def create_post(post : Post, user_id : int = Depends(get_current_user)):
 
 @app.put("/posts/{id}", status_code = status.HTTP_200_OK)
 def edit_post(id : int, post : Post, user_id : int = Depends(get_current_user)):
-    user_id = 2
     res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(id,))
     if not res:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the post with id {id} can t be found")
@@ -51,7 +50,6 @@ def edit_post(id : int, post : Post, user_id : int = Depends(get_current_user)):
 
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id : int, user_id : int = Depends(get_current_user)):
-    user_id = 2
     res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(id,))
     if not res:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the post with id {id} can t be found")
