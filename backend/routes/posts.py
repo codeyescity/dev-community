@@ -1,6 +1,7 @@
-from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
+from fastapi import status, HTTPException, Depends, APIRouter, Response
 from dbhelper import runSQL
 from pydantic import BaseModel
+from oauth2 import get_current_user
 
 # tags are just for the ui
 app = APIRouter(tags=['Posts'])
@@ -13,69 +14,66 @@ class Post(BaseModel):
     code: str | None = None
 
 @app.get("/posts", status_code=200)
-def get_posts():
+def get_posts(user_id : int = Depends(get_current_user)):
 
-    #res = runSQL("""SELECT * FROM posts""")
-    #for post in res:
-    #    comments = runSQL("""SELECT * FROM postscomments WHERE post_id = %s""",(post["post_id"],))
-    #    post["comments"] = comments
+    sql ="""SELECT posts.post_id, posts.post_creation_date, users.user_id, users.user_name, posts.description, posts.number_likes
+            FROM posts 
+            INNER JOIN users ON users.user_id = posts.user_id; """
 
-    sql = """ select 
-        c.post_id,
-        c.post_creation_date,
-        u.user_id,
-        u.user_name,
-        c.description,
-        c.number_likes,
-        json_arrayagg( json_object
-                                ( 
-                                'comment_id', p.comment_id, 
-                                'user_id', u.user_id,
-                                'user_name', u.user_name,
-                                'comment_text', p.comment_text,
-                                'comment_likes', p.comment_likes
-                                )  
-                        ) AS 'comments'
-        from posts c
-        inner join postscomments p on p.post_id = c.post_id
-        inner join users u ON u.user_id = c.user_id
-        group by c.post_id
-        ; """
     res = runSQL(sql)
+
     return res
 
-@app.get("/posts/{id}", status_code=200)
-def get_post(id : int):
-    res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(id,))     
+@app.get("/posts/{id}", status_code = status.HTTP_200_OK)
+def get_post(id : int, user_id : int = Depends(get_current_user)):
+    res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(id,))    
+    if not res:
+        raise HTTPException(status_code=404, detail=f"the post with id {id} can t be found")
     return res
 
 @app.post("/posts", status_code = status.HTTP_201_CREATED)
-def create_post(post : Post):
-    runSQL("""INSERT INTO posts (user_id,type,description,post_creation_date) VALUES (1,"post",%s,NOW());""" ,(post.description,))
-    return {"added" : "post"}
+def create_post(post : Post, user_id : int = Depends(get_current_user)):
+    runSQL("""INSERT INTO posts (user_id,type,description,post_creation_date) VALUES (%s,"post",%s,NOW());""" ,(user_id,post.description))
+    return post
 
-@app.put("/posts/{id}")
-def edit_post(id : int,post : Post):
+@app.put("/posts/{id}", status_code = status.HTTP_200_OK)
+def edit_post(id : int, post : Post, user_id : int = Depends(get_current_user)):
+    user_id = 2
+    res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(id,))
+    if not res:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the post with id {id} can t be found")
+    if res[0]["user_id"] != user_id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    
     res = runSQL("""UPDATE posts SET description = %s WHERE post_id = %s """,(post.description,id))
-    return {"edited": id}
+    res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(id,))
+    return res
 
-@app.delete("/posts/{id}")
-def delete_post(id : int):
+@app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_post(id : int, user_id : int = Depends(get_current_user)):
+    user_id = 2
+    res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(id,))
+    if not res:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the post with id {id} can t be found")
+    if res[0]["user_id"] != user_id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    
     res = runSQL("""DELETE FROM posts WHERE post_id = %s""",(id,))
-    return {"deleted": id}
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 
 @app.post("/postlike/{id}")
-def like_post(id:int):
-    userid = 2
-    res = runSQL("""SELECT user_id FROM postlikes WHERE post_id = %s AND user_id = %s""",(id,userid))
+def like_post(id:int, user_id : int = Depends(get_current_user)):
+    res = runSQL("""SELECT user_id FROM postlikes WHERE post_id = %s AND user_id = %s""",(id,user_id))
 
     if(res):
-        runSQL("""DELETE FROM postlikes WHERE post_id = %s AND user_id = %s""",(id,userid) )
-        return "deleted"
+        runSQL("""DELETE FROM postlikes WHERE post_id = %s AND user_id = %s""",(id,user_id) )
+        runSQL("""UPDATE posts SET number_likes = number_likes - 1 WHERE post_id = %s """,(id,))
+        return Response(status_code = status.HTTP_204_NO_CONTENT)
     else:
-        runSQL("""INSERT INTO  postlikes (post_id,user_id) VALUES (%s,%s)""",(id,userid) )
-        return "added"
+        runSQL("""INSERT INTO  postlikes (post_id,user_id) VALUES (%s,%s)""",(id,user_id) )
+        runSQL("""UPDATE posts SET number_likes = number_likes + 1 WHERE post_id = %s """,(id,))
+        return Response(status_code = status.HTTP_201_CREATED)
 
     
