@@ -12,16 +12,21 @@ from oauth2 import create_access_token, get_current_user
 app = APIRouter(tags=['users'])
 
 class User(BaseModel):
-    name : str
+    username : str
     password : str
 
 
 @app.post("/register/", status_code = status.HTTP_201_CREATED)
 def register_user(user: User):
 
+    res = runSQL("""SELECT * FROM users WHERE user_name = %s""", (user.username,))
+    # check if name is taken
+    if res:
+        raise HTTPException(status_code = status.HTTP_409_CONFLIC, detail=f"the username {user.username} is already taken.")
+    
+    # hash the password
     user.password = hash(user.password)
-    res = runSQL(""" INSERT INTO users (user_name, user_password) VALUES (%s,%s)""",(user.name,user.password))
-    # hash the password - user.password
+    res = runSQL(""" INSERT INTO users (user_name, user_password) VALUES (%s,%s)""",(user.username,user.password))
 
     return res
 
