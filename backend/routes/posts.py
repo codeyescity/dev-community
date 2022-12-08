@@ -92,3 +92,4 @@ def like_post(post_id: int, user_id : int = Depends(get_current_user)):
         return Response(status_code = status.HTTP_201_CREATED)
 
     
+

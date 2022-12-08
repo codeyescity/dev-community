@@ -11,8 +11,11 @@ CREATE TABLE IF NOT EXISTS users
 (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     user_name TEXT,
-    user_password TEXT
-
+    first_name TEXT,
+    last_name TEXT,
+    user_password TEXT,
+    email TEXT,
+    password TEXT
 );
 
 CREATE TABLE IF NOT EXISTS posts
@@ -59,6 +62,37 @@ CREATE TABLE IF NOT EXISTS commentlikes
     FOREIGN KEY(comment_id) REFERENCES postscomments(comment_id) ON DELETE CASCADE,
     FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS technologies
+(
+    technology_id INT AUTO_INCREMENT PRIMARY KEY,
+    technology_name TEXT
+);
+
+CREATE TABLE IF NOT EXISTS users_technologies
+(
+    user_id INT,
+    technology_id INT, 
+    PRIMARY KEY(user_id, technology_id),
+    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY(technology_id) REFERENCES technologies(technology_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS posts_technologies
+(
+    post_id INT,
+    technology_id INT, 
+    PRIMARY KEY(post_id, technology_id),
+    FOREIGN KEY(post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+    FOREIGN KEY(technology_id) REFERENCES technologies(technology_id) ON DELETE CASCADE
+);
+
+
+
+
+
+
+
 
 --@block
 USE DevCommunityTest;

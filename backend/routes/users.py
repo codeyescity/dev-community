@@ -57,3 +57,27 @@ def get_user(user_id: int = Depends(get_current_user)):
     if not res:
         raise HTTPException(status_code = 404, detail=f"User with id: {user_id} does not exist")
     return res
+
+
+@app.get("/userprofile/posts", status_code=200)
+def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: int = 20, type: str = "all"):
+
+    if type not in ["post","question","job_offer","all"]:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail=f"the post type  {type} can t be found")
+
+    if type == "all":
+        sql ="""SELECT posts.post_id, posts.post_creation_date, users.user_id, users.user_name, posts.description, posts.number_likes
+            FROM posts 
+            INNER JOIN users ON users.user_id = posts.user_id 
+            WHERE user_id = %s
+            LIMIT %s, %s;"""
+        res = runSQL(sql, (user_id, start, limit))
+    else:
+        sql ="""SELECT posts.post_id, posts.post_creation_date, users.user_id, users.user_name, posts.description, posts.number_likes
+            FROM posts 
+            INNER JOIN users ON users.user_id = posts.user_id 
+            WHERE user_id = %s
+            WHERE type = %s LIMIT %s, %s;"""
+        res = runSQL(sql, (user_id, type, start, limit))
+
+    return res
