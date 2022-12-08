@@ -7,10 +7,19 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 import uvicorn
 
+from fastapi.middleware.cors import CORSMiddleware
 # importing routes from other files
 from routes import posts, comments, users
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(posts.app)
 app.include_router(comments.app)

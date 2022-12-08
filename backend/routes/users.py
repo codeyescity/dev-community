@@ -22,7 +22,7 @@ def register_user(user: User):
     res = runSQL("""SELECT * FROM users WHERE user_name = %s""", (user.username,))
     # check if name is taken
     if res:
-        raise HTTPException(status_code = status.HTTP_409_CONFLIC, detail=f"the username {user.username} is already taken.")
+        raise HTTPException(status_code = status.HTTP_403_FORBIDDEN, detail=f"the username {user.username} is already taken.")
     
     # hash the password
     user.password = hash(user.password)
@@ -50,10 +50,10 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends()):
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@app.get("/users/{id}", status_code = 200)
-def get_user(id: int, user_id: int = Depends(get_current_user)):
-    res = runSQL(""" SELECT * FROM users WHERE user_id = %s""",(id,))
+@app.get("/userprofile", status_code = 200)
+def get_user(user_id: int = Depends(get_current_user)):
+    res = runSQL(""" SELECT * FROM users WHERE user_id = %s""",(user_id,))
 
     if not res:
-        raise HTTPException(status_code = 404, detail=f"User with id: {id} does not exist")
+        raise HTTPException(status_code = 404, detail=f"User with id: {user_id} does not exist")
     return res
