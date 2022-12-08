@@ -7,7 +7,6 @@ from oauth2 import get_current_user
 app = APIRouter(tags=['Posts'])
 
 class Post(BaseModel):
-    user_id: int
     post_type: str
     title: str | None = None
     description: str
@@ -20,11 +19,14 @@ def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: 
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail=f"the post type  {type} can t be found")
 
     if type == "all":
-        sql ="""SELECT posts.post_id, posts.post_creation_date, users.user_id, users.user_name, posts.description, posts.number_likes
+        sql ="""SELECT posts.post_id, posts.post_creation_date, users.user_id, users.user_name, posts.description, posts.number_likes,
+            IF(postlikes.user_id=%s, 'TRUE', 'FALSE') AS 'liked'
             FROM posts 
-            INNER JOIN users ON users.user_id = posts.user_id 
-            LIMIT %s, %s;"""
-        res = runSQL(sql, (start, limit))
+            LEFT JOIN users ON users.user_id = posts.user_id 
+            LEFT JOIN postlikes ON postlikes.post_id = posts.post_id
+
+            LIMIT %s, %s """
+        res = runSQL(sql, (user_id, start, limit))
     else:
         sql ="""SELECT posts.post_id, posts.post_creation_date, users.user_id, users.user_name, posts.description, posts.number_likes
             FROM posts 
@@ -42,8 +44,15 @@ def get_post(post_id : int, user_id : int = Depends(get_current_user)):
     return res
 
 @app.post("/posts", status_code = status.HTTP_201_CREATED)
-def create_post(post : Post, user_id : int = Depends(get_current_user)):
-    runSQL("""INSERT INTO posts (user_id,type,description,post_creation_date) VALUES (%s,"post",%s,NOW());""" ,(user_id,post.description))
+def create_post(post : Post, user_id : int = Depends(get_current_user), type: str = "post"):
+    if type not in ["post","question","job_offer"]:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail=f"the post type  {type} can t be created")
+
+    if(type == "question"):
+        runSQL("""INSERT INTO posts (user_id, type, title, description, code, post_creation_date) VALUES (%s,%s,%s,%s,%s,NOW());""" ,(user_id, type, post.title, post.description, post.code))
+    else:
+        # post or job offer
+        runSQL("""INSERT INTO posts (user_id,type,description,post_creation_date) VALUES (%s,%s,%s,NOW());""" ,(user_id,type,post.description))    
     return post
 
 @app.put("/posts/{post_id}", status_code = status.HTTP_200_OK)

@@ -11,11 +11,10 @@ CREATE TABLE IF NOT EXISTS users
 (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     user_name TEXT,
+    user_password TEXT,
     first_name TEXT,
     last_name TEXT,
-    user_password TEXT,
-    email TEXT,
-    password TEXT
+    user_email TEXT
 );
 
 CREATE TABLE IF NOT EXISTS posts
@@ -86,11 +85,6 @@ CREATE TABLE IF NOT EXISTS posts_technologies
     FOREIGN KEY(post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
     FOREIGN KEY(technology_id) REFERENCES technologies(technology_id) ON DELETE CASCADE
 );
-
-
-
-
-
 
 
 
