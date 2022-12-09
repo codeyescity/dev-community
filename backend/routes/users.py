@@ -14,19 +14,24 @@ app = APIRouter(tags=['users'])
 class User(BaseModel):
     username : str
     password : str
+    first_name: str
+    last_name: str
+    email: str
+    phone_number: int
+    
 
 
 @app.post("/register/", status_code = status.HTTP_201_CREATED)
 def register_user(user: User):
 
-    res = runSQL("""SELECT * FROM users WHERE user_name = %s""", (user.username,))
+    res = runSQL("""SELECT * FROM users WHERE username = %s""", (user.username,))
     # check if name is taken
     if res:
         raise HTTPException(status_code = status.HTTP_403_FORBIDDEN, detail=f"the username {user.username} is already taken.")
     
     # hash the password
     user.password = hash(user.password)
-    res = runSQL(""" INSERT INTO users (user_name, user_password) VALUES (%s,%s)""",(user.username,user.password))
+    res = runSQL("""INSERT INTO users (username, password, first_name, last_name, email, phone_number) VALUES (%s,%s,%s,%s,%s,%s)""",(user.username, user.password,user.first_name, user.last_name, user.email, user.phone_number))
 
     return res
 
@@ -35,13 +40,13 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends()):
     #OAuth2PasswordRequestForm dict
     #{"username": "example", "password" : "examplepassword"}
 
-    user = runSQL("""SELECT * FROM users WHERE user_name = %s""",(user_credentials.username,))
+    user = runSQL("""SELECT * FROM users WHERE username = %s""",(user_credentials.username,))
     # check if user name is in db
     print(user)
     if not user:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid Credentials")
     # check if password is the same as the hashed password in db
-    if not verify(user_credentials.password, user[0]['user_password']):
+    if not verify(user_credentials.password, user[0]['password']):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid Credentials")
 
     # create a token
@@ -66,14 +71,14 @@ def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: 
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail=f"the post type  {type} can t be found")
 
     if type == "all":
-        sql ="""SELECT posts.post_id, posts.post_creation_date, users.user_id, users.user_name, posts.description, posts.number_likes
+        sql ="""SELECT posts.post_id, posts.post_creation_date, users.user_id, users.username, posts.description, posts.number_likes
             FROM posts 
-            INNER JOIN users ON users.user_id = posts.user_id 
+            INNER JOIN users ON users.post_owner_id = posts.user_id 
             WHERE user_id = %s
             LIMIT %s, %s;"""
         res = runSQL(sql, (user_id, start, limit))
     else:
-        sql ="""SELECT posts.post_id, posts.post_creation_date, users.user_id, users.user_name, posts.description, posts.number_likes
+        sql ="""SELECT posts.post_id, posts.post_creation_date, users.user_id, users.username, posts.description, posts.number_likes
             FROM posts 
             INNER JOIN users ON users.user_id = posts.user_id 
             WHERE user_id = %s

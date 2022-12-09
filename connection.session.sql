@@ -10,56 +10,59 @@ USE DevCommunityTest;
 CREATE TABLE IF NOT EXISTS users
 (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_name TEXT,
-    user_password TEXT,
+    username VARCHAR(20) UNIQUE,
+    password TEXT,
     first_name TEXT,
     last_name TEXT,
-    user_email TEXT
+    email TEXT,
+    phone_number BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS posts
 (
     post_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    type TEXT,
-    title TEXT,
-    description TEXT,
-    code TEXT,
-    number_likes INT,
+    post_owner_id INT,
+    post_type TEXT,
+    post_title TEXT,
+    post_body TEXT,
+    post_code TEXT,
+    post_number_likes INT DEFAULT 0,
+    post_number_comments INT DEFAULT 0,
     post_creation_date DATETIME,
-    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY(post_owner_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS postscomments
+
+CREATE TABLE IF NOT EXISTS users_comments_posts
 (
     comment_id INT AUTO_INCREMENT PRIMARY KEY, 
-    user_id INT,
+    comment_owner_id INT,
     post_id INT,
-    comment_text TEXT,
-    comment_likes INT,
-    comment_creation_date DATETIME,
-    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    comment_body TEXT,
+    comment_number_likes INT DEFAULT 0,
+    comment_date DATETIME,
+    FOREIGN KEY(comment_owner_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY(post_id) REFERENCES posts(post_id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS postlikes
+CREATE TABLE IF NOT EXISTS users_likes_posts
 (
+    post_liker_id INT,
     post_id INT, 
-    user_id INT,
     post_like_date DATETIME,
-    PRIMARY KEY(post_id,user_id),
-    FOREIGN KEY(post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
-    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    PRIMARY KEY(post_id,post_liker_id),
+    FOREIGN KEY(post_liker_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY(post_id) REFERENCES posts(post_id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS commentlikes
+CREATE TABLE IF NOT EXISTS users_likes_comments
 (
+    comment_liker_id INT,
     comment_id INT, 
-    user_id INT,
     comment_like_date DATETIME,
-    PRIMARY KEY(comment_id,user_id),
-    FOREIGN KEY(comment_id) REFERENCES postscomments(comment_id) ON DELETE CASCADE,
-    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    PRIMARY KEY(comment_id,comment_liker_id),
+    FOREIGN KEY(comment_liker_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY(comment_id) REFERENCES users_comments_posts(comment_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS technologies
@@ -90,27 +93,33 @@ CREATE TABLE IF NOT EXISTS posts_technologies
 
 --@block
 USE DevCommunityTest;
-INSERT INTO users (user_name) VALUES
-("salim"),
-("hakim"),
-("faycal")
+INSERT INTO users (username, first_name, last_name, email, phone_number) VALUES
+("bob","Drake" ,"Carroll","lorem@outlook.org","9824061330"),
+("Yoko","Marsden", "Jefferson","at.arcu@outlook.com","9824061330"),
+("star", "Palmer", "Barnes","nisi.sem@gmail.ca","9844061330"),
+("Palmer" ,"Yoko", "Donaldson","vulputate.velit@gmail.com","9824061330"),
+("Jefferson", "Fritz", "Joseph","eget.nisi.dictum@outlook.com","9824061330")
 ;
 
-INSERT INTO posts (user_id,type,description,number_likes,post_creation_date) VALUES
-(1,"post","despcription 1",20,NOW()),
-(2,"post","despcription 2",3,NOW()),
-(3,"post","despcription 2",5,NOW())
+INSERT INTO posts (post_owner_id, post_type, post_title, post_body, post_code, post_creation_date) VALUES
+(1,"post", "", "Lorem ipsum dolor sit amet", "", NOW()),
+(1,"post", "", "Lorem ipsum dolor sit amet", "", NOW()),
+(2,"question", "title", "Lorem ipsum dolor sit amet", "x = x+1", NOW()),
+(3,"question", "title", "Lorem ipsum dolor sit amet", "let v = 5", NOW()),
+(4,"job_offer", "", "Lorem ipsum dolor sit amet", "", NOW()),
+(5,"job_offer", "", "Lorem ipsum dolor sit amet", "", NOW())
 ;
 
-INSERT INTO postscomments (user_id, post_id, comment_text,comment_likes,comment_creation_date) VALUES
-(1,1,"comment 1",5,NOW()),
-(2,1,"comment 2",2,NOW()),
-(3,2,"comment 3",1,NOW());
 
-INSERT INTO postlikes (user_id, post_id, post_like_date) VALUES
-(1,1,NOW()),
-(1,2,NOW()),
-(2,3,NOW())
+INSERT INTO users_comments_posts (comment_owner_id, post_id, comment_body, comment_date) VALUES
+(1,1,"Lorem ipsum dolor sit amet",NOW()),
+(2,1,"Lorem ipsum dolor sit amet",NOW()),
+(3,1,"Lorem ipsum dolor sit amet",NOW()),
+(1,2,"Lorem ipsum dolor sit amet",NOW()),
+(1,3,"Lorem ipsum dolor sit amet",NOW()),
+(1,4,"Lorem ipsum dolor sit amet",NOW())
+;
+
 
 --@block
 SELECT * FROM users;
@@ -119,23 +128,31 @@ SELECT * FROM users;
 SELECT * FROM posts;
 
 --@block
-SELECT * FROM postscomments;
+SELECT * FROM users_comments_posts;
 
 --@block
-SELECT * FROM postlikes;
+SELECT * FROM users_likes_posts;
+
+--@block
+SELECT * FROM users_likes_comments;
+
+
+
+
+
 --@block
 select 
         c.post_id,
         c.post_creation_date,
         u.user_id,
-        u.user_name,
+        u.username,
         c.description,
         c.number_likes,
         json_arrayagg( json_object
                                 ( 
                                 'comment_id', p.comment_id, 
                                 'user_id', u.user_id,
-                                'user_name', u.user_name,
+                                'username', u.username,
                                 'comment_text', p.comment_text,
                                 'comment_likes', p.comment_likes
                                 )  
@@ -145,3 +162,22 @@ select
         inner join users u ON u.user_id = c.user_id
         group by c.post_id
         ;
+
+--@block
+SELECT *    
+FROM posts 
+LEFT JOIN users ON posts.user_id  = users.user_id
+LEFT JOIN postlikes ON posts.post_id = postlikes.post_id
+
+;
+--@block
+SELECT posts.post_id, posts.post_creation_date, users.user_id, users.username, posts.description, posts.number_likes,
+            IF(10>20, '12', '13') AS "LIKED"
+            
+            FROM posts 
+            LEFT JOIN users ON posts.user_id  = users.user_id
+            LEFT JOIN postlikes ON posts.post_id = postlikes.post_id
+            GROUP BY  posts.post_id
+
+
+;
