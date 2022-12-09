@@ -21,7 +21,7 @@ class User(BaseModel):
     
 
 
-@app.post("/register/", status_code = status.HTTP_201_CREATED)
+@app.post("/register", status_code = status.HTTP_201_CREATED)
 def register_user(user: User):
 
     res = runSQL("""SELECT * FROM users WHERE username = %s""", (user.username,))
