@@ -15,6 +15,7 @@ class Post(BaseModel):
 @app.get("/posts", status_code=200)
 def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: int = 20, type: str = "all"):
 
+    res = None
     if type not in ["post","question","job_offer","all"]:
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail=f"the post with the type {type} can t be found")
     # get all posts posts, questions , job offers
@@ -35,7 +36,6 @@ def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: 
                 LIMIT %s, %s;"""
         res = runSQL(sql, (start, limit))
     else:
-        
         sql ="""
             SELECT 
                 p.post_id, 

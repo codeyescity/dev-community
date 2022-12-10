@@ -24,12 +24,16 @@ class User(BaseModel):
 @app.post("/register", status_code = status.HTTP_201_CREATED)
 def register_user(user: User):
 
-    res = runSQL("""SELECT * FROM users WHERE username = %s""", (user.username,))
+    # check lenght of thr username and password
+    if len(str(user.username)) > 20 or len(str(user.password)) > 20:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid Credentials")
+
     # check if name is taken
+    res = runSQL("""SELECT * FROM users WHERE username = %s""", (user.username,))
     if res:
         raise HTTPException(status_code = status.HTTP_403_FORBIDDEN, detail=f"the username {user.username} is already taken.")
     
-    # hash the password
+    # hash the password and ass password to the db
     user.password = hash(user.password)
     res = runSQL("""INSERT INTO users (username, password, first_name, last_name, email, phone_number) VALUES (%s,%s,%s,%s,%s,%s)""",(user.username, user.password,user.first_name, user.last_name, user.email, user.phone_number))
 
@@ -42,7 +46,6 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends()):
 
     user = runSQL("""SELECT * FROM users WHERE username = %s""",(user_credentials.username,))
     # check if user name is in db
-    print(user)
     if not user:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid Credentials")
     # check if password is the same as the hashed password in db
@@ -57,7 +60,7 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends()):
 
 @app.get("/userprofile", status_code = 200)
 def get_user(user_id: int = Depends(get_current_user)):
-    res = runSQL(""" SELECT * FROM users WHERE user_id = %s""",(user_id,))
+    res = runSQL("""SELECT user_id FROM users WHERE user_id = %s""",(user_id,))
 
     if not res:
         raise HTTPException(status_code = 404, detail=f"User with id: {user_id} does not exist")
