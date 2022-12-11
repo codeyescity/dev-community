@@ -23,10 +23,11 @@ def get_post_comments(post_id: int, user_id: int = Depends(get_current_user), st
             u.username,
             c.comment_date,
             c.comment_body,
-            c.comment_number_likes
+            c.comment_number_likes, 
+            IF((SELECT comment_liker_id FROM users_likes_comments cl WHERE cl.comment_liker_id = %s AND cl.comment_id = c.comment_id), "true", "false") AS 'liked'
         FROM users_comments_posts c
         LEFT JOIN users u ON c.comment_owner_id = u.user_id
-        WHERE post_id = %s LIMIT %s, %s;""",(post_id,start,limit))
+        WHERE post_id = %s LIMIT %s, %s;""",(user_id, post_id,start,limit))
     return res
 
 @app.post("/posts/{post_id}/comments")
