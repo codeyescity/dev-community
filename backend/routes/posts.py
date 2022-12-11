@@ -30,11 +30,12 @@ def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: 
                     p.post_body, 
                     p.post_code,
                     p.post_number_likes, 
-                    p.post_number_comments
+                    p.post_number_comments,
+                    IF((SELECT post_liker_id FROM users_likes_posts pl WHERE pl.post_liker_id = %s AND pl.post_id = p.post_id), "true", "false") AS 'liked'
                 FROM posts p
                 LEFT JOIN users u ON p.post_owner_id  = u.user_id
                 LIMIT %s, %s;"""
-        res = runSQL(sql, (start, limit))
+        res = runSQL(sql, (user_id,start, limit))
     else:
         sql ="""
             SELECT 
