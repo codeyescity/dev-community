@@ -59,7 +59,9 @@ def delete_post_comment(post_id: int, comment_id: int, user_id : int = Depends(g
     if res[0]["comment_owner_id"] != user_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
-    res = db.runSQL("""DELETE FROM users_comments_posts WHERE post_id = %s AND comment_id = %s""",(post_id, comment_id))
+    db.runSQL("""DELETE FROM users_comments_posts WHERE post_id = %s AND comment_id = %s""",(post_id, comment_id))
+    db.runSQL("""UPDATE posts SET post_number_comments = post_number_comments - 1 WHERE post_id = %s """,(post_id,))
+    
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 @app.post("/posts/{post_id}/likecomment/{comment_id}")
