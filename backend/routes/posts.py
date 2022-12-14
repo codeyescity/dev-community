@@ -37,7 +37,7 @@ def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: 
                 FROM posts p
                 LEFT JOIN users u ON p.post_owner_id  = u.user_id
                 LIMIT %s, %s;"""
-        res = db.runSQL(sql, (user_id,start, limit))
+        res = runSQL(sql, (user_id,start, limit))
     else:
         sql ="""
             SELECT 
@@ -56,7 +56,7 @@ def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: 
             LEFT JOIN users u ON p.post_owner_id  = u.user_id
             WHERE p.post_type = %s
             LIMIT %s, %s;"""
-        res = db.runSQL(sql, (user_id, type, start, limit))
+        res = runSQL(sql, (user_id, type, start, limit))
 
     return res
 
@@ -79,7 +79,7 @@ def get_post(post_id : int, user_id : int = Depends(get_current_user)):
         LEFT JOIN users u ON p.post_owner_id  = u.user_id
         WHERE p.post_id = %s;"""
 
-    res = db.runSQL(sql,(user_id,post_id))    
+    res = runSQL(sql,(user_id,post_id))    
     # check if post exists and returns
     if not res:
         raise HTTPException(status_code=404, detail=f"the post with id {post_id} can t be found")
@@ -91,33 +91,33 @@ def create_post(post : Post, user_id : int = Depends(get_current_user)):
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail=f"the post with type {post.post_type} can t be created")
 
     # add the post to the db 
-    db.runSQL("""INSERT INTO posts (post_owner_id , post_type, post_title, post_body, post_code, post_creation_date) VALUES 
+    runSQL("""INSERT INTO posts (post_owner_id , post_type, post_title, post_body, post_code, post_creation_date) VALUES 
             (%s,%s,%s,%s,%s,NOW());""" ,(user_id, post.post_type, post.post_title, post.post_body, post.post_code))
 
     return post
 
 @app.put("/posts/{post_id}", status_code = status.HTTP_200_OK)
 def edit_post(post_id : int, post : Post, user_id : int = Depends(get_current_user)):
-    res = db.runSQL("""SELECT post_owner_id FROM posts WHERE post_id = %s""",(post_id,))
+    res = runSQL("""SELECT post_owner_id FROM posts WHERE post_id = %s""",(post_id,))
     if not res:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the post with id {post_id} can t be found")
     if res[0]["post_owner_id"] != user_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
-    res = db.runSQL("""UPDATE posts SET post_title = %s, post_body = %s, post_code = %s WHERE post_id = %s""",(post.post_title,post.post_body,post.post_code,post_id))
+    res = runSQL("""UPDATE posts SET post_title = %s, post_body = %s, post_code = %s WHERE post_id = %s""",(post.post_title,post.post_body,post.post_code,post_id))
     # return the edited post
-    res = db.runSQL("""SELECT * FROM posts WHERE post_id = %s""",(post_id,))
+    res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(post_id,))
     return res
 
 @app.delete("/posts/{post_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(post_id : int, user_id : int = Depends(get_current_user)):
-    res = db.runSQL("""SELECT post_owner_id FROM posts WHERE post_id = %s""",(post_id,))
+    res = runSQL("""SELECT post_owner_id FROM posts WHERE post_id = %s""",(post_id,))
     if not res:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the post with id {post_id} can t be found")
     if res[0]["post_owner_id"] != user_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
     
-    res = db.runSQL("""DELETE FROM posts WHERE post_id = %s""",(post_id,))
+    res = runSQL("""DELETE FROM posts WHERE post_id = %s""",(post_id,))
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
@@ -125,20 +125,20 @@ def delete_post(post_id : int, user_id : int = Depends(get_current_user)):
 @app.post("/postlike/{post_id}")
 def like_post(post_id: int, user_id : int = Depends(get_current_user)):
     # check if the post exists
-    res = db.runSQL("""SELECT * FROM posts WHERE post_id = %s""",(post_id,))
+    res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(post_id,))
     if not res:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the post with id {post_id} can t be found")    
     # check if user has liked the post
-    res = db.runSQL("""SELECT * FROM users_likes_posts WHERE post_id = %s AND post_liker_id = %s""",(post_id, user_id))
+    res = runSQL("""SELECT * FROM users_likes_posts WHERE post_id = %s AND post_liker_id = %s""",(post_id, user_id))
     if(res):
         # remove like 
-        db.runSQL("""DELETE FROM users_likes_posts WHERE post_id = %s AND post_liker_id = %s""",(post_id,user_id) )
-        db.runSQL("""UPDATE posts SET post_number_likes = post_number_likes - 1 WHERE post_id = %s """,(post_id,))
+        runSQL("""DELETE FROM users_likes_posts WHERE post_id = %s AND post_liker_id = %s""",(post_id,user_id) )
+        runSQL("""UPDATE posts SET post_number_likes = post_number_likes - 1 WHERE post_id = %s """,(post_id,))
         return Response(status_code = status.HTTP_204_NO_CONTENT)
     else:
         # add like
-        db.runSQL("""INSERT INTO  users_likes_posts (post_id,post_liker_id) VALUES (%s,%s)""",(post_id,user_id) )
-        db.runSQL("""UPDATE posts SET post_number_likes = post_number_likes + 1 WHERE post_id = %s """,(post_id,))
+        runSQL("""INSERT INTO  users_likes_posts (post_id,post_liker_id) VALUES (%s,%s)""",(post_id,user_id) )
+        runSQL("""UPDATE posts SET post_number_likes = post_number_likes + 1 WHERE post_id = %s """,(post_id,))
         return Response(status_code = status.HTTP_201_CREATED)
 
     

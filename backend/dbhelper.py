@@ -17,12 +17,15 @@ def runSQL(sql, args = None):
             print('Connected to MySQL database')
     except Error as e:
         print(e)
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute(sql,args)
 
-    cursor = connection.cursor(dictionary=True)
-    cursor.execute(sql,args)
-
-    result = cursor.fetchall()
-    connection.commit()
+        result = cursor.fetchall()
+        connection.commit()
+        
+    except Exception as e:
+        print(e)
 
     return result
 
