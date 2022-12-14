@@ -123,7 +123,7 @@ def delete_post(post_id : int, user_id : int = Depends(get_current_user)):
 
 
 @app.post("/postlike/{post_id}")
-def like_post(post_id: int, user_id : int = Depends(get_current_user)):
+async def like_post(post_id: int, user_id : int = Depends(get_current_user)):
     # check if the post exists
     res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(post_id,))
     if not res:
