@@ -73,12 +73,13 @@ def get_post(post_id : int, user_id : int = Depends(get_current_user)):
             p.post_body, 
             p.post_code,
             p.post_number_likes, 
-            p.post_number_comments
+            p.post_number_comments,
+            IF((SELECT post_liker_id FROM users_likes_posts pl WHERE pl.post_liker_id = %s AND pl.post_id = p.post_id), "true", "false") AS 'liked'
         FROM posts p
         LEFT JOIN users u ON p.post_owner_id  = u.user_id
         WHERE p.post_id = %s;"""
 
-    res = db.runSQL(sql,(post_id,))    
+    res = db.runSQL(sql,(user_id,post_id))    
     # check if post exists and returns
     if not res:
         raise HTTPException(status_code=404, detail=f"the post with id {post_id} can t be found")
