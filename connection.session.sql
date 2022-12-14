@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS users_comments_posts
     comment_owner_id INT,
     post_id INT,
     comment_body TEXT,
+    comment_code TEXT,
     comment_number_likes INT DEFAULT 0,
     comment_date DATETIME,
     FOREIGN KEY(comment_owner_id) REFERENCES users(user_id) ON DELETE CASCADE,
