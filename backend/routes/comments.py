@@ -16,7 +16,7 @@ app = APIRouter(tags=['comments'])
 
 @app.get("/posts/{post_id}/comments")
 def get_post_comments(post_id: int, user_id: int = Depends(get_current_user), start: int = 0, limit: int = 5):
-    res = runSQL("""
+    res = db.runSQL("""
         SELECT 
             c.comment_id,
             c.post_id,
