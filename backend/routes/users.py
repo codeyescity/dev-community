@@ -63,12 +63,19 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends()):
 
 @app.get("/userprofile", status_code = 200)
 def get_user(user_id: int = Depends(get_current_user)):
-    res = runSQL("""SELECT * FROM users WHERE user_id = %s""",(user_id,))
+    res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number FROM users WHERE user_id = %s""",(user_id,))
 
     if not res:
         raise HTTPException(status_code = 404, detail=f"User with id: {user_id} does not exist")
     return res
 
+@app.get("/user/{id}", status_code = 200)
+def get_user(id: int, user_id: int = Depends(get_current_user)):
+    res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number FROM users WHERE user_id = %s""",(id,))
+
+    if not res:
+        raise HTTPException(status_code = 404, detail=f"User with id: {id} does not exist")
+    return res
 
 @app.get("/userprofile/posts", status_code=200)
 def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: int = 20, type: str = "all"):
