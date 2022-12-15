@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users
 (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(20) UNIQUE,
+    img_url VARCHAR(120) DEFAULT "http://127.0.0.1:3000/static/img/user.jpg",
     password TEXT,
     first_name TEXT,
     last_name TEXT,

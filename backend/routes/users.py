@@ -94,23 +94,28 @@ def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: 
     return res
 
 @app.post("/user_profile_img/")
-async def change_user_profile_img(image: UploadFile):
-    #print(file.content_type == "image/png")
-    print(image.content_type)
-    #image/png
+async def change_user_profile_img(image: UploadFile, user_id : int = Depends(get_current_user)):
+    #image.content_type image/png image/jpeg
+    if(image.content_type not in ["image/png", "image/jpeg"]):
+        raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="file format unsupported")
 
-    #print(len(image.file.read()))
+    # file size limit 5 mb
+    SIZE_LIMIT = 1024 * 1024 * 5
+    if(len(image.file.read()) > SIZE_LIMIT):
+        raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=f"the file is  larger then 5 Mb")
+    
     #generate random file name
-    filename = "./static/img/" + str(uuid.uuid4())
+    filename = str(uuid.uuid4())
     try:
         file_content = await image.read()
-        with open(filename, 'wb') as f:
+        with open("./static/img/" + filename, 'wb') as f:
             f.write(file_content)
     except Exception:
         return {"message": "There was an error uploading the file"}
     finally:
         image.file.close()
 
-        runSQL("""   """)
+    path = "http://127.0.0.1:3000/static/img/" + filename
+    runSQL("""UPDATE users SET img_url = %s WHERE user_id = %s """,(path, user_id))
 
     return {"filename": image.filename}
