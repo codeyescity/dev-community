@@ -22,6 +22,7 @@ def get_post_comments(post_id: int, user_id: int = Depends(get_current_user), st
             c.post_id,
             c.comment_owner_id,
             u.username,
+            u.img_url,
             c.comment_date,
             c.comment_body,
             c.comment_code,
