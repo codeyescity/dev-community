@@ -10,8 +10,8 @@ from fastapi import UploadFile
 # weird hack to import 
 import sys
 sys.path.append("..")
-from utiles import hash,verify
-from oauth2 import create_access_token, get_current_user
+from oauth2 import  get_current_user
+
 app = APIRouter(tags=['users'])
 
 class User(BaseModel):
@@ -22,44 +22,6 @@ class User(BaseModel):
     email: str
     phone_number: int
     
-db = Database()
-
-@app.post("/register", status_code = status.HTTP_201_CREATED)
-def register_user(user: User):
-
-    # check lenght of thr username and password
-    if len(str(user.username)) > 20 or len(str(user.password)) > 20:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid Credentials")
-
-    # check if name is taken
-    res = runSQL("""SELECT * FROM users WHERE username = %s""", (user.username,))
-    if res:
-        raise HTTPException(status_code = status.HTTP_403_FORBIDDEN, detail=f"the username {user.username} is already taken.")
-    
-    # hash the password and ass password to the db
-    user.password = hash(user.password)
-    res = runSQL("""INSERT INTO users (username, password, first_name, last_name, email, phone_number) VALUES (%s,%s,%s,%s,%s,%s)""",(user.username, user.password,user.first_name, user.last_name, user.email, user.phone_number))
-
-    return res
-
-@app.post('/login')
-def login(user_credentials: OAuth2PasswordRequestForm = Depends()):
-    #OAuth2PasswordRequestForm dict
-    #{"username": "example", "password" : "examplepassword"}
-
-    user = runSQL("""SELECT * FROM users WHERE username = %s""",(user_credentials.username,))
-    # check if user name is in db
-    if not user:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid Credentials")
-    # check if password is the same as the hashed password in db
-    if not verify(user_credentials.password, user[0]['password']):
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid Credentials")
-
-    # create a token
-    access_token = create_access_token(data={"user_id": user[0]["user_id"]})
-
-    return {"access_token": access_token, "token_type": "bearer"}
-
 
 @app.get("/userprofile", status_code = 200)
 def get_user(user_id: int = Depends(get_current_user)):
@@ -106,8 +68,8 @@ async def change_user_profile_img(image: UploadFile, user_id : int = Depends(get
     if(image.content_type not in ["image/png", "image/jpeg"]):
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="file format unsupported")
 
-    # file size limit 5 mb
-    SIZE_LIMIT = 1024 * 1024 * 5
+    # file size limit 10 mb
+    SIZE_LIMIT = 1024 * 1024 * 10
     if(len(image.file.read()) > SIZE_LIMIT):
         raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=f"the file is  larger then 5 Mb")
     

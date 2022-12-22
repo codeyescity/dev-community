@@ -12,7 +12,6 @@ class Post(BaseModel):
     post_body: str
     post_code: str | None = None
 
-db = Database()
 
 @app.get("/posts", status_code=200)
 def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: int = 20, type: str = "all"):

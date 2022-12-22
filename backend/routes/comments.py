@@ -8,7 +8,6 @@ class Comment(BaseModel):
     comment_body: str
     comment_code: str | None = None
 
-db = Database()
 
 # tags are just for the ui
 app = APIRouter(tags=['comments'])

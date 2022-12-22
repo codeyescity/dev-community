@@ -67,6 +67,37 @@ CREATE TABLE IF NOT EXISTS users_likes_comments
     FOREIGN KEY(comment_id) REFERENCES users_comments_posts(comment_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS members
+(
+    member_id INT AUTO_INCREMENT PRIMARY KEY, 
+    member_role TEXT DEFAULT "member",
+    user_id INT,
+    project_id INT,
+    member_join_date DATETIME,
+    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE,
+);
+
+CREATE TABLE IF NOT EXISTS invites
+(
+    invite_id INT AUTO_INCREMENT PRIMARY KEY, 
+    user_id INT,
+    project_id INT,
+    invite_date DATETIME,
+    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE,
+);
+
+CREATE TABLE IF NOT EXISTS projects
+(
+    project_id INT AUTO_INCREMENT PRIMARY KEY, 
+    project_owner_id INT,
+    project_name TEXT,
+    project_description TEXT,
+    project_creation_date DATETIME,
+    FOREIGN KEY(project_owner_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS technologies
 (
     technology_id INT AUTO_INCREMENT PRIMARY KEY,

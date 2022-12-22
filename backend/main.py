@@ -1,22 +1,16 @@
-from datetime import datetime, timedelta
 
-#temp
-from fastapi.staticfiles import StaticFiles
-
-from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-
-from passlib.context import CryptContext
-from pydantic import BaseModel
+from fastapi import FastAPI
 import uvicorn
+
+#image hosting
+from fastapi.staticfiles import StaticFiles
 
 from fastapi.middleware.cors import CORSMiddleware
 # importing routes from other files
-from routes import posts, comments, users
+from routes import posts, comments, users, login, projects, invites
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,9 +20,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(login.app)
+app.include_router(users.app)
 app.include_router(posts.app)
 app.include_router(comments.app)
-app.include_router(users.app)
+app.include_router(invites.app)
+app.include_router(projects.app)
 
 
 @app.get("/")
@@ -37,4 +34,4 @@ def read_root():
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host = "127.0.0.1", port = 3000, reload=True)
+    uvicorn.run("main:app", host = "127.0.0.1", port = 5000, reload=True)
