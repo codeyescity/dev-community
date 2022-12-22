@@ -1,5 +1,4 @@
-from fastapi import status, HTTPException, Depends, APIRouter
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi import status, HTTPException, Depends, APIRouter, Response
 from dbhelper import runSQL, Database
 from pydantic import BaseModel
 #temp
@@ -61,6 +60,14 @@ def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: 
         res = runSQL(sql, (user_id, type, start, limit))
 
     return res
+#maybe more info
+@app.get("/user/projects/", status_code = status.HTTP_200_OK)
+def get_user_projects(user_id : int = Depends(get_current_user)):
+    res = runSQL(""" SELECT p.project_id, p.project_name FROM members m
+                LEFT JOIN projects p ON m.project_id = p.project_id  
+                WHERE user_id = %s""", (user_id,))
+
+    return res
 
 @app.post("/user_profile_img/")
 async def change_user_profile_img(image: UploadFile, user_id : int = Depends(get_current_user)):
@@ -88,3 +95,5 @@ async def change_user_profile_img(image: UploadFile, user_id : int = Depends(get
     runSQL("""UPDATE users SET img_url = %s WHERE user_id = %s """,(path, user_id))
 
     return {"filename": image.filename}
+
+

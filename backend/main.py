@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 
 from fastapi.middleware.cors import CORSMiddleware
 # importing routes from other files
-from routes import posts, comments, users, login, projects, invites
+from routes import posts, comments, users, login, projects, invites, user_invites
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -22,6 +22,7 @@ app.add_middleware(
 
 app.include_router(login.app)
 app.include_router(users.app)
+app.include_router(user_invites.app)
 app.include_router(posts.app)
 app.include_router(comments.app)
 app.include_router(invites.app)
