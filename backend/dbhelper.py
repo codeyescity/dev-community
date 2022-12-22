@@ -10,7 +10,7 @@ except Error as e:
     print(e)
 """
 def runSQL(sql, args = None):
-
+    result = None
     try:
         connection = mysql.connector.connect(host = settings.host, database = settings.database, user = settings.user, password = settings.password)
         if connection.is_connected():
@@ -30,7 +30,7 @@ def runSQL(sql, args = None):
     return result
 
 def runSQL_return_id(sql, args = None):
-
+    id = None
     try:
         connection = mysql.connector.connect(host = settings.host, database = settings.database, user = settings.user, password = settings.password)
         if connection.is_connected():
