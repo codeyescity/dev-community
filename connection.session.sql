@@ -99,6 +99,15 @@ CREATE TABLE IF NOT EXISTS invites
     FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS teams
+(
+    team_id INT AUTO_INCREMENT PRIMARY KEY, 
+    team_name VARCHAR(50),
+    team_leader_id INT,
+    project_id INT,
+    FOREIGN KEY(team_leader_id) REFERENCES members(user_id) ON DELETE CASCADE,
+    FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS technologies
 (
@@ -157,6 +166,10 @@ INSERT INTO users_comments_posts (comment_owner_id, post_id, comment_body, comme
 
 
 --@block
+INSERT INTO teams (team_name) VALUES ("team1");
+
+
+--@block
 SELECT * FROM users;
 
 --@block
@@ -174,7 +187,8 @@ SELECT * FROM users_likes_comments;
 --@block
 SELECT * FROM projects;
 
-
+--@block
+SELECT * FROM teams;
 
 
 --@block
