@@ -109,6 +109,15 @@ CREATE TABLE IF NOT EXISTS teams
     FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS team_members
+(
+    team_member_id INT AUTO_INCREMENT PRIMARY KEY, 
+    team_id INT, 
+    member_id INT,
+    FOREIGN KEY(team_id) REFERENCES teams(team_id) ON DELETE CASCADE,
+    FOREIGN KEY(member_id) REFERENCES members(member_id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS technologies
 (
     technology_id INT AUTO_INCREMENT PRIMARY KEY,

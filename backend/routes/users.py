@@ -38,6 +38,13 @@ def get_user(id: int, user_id: int = Depends(get_current_user)):
         raise HTTPException(status_code = 404, detail=f"User with id: {id} does not exist")
     return res
 
+@app.get("/user", status_code = 200)
+def get_user(username: str, user_id: int = Depends(get_current_user)):
+    res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number FROM users WHERE username LIKE %s""",("%"+username+"%",))
+    #if not res:
+    #    raise HTTPException(status_code = 404, detail=f"User with name: {id} does not exist")
+    return res
+
 @app.get("/userprofile/posts", status_code=200)
 def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: int = 20, type: str = "all"):
 
