@@ -24,7 +24,12 @@ def main(project_id: int, user_id : int = Depends(get_current_user)):
 
     return res
 
-
+@app.get("/projects/{project_id}/allusertobeinvited", status_code = 200)
+def get_user(project_id: int, user_id: int = Depends(get_current_user)):
+    res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number FROM users WHERE user_id NOT IN ( SELECT user_id FROM members WHERE project_id = %s )""",(project_id,))
+    #if not res:
+    #    raise HTTPException(status_code = 404, detail=f"User with name: {id} does not exist")
+    return res
 
 @app.post("/projects/{project_id}/invites", status_code = status.HTTP_201_CREATED)
 def main(project_id: int, invite : Invite, user_id : int = Depends(get_current_user)):
