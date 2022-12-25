@@ -22,7 +22,9 @@ def get_project(project_id: int, user_id : int = Depends(get_current_user)):
     if not res:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="you are not member of this project")
     #################### need change(more info for main page maybe use joins ?)
-    res = runSQL("""SELECT * FROM projects WHERE project_id = %s""", (project_id,))
+    res = runSQL("""SELECT * FROM projects p
+                    LEFT JOIN members m ON p.project_id = m.project_id
+                    WHERE p.project_id = %s AND m.user_id = %s""", (project_id, user_id))
     return res
 
 
