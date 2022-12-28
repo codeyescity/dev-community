@@ -4,13 +4,13 @@ from pydantic import BaseModel
 from oauth2 import get_current_user
 
 # tags are just for the ui
-app = APIRouter(tags=['invites'])
+app = APIRouter(tags=['project invites'])
 
 class Invite(BaseModel):
     username : str
 
 @app.get("/projects/{project_id}/invites", status_code = status.HTTP_200_OK)
-def main(project_id: int, user_id : int = Depends(get_current_user)):
+def get_all_invites_project(project_id: int, user_id : int = Depends(get_current_user)):
     # check if project exits
     res = runSQL("""SELECT * FROM projects WHERE project_id = %s""",(project_id,))
     if not res:
@@ -25,14 +25,17 @@ def main(project_id: int, user_id : int = Depends(get_current_user)):
     return res
 
 @app.get("/projects/{project_id}/allusertobeinvited", status_code = 200)
-def get_user(project_id: int, user_id: int = Depends(get_current_user)):
-    res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number FROM users WHERE user_id NOT IN ( SELECT user_id FROM members WHERE project_id = %s )""",(project_id,))
-    #if not res:
-    #    raise HTTPException(status_code = 404, detail=f"User with name: {id} does not exist")
+def get_all_users_can_be_invited(project_id: int, user_id: int = Depends(get_current_user)):
+    # get all user not member in project and user don t have invite to this project
+    res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number FROM users 
+                    WHERE user_id NOT IN ( 
+                        SELECT user_id FROM members WHERE project_id = %s AND user_id NOT IN (
+                            SELECT user_id FROM invites WHERE project_id = %s AND user_id = %s
+                    ))""",(project_id,project_id,user_id))
     return res
 
 @app.post("/projects/{project_id}/invites", status_code = status.HTTP_201_CREATED)
-def main(project_id: int, invite : Invite, user_id : int = Depends(get_current_user)):
+def create_invite_for_user(project_id: int, invite : Invite, user_id : int = Depends(get_current_user)):
     # check if project exits
     res = runSQL("""SELECT * FROM projects WHERE project_id = %s""",(project_id,))
     if not res:
@@ -55,7 +58,7 @@ def main(project_id: int, invite : Invite, user_id : int = Depends(get_current_u
     return res
 
 @app.delete("/projects/{project_id}/invites/{invite_id}", status_code=status.HTTP_204_NO_CONTENT)
-def main(project_id: int, invite_id: int, user_id : int = Depends(get_current_user)):
+def delete_invite(project_id: int, invite_id: int, user_id : int = Depends(get_current_user)):
     # check if project exits
     res = runSQL("""SELECT * FROM projects WHERE project_id = %s""",(project_id,))
     if not res:
