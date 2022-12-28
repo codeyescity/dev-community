@@ -96,7 +96,3 @@ def remove_member_from_team(project_id: int, team_id: int, member_id: int, user_
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-
-
-
-

@@ -194,8 +194,12 @@ SELECT * FROM users_likes_posts;
 SELECT * FROM users_likes_comments;
 
 --@block
+SELECT * FROM invites;
+--@block
 SELECT * FROM projects;
 
+--@block
+SELECT * FROM members;
 --@block
 SELECT * FROM teams;
 

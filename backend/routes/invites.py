@@ -30,11 +30,12 @@ def get_all_users_can_be_invited(project_id: int, user_id: int = Depends(get_cur
     res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number FROM users 
                     WHERE user_id NOT IN 
                     ( 
-                        SELECT user_id FROM members WHERE project_id = %s AND user_id NOT IN 
-                        (
+                        SELECT user_id FROM members WHERE project_id = %s 
+                    ) AND user_id NOT IN 
+                    (
                         SELECT user_id FROM invites WHERE project_id = %s
-                        )
-                    )""",(project_id,project_id))
+                    )
+                    """,(project_id,project_id))
     return res
 
 @app.post("/projects/{project_id}/invites", status_code = status.HTTP_201_CREATED)
