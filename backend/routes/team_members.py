@@ -36,7 +36,7 @@ def get_team_members(project_id: int, team_id: int, user_id : int = Depends(get_
 
 
 
-@app.post("/projects/{project_id}/teams/{team_id}/members", status_code = status.HTTP_201_CREATED)
+@app.post("/projects/{project_id}/teams/{team_id}/members/{member_id}", status_code = status.HTTP_201_CREATED)
 def add_team_member(project_id: int, team_id: int, member_id: int, user_id : int = Depends(get_current_user)):
     # check if project exits
     res = runSQL("""SELECT * FROM projects WHERE project_id = %s""",(project_id,))
@@ -68,7 +68,7 @@ def add_team_member(project_id: int, team_id: int, member_id: int, user_id : int
 
 
     
-@app.delete("/projects/{project_id}/teams/{team_id}/members/{member_id}", status_code = status.HTTP_201_CREATED)
+@app.delete("/projects/{project_id}/teams/{team_id}/members/{member_id}", status_code = status.HTTP_204_NO_CONTENT)
 def remove_member_from_team(project_id: int, team_id: int, member_id: int, user_id : int = Depends(get_current_user)):
     # check if project exits
     res = runSQL("""SELECT * FROM projects WHERE project_id = %s""",(project_id,))
