@@ -4,7 +4,7 @@ from pydantic import BaseModel
 #temp
 import uuid
 # temp 
-from fastapi import UploadFile
+from fastapi import UploadFile, File
 
 # weird hack to import 
 import sys
@@ -77,20 +77,21 @@ def get_user_projects(user_id : int = Depends(get_current_user)):
     return res
 
 @app.post("/user_profile_img/")
-async def change_user_profile_img(image: UploadFile, user_id : int = Depends(get_current_user)):
+def change_user_profile_img(image: UploadFile, user_id : int = Depends(get_current_user)):
     #image.content_type image/png image/jpeg
     if(image.content_type not in ["image/png", "image/jpeg"]):
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="file format unsupported")
 
-    # file size limit 10 mb
-    SIZE_LIMIT = 1024 * 1024 * 10
-    if(len(image.file.read()) > SIZE_LIMIT):
-        raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=f"the file is  larger then 5 Mb")
-    
     #generate random file name
     filename = str(uuid.uuid4())
     try:
-        file_content = await image.read()
+        # read the file
+        file_content = image.file.read()
+        # file size limit 10 mb
+        SIZE_LIMIT = 1024 * 1024 * 10
+        if(len(file_content) > SIZE_LIMIT):
+            raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=f"the file is  larger then 5 Mb")
+
         with open("./static/img/" + filename, 'wb') as f:
             f.write(file_content)
     except Exception:
@@ -101,6 +102,4 @@ async def change_user_profile_img(image: UploadFile, user_id : int = Depends(get
     path = "http://127.0.0.1:3000/static/img/" + filename
     runSQL("""UPDATE users SET img_url = %s WHERE user_id = %s """,(path, user_id))
 
-    return {"filename": image.filename}
-
-
+    return {"path": path }
