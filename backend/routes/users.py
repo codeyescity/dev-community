@@ -97,11 +97,11 @@ def get_user_projects(user_id : int = Depends(get_current_user)):
     # get the projects that the user is part of
     res = runSQL("""SELECT 
                     p.project_id, 
-                    p.project_name,
+                    p.project_name
     
-                    FROM projects p
-                    LEFT JOIN members m 
-                    ON m.project_id = p.project_id  
+                    FROM members m 
+                    LEFT JOIN projects p 
+                    ON p.project_id = m.project_id  
                             
                     WHERE m.user_id = %s
                 """, (user_id,))
