@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS users
     first_name TEXT,
     last_name TEXT,
     email TEXT,
+    about TEXT DEFAULT "This user "
     phone_number BIGINT
 );
 
