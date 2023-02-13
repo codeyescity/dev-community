@@ -106,9 +106,21 @@ def get_user_projects(user_id : int = Depends(get_current_user)):
                     WHERE m.user_id = %s
                 """, (user_id,))
 
+
+    res = runSQL("""
+                    SELECT 
+                        p.project_id, 
+                        p.project_name,
+                        u.img_url
+                    FROM projects p
+                    LEFT JOIN members m ON p.project_id = m.project_id  
+                    LEFT JOIN users u ON u.user_id = p.project_owner_id
+                    WHERE m.user_id = %s
+                """,(user_id,))
+
     return res
 
-
+#SELECT username FROM users WHERE user_id = (SELECT user_id FROM members WHERE project_id = ( SELECT project_id FROM projects WHERE  ))  
 
 @app.post("/user_profile_img/", status_code = status.HTTP_200_OK)
 def change_user_profile_img(image: UploadFile, user_id : int = Depends(get_current_user)):
