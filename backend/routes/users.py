@@ -95,18 +95,6 @@ def get_user_posts(id: int, type: str, start: int = 0, limit: int = 20, user_id:
 @app.get("/user/{id}/projects", status_code = status.HTTP_200_OK)
 def get_user_projects(user_id : int = Depends(get_current_user)):
     # get the projects that the user is part of
-    res = runSQL("""SELECT 
-                    p.project_id, 
-                    p.project_name
-    
-                    FROM members m 
-                    LEFT JOIN projects p 
-                    ON p.project_id = m.project_id  
-                            
-                    WHERE m.user_id = %s
-                """, (user_id,))
-
-
     res = runSQL("""
                     SELECT 
                         p.project_id, 
