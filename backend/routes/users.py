@@ -1,7 +1,7 @@
 from fastapi import status, HTTPException, Depends, APIRouter, Response
 from dbhelper import runSQL, Database
 from pydantic import BaseModel
-#temp
+#to generate random file name
 import uuid
 # temp 
 from fastapi import UploadFile, File
@@ -25,7 +25,7 @@ class User(BaseModel):
 
     
 
-@app.get("/userprofile", status_code = 200)
+@app.get("/userprofile", status_code = status.HTTP_200_OK)
 def get_user_info(user_id: int = Depends(get_current_user)):
 
     res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number,about FROM users WHERE user_id = %s""",(user_id,))
@@ -35,16 +35,35 @@ def get_user_info(user_id: int = Depends(get_current_user)):
     
     return res
 
-@app.get("/user/{id}", status_code = 200)
+@app.put("/userprofile", status_code = status.HTTP_200_OK)
+def edit_user_info(user: User, user_id : int = Depends(get_current_user)):
+    res = runSQL("""SELECT * FROM users WHERE user_id = %s""",(user_id,))
+    if not res :
+        raise HTTPException(status_code = 404, detail=f"User can't be found")
+
+    password = user.password
+    hashed_password = res[0]["password"]
+
+    if(verify(password,hashed_password)):
+        new_hashed_password = hash(user.new_password)
+        res = runSQL(""" UPDATE users SET username = %s, first_name = %s, last_name = %s , email = %s, about = %s, password = %s WHERE user_id = %s""",(user.username, user.first_name, user.last_name, user.email, user.about, new_hashed_password, user_id))
+        
+        res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number,about FROM users WHERE user_id = %s""",(user_id,))
+        return res
+    else:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid password")
+
+
+@app.get("/user/{id}", status_code = status.HTTP_200_OK)
 def get_user(id: int, user_id: int = Depends(get_current_user)):
-    #res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number FROM users WHERE user_id = %s""",(id,))
+
     res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number,about FROM users WHERE user_id = %s""",(id,))
 
     if not res:
         raise HTTPException(status_code = 404, detail=f"User with id: {id} does not exist")
     return res
 
-@app.get("/user/{id}/posts", status_code = 200)
+@app.get("/user/{id}/posts", status_code = status.HTTP_200_OK)
 def get_user_posts(id: int, type: str, start: int = 0, limit: int = 20, user_id: int = Depends(get_current_user)):
     sql ="""SELECT 
             p.post_id, 
@@ -62,81 +81,36 @@ def get_user_posts(id: int, type: str, start: int = 0, limit: int = 20, user_id:
         FROM posts p
         LEFT JOIN users u ON p.post_owner_id  = u.user_id
         WHERE u.user_id = %s AND p.post_type = %s
-        LIMIT %s, %s;"""
+        LIMIT %s, %s;
+        """
 
     res = runSQL(sql, (user_id, id, type,start, limit))
 
-    # check later
-    #if not res:
-    #    raise HTTPException(status_code = 404, detail=f"User posts can't be found")
     return res
 
 
-#@app.get("/user/{id}/questions", status_code = 200)
-#def get_user_posts(user_id: int = Depends(get_current_user), id: int, start: int = 0, limit: int = 20):
-#    sql ="""SELECT 
-"""            p.post_id, 
-            p.post_creation_date, 
-            p.post_owner_id, 
-            u.username, 
-            u.img_url,
-            p.post_type,
-            p.post_title,
-            p.post_body, 
-            p.post_code,
-            p.post_number_likes, 
-            p.post_number_comments,
-            IF((SELECT post_liker_id FROM users_likes_posts pl WHERE pl.post_liker_id = %s AND pl.post_id = p.post_id), "true", "false") AS 'liked'
-        FROM posts p
-        LEFT JOIN users u ON p.post_owner_id  = u.user_id
-        WHERE u.user_id = %s AND p.post_type  = "question"
-        LIMIT %s, %s;"""
-
-#    res = runSQL(sql, (user_id, id, start, limit))
-
-    #if not res:
-    #    raise HTTPException(status_code = 404, detail=f"User posts can't be found")
-#    return res
 
 
 
 @app.get("/user/{id}/projects", status_code = status.HTTP_200_OK)
 def get_user_projects(user_id : int = Depends(get_current_user)):
-    res = runSQL(""" SELECT p.project_id, p.project_name FROM members m
-                LEFT JOIN projects p ON m.project_id = p.project_id  
-                WHERE user_id = %s""", (user_id,))
+    # get the projects that the user is part of
+    res = runSQL("""SELECT 
+                    p.project_id, 
+                    p.project_name,
+    
+                    FROM projects p
+                    LEFT JOIN members m 
+                    ON m.project_id = p.project_id  
+                            
+                    WHERE m.user_id = %s
+                """, (user_id,))
 
     return res
 
 
-# note: changing password don t work
-@app.put("/userprofile", status_code = 200)
-def edit_user_info(user: User, user_id : int = Depends(get_current_user)):
-    res = runSQL("""SELECT * FROM users WHERE user_id = %s""")
-    if not res :
-        raise HTTPException(status_code = 404, detail=f"User can't be found")
 
-    password = user.password
-    hashed_password = res["password"]
-
-    if(verify(password,hashed_password)):
-        new_hashed_password = hash(user.new_password)
-        res = runSQL(""" UPDATE users SET username = %s, first_name = %s, last_name = %s , email = %s, about = %s, password = %s WHERE user_id = %s""",(user.username, user.first_name, user.last_name, user.email, user.about, new_hashed_password))
-        
-        res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number,about FROM users WHERE user_id = %s""",(user_id,))
-        return res
-    else:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid password")
-
-
-
-
-
-
-
-
-
-@app.post("/user_profile_img/")
+@app.post("/user_profile_img/", status_code = status.HTTP_200_OK)
 def change_user_profile_img(image: UploadFile, user_id : int = Depends(get_current_user)):
     #image.content_type image/png image/jpeg
     if(image.content_type not in ["image/png", "image/jpeg"]):
