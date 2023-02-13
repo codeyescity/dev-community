@@ -80,7 +80,7 @@ def get_user_posts(user_id: int = Depends(get_current_user), start: int = 0, lim
             IF((SELECT post_liker_id FROM users_likes_posts pl WHERE pl.post_liker_id = %s AND pl.post_id = p.post_id), "true", "false") AS 'liked'
         FROM posts p
         LEFT JOIN users u ON p.post_owner_id  = u.user_id
-        WHERE u.user_id = %s AND type = "question"
+        WHERE u.user_id = %s AND p.post_type  = "question"
         LIMIT %s, %s;"""
 
     res = runSQL(sql, (user_id,user_id,start, limit))
