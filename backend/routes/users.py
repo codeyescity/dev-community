@@ -58,8 +58,9 @@ def get_user_posts(user_id: int = Depends(get_current_user), start: int = 0, lim
 
     res = runSQL(sql, (user_id,user_id,start, limit))
 
-    if not res:
-        raise HTTPException(status_code = 404, detail=f"User posts can't be found")
+    # check later
+    #if not res:
+    #    raise HTTPException(status_code = 404, detail=f"User posts can't be found")
     return res
 
 
@@ -85,8 +86,8 @@ def get_user_posts(user_id: int = Depends(get_current_user), start: int = 0, lim
 
     res = runSQL(sql, (user_id,user_id,start, limit))
 
-    if not res:
-        raise HTTPException(status_code = 404, detail=f"User posts can't be found")
+    #if not res:
+    #    raise HTTPException(status_code = 404, detail=f"User posts can't be found")
     return res
 
 
