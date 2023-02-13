@@ -35,9 +35,17 @@ def get_user_info(user_id: int = Depends(get_current_user)):
     
     return res
 
+@app.get("/user/{id}", status_code = 200)
+def get_user(id: int, user_id: int = Depends(get_current_user)):
+    #res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number FROM users WHERE user_id = %s""",(id,))
+    res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number,about FROM users WHERE user_id = %s""",(id,))
 
-@app.get("/userprofile/posts", status_code = 200)
-def get_user_posts(user_id: int = Depends(get_current_user), start: int = 0, limit: int = 20):
+    if not res:
+        raise HTTPException(status_code = 404, detail=f"User with id: {id} does not exist")
+    return res
+
+@app.get("/user/{id}/posts", status_code = 200)
+def get_user_posts(id: int, type: str, start: int = 0, limit: int = 20, user_id: int = Depends(get_current_user)):
     sql ="""SELECT 
             p.post_id, 
             p.post_creation_date, 
@@ -53,10 +61,10 @@ def get_user_posts(user_id: int = Depends(get_current_user), start: int = 0, lim
             IF((SELECT post_liker_id FROM users_likes_posts pl WHERE pl.post_liker_id = %s AND pl.post_id = p.post_id), "true", "false") AS 'liked'
         FROM posts p
         LEFT JOIN users u ON p.post_owner_id  = u.user_id
-        WHERE u.user_id = %s AND p.post_type = "post"
+        WHERE u.user_id = %s AND p.post_type = %s
         LIMIT %s, %s;"""
 
-    res = runSQL(sql, (user_id,user_id,start, limit))
+    res = runSQL(sql, (user_id, id, type,start, limit))
 
     # check later
     #if not res:
@@ -64,10 +72,10 @@ def get_user_posts(user_id: int = Depends(get_current_user), start: int = 0, lim
     return res
 
 
-@app.get("/userprofile/questions", status_code = 200)
-def get_user_posts(user_id: int = Depends(get_current_user), start: int = 0, limit: int = 20):
-    sql ="""SELECT 
-            p.post_id, 
+#@app.get("/user/{id}/questions", status_code = 200)
+#def get_user_posts(user_id: int = Depends(get_current_user), id: int, start: int = 0, limit: int = 20):
+#    sql ="""SELECT 
+"""            p.post_id, 
             p.post_creation_date, 
             p.post_owner_id, 
             u.username, 
@@ -84,26 +92,15 @@ def get_user_posts(user_id: int = Depends(get_current_user), start: int = 0, lim
         WHERE u.user_id = %s AND p.post_type  = "question"
         LIMIT %s, %s;"""
 
-    res = runSQL(sql, (user_id,user_id,start, limit))
+#    res = runSQL(sql, (user_id, id, start, limit))
 
     #if not res:
     #    raise HTTPException(status_code = 404, detail=f"User posts can't be found")
-    return res
-
-
-@app.get("/user/{id}", status_code = 200)
-def get_user(id: int, user_id: int = Depends(get_current_user)):
-    #res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number FROM users WHERE user_id = %s""",(id,))
-    res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number,about FROM users WHERE user_id = %s""",(id,))
-
-    if not res:
-        raise HTTPException(status_code = 404, detail=f"User with id: {id} does not exist")
-    return res
+#    return res
 
 
 
-
-@app.get("/userprofile/projects", status_code = status.HTTP_200_OK)
+@app.get("/user/{id}/projects", status_code = status.HTTP_200_OK)
 def get_user_projects(user_id : int = Depends(get_current_user)):
     res = runSQL(""" SELECT p.project_id, p.project_name FROM members m
                 LEFT JOIN projects p ON m.project_id = p.project_id  
