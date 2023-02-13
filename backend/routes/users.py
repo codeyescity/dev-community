@@ -10,6 +10,7 @@ from fastapi import UploadFile, File
 import sys
 sys.path.append("..")
 from oauth2 import  get_current_user
+from utiles import hash,verify
 
 app = APIRouter(tags=['users'])
 
@@ -19,17 +20,19 @@ class User(BaseModel):
     username : str
     email: str
     about : str
-
     password : str
+    new_password : str
 
     
 
 @app.get("/userprofile", status_code = 200)
 def get_user_info(user_id: int = Depends(get_current_user)):
+
     res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number,about FROM users WHERE user_id = %s""",(user_id,))
 
     if not res:
         raise HTTPException(status_code = 404, detail=f"User with id: {user_id} does not exist")
+    
     return res
 
 
@@ -87,13 +90,14 @@ def get_user_posts(user_id: int = Depends(get_current_user), start: int = 0, lim
     return res
 
 
-#@app.get("/user/{id}", status_code = 200)
-#def get_user(id: int, user_id: int = Depends(get_current_user)):
-#    res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number FROM users WHERE user_id = %s""",(id,))
+@app.get("/user/{id}", status_code = 200)
+def get_user(id: int, user_id: int = Depends(get_current_user)):
+    #res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number FROM users WHERE user_id = %s""",(id,))
+    res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number,about FROM users WHERE user_id = %s""",(id,))
 
-#    if not res:
-#        raise HTTPException(status_code = 404, detail=f"User with id: {id} does not exist")
-#    return res
+    if not res:
+        raise HTTPException(status_code = 404, detail=f"User with id: {id} does not exist")
+    return res
 
 
 
@@ -110,9 +114,18 @@ def get_user_projects(user_id : int = Depends(get_current_user)):
 # note: changing password don t work
 @app.put("/userprofile", status_code = 200)
 def edit_user_info(user: User, user_id : int = Depends(get_current_user)):
-    res = runSQL("""SELECT user_id FROM users WHERE user_id = %s""")
+    res = runSQL("""SELECT * FROM users WHERE user_id = %s""")
     if not res :
         raise HTTPException(status_code = 404, detail=f"User can't be found")
+
+    password = user.password
+    hashed_password = res["password"]
+
+    if(verify(password,hashed_password)):
+        print("he")
+
+
+    
     res = runSQL(""" UPDATE users SET username = %s, first_name = %s, last_name = %s , email = %s, about = %s WHERE user_id = %s""",(user.username, user.first_name, user.last_name, user.email, user.about))
 
 
