@@ -120,11 +120,15 @@ def edit_user_info(user: User, user_id : int = Depends(get_current_user)):
     hashed_password = res["password"]
 
     if(verify(password,hashed_password)):
-        print("he")
+        new_hashed_password = hash(user.new_password)
+        res = runSQL(""" UPDATE users SET username = %s, first_name = %s, last_name = %s , email = %s, about = %s, password = %s WHERE user_id = %s""",(user.username, user.first_name, user.last_name, user.email, user.about, new_hashed_password))
+        return res
+    else:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid password")
 
 
     
-    res = runSQL(""" UPDATE users SET username = %s, first_name = %s, last_name = %s , email = %s, about = %s WHERE user_id = %s""",(user.username, user.first_name, user.last_name, user.email, user.about))
+    #res = runSQL(""" UPDATE users SET username = %s, first_name = %s, last_name = %s , email = %s, about = %s WHERE user_id = %s""",(user.username, user.first_name, user.last_name, user.email, user.about))
 
 
 
