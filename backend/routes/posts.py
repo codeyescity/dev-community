@@ -1,5 +1,5 @@
 from fastapi import status, HTTPException, Depends, APIRouter, Response
-from dbhelper import runSQL, Database
+from dbhelper import runSQL, Database, runSQL_return_id
 from pydantic import BaseModel
 from oauth2 import get_current_user
 
@@ -93,10 +93,10 @@ def create_post(post : Post, user_id : int = Depends(get_current_user)):
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail=f"the post with type {post.post_type} can t be created")
 
     # add the post to the db 
-    runSQL("""INSERT INTO posts (post_owner_id , post_type, post_title, post_body, post_code, post_creation_date) VALUES 
+    res = runSQL_return_id("""INSERT INTO posts (post_owner_id , post_type, post_title, post_body, post_code, post_creation_date) VALUES 
             (%s,%s,%s,%s,%s,NOW());""" ,(user_id, post.post_type, post.post_title, post.post_body, post.post_code))
 
-    return post
+    return res
 
 @app.put("/posts/{post_id}", status_code = status.HTTP_200_OK)
 def edit_post(post_id : int, post : Post, user_id : int = Depends(get_current_user)):

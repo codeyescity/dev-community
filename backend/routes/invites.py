@@ -20,7 +20,16 @@ def get_all_invites_project(project_id: int, user_id : int = Depends(get_current
     if res[0]["member_role"] != "admin":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="you are not Not authorized in this project with id {project_id}")
 
-    res = runSQL("""SELECT * FROM invites WHERE project_id = %s""", (project_id,))
+    res = runSQL("""SELECT 
+                    i.invite_id,
+                    i.user_id,
+                    i.project_id,
+                    i.invite_date,
+                    u.username,
+                    u.img_url 
+                    FROM invites i
+                    LEFT JOIN  users u ON u.user_id = i.user_id
+                    WHERE project_id = %s""", (project_id,))
 
     return res
 
