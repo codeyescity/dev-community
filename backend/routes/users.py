@@ -19,7 +19,7 @@ class User(BaseModel):
     last_name: str
     username : str
     email: str
-    about : str | None = None
+    about : str
     password : str | None = None
     new_password : str | None = None
 
@@ -40,12 +40,7 @@ def edit_user_info(user: User, user_id : int = Depends(get_current_user)):
     res = runSQL("""SELECT * FROM users WHERE user_id = %s""",(user_id,))
     if not res :
         raise HTTPException(status_code = 404, detail=f"User can't be found")
-
-    if(user.about):
-        res = runSQL(""" UPDATE users SET username = %s, first_name = %s, last_name = %s , email = %s about = %s, WHERE user_id = %s""",(user.username, user.first_name, user.last_name, user.email, user.about, user_id))
-    else:
-        res = runSQL(""" UPDATE users SET username = %s, first_name = %s, last_name = %s , email = %s WHERE user_id = %s""",(user.username, user.first_name, user.last_name, user.email, user_id))
-
+ 
     if(user.password):
         if(user.new_password):
             password = user.password
@@ -57,6 +52,8 @@ def edit_user_info(user: User, user_id : int = Depends(get_current_user)):
                 
             else:
                 raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid password")
+    res = runSQL(""" UPDATE users SET username = %s, first_name = %s, last_name = %s , email = %s, about = %s WHERE user_id = %s""",(user.username, user.first_name, user.last_name, user.email, user.about, user_id))
+
     return res
 
 
