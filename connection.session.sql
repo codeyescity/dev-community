@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users
     first_name TEXT,
     last_name TEXT,
     email TEXT,
-    about VARCHAR(500) DEFAULT "This user has not about section",
+    about VARCHAR(500) DEFAULT "This user has no about section",
     phone_number BIGINT
 );
 

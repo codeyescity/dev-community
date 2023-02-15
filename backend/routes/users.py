@@ -19,9 +19,9 @@ class User(BaseModel):
     last_name: str
     username : str
     email: str
-    about : str
-    password : str
-    new_password : str
+    about : str | None = None
+    password : str | None = None
+    new_password : str | None = None
 
     
 
@@ -41,17 +41,23 @@ def edit_user_info(user: User, user_id : int = Depends(get_current_user)):
     if not res :
         raise HTTPException(status_code = 404, detail=f"User can't be found")
 
-    password = user.password
-    hashed_password = res[0]["password"]
-
-    if(verify(password,hashed_password)):
-        new_hashed_password = hash(user.new_password)
-        res = runSQL(""" UPDATE users SET username = %s, first_name = %s, last_name = %s , email = %s, about = %s, password = %s WHERE user_id = %s""",(user.username, user.first_name, user.last_name, user.email, user.about, new_hashed_password, user_id))
-        
-        res = runSQL("""SELECT user_id,username,img_url,first_name,last_name,email,phone_number,about FROM users WHERE user_id = %s""",(user_id,))
-        return res
+    if(user.about):
+        res = runSQL(""" UPDATE users SET username = %s, first_name = %s, last_name = %s , email = %s about = %s, WHERE user_id = %s""",(user.username, user.first_name, user.last_name, user.email, user.about, user_id))
     else:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid password")
+        res = runSQL(""" UPDATE users SET username = %s, first_name = %s, last_name = %s , email = %s WHERE user_id = %s""",(user.username, user.first_name, user.last_name, user.email, user_id))
+
+    if(user.password):
+        if(user.new_password):
+            password = user.password
+            hashed_password = res[0]["password"]
+
+            if(verify(password,hashed_password)):
+                new_hashed_password = hash(user.new_password)
+                res = runSQL(""" UPDATE users SET password = %s WHERE user_id = %s""",(new_hashed_password, user_id))
+                
+            else:
+                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid password")
+    return res
 
 
 @app.get("/user/{id}", status_code = status.HTTP_200_OK)
@@ -93,7 +99,7 @@ def get_user_posts(id: int, type: str, start: int = 0, limit: int = 20, user_id:
 
 
 @app.get("/user/{id}/projects", status_code = status.HTTP_200_OK)
-def get_user_projects(user_id : int = Depends(get_current_user)):
+def get_user_projects(id: int, user_id : int = Depends(get_current_user)):
     # get the projects that the user is part of
     res = runSQL("""
                     SELECT 
@@ -104,7 +110,7 @@ def get_user_projects(user_id : int = Depends(get_current_user)):
                     LEFT JOIN members m ON p.project_id = m.project_id  
                     LEFT JOIN users u ON u.user_id = p.project_owner_id
                     WHERE m.user_id = %s
-                """,(user_id,))
+                """,(id,))
 
     return res
 
