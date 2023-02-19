@@ -143,7 +143,16 @@ CREATE TABLE IF NOT EXISTS posts_technologies
     FOREIGN KEY(technology_id) REFERENCES technologies(technology_id) ON DELETE CASCADE
 );
 
-
+CREATE TABLE IF NOT EXISTS chatlogs
+(
+    chatlogs_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    project_id INT,
+    message VARCHAR(400),
+    message_date DATETIME,
+    FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE
+);
 
 --@block
 USE DevCommunityTest;
