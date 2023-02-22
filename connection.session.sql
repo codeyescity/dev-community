@@ -154,6 +154,21 @@ CREATE TABLE IF NOT EXISTS chatlogs
     FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS tasks
+(
+    task_id INT AUTO_INCREMENT PRIMARY KEY,
+    project_id INT,
+    member_id INT, 
+    task_title VARCHAR(200),
+    task_description TEXT,
+    task_type VARCHAR(20),
+    task_state VARCHAR(20),
+    FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE,
+    FOREIGN KEY(member_id) REFERENCES members(member_id) ON DELETE CASCADE
+);
+
+
+
 --@block
 USE DevCommunityTest;
 INSERT INTO users (username, first_name, last_name, email, phone_number) VALUES

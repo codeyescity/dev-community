@@ -11,7 +11,7 @@ from fastapi.staticfiles import StaticFiles
 
 from fastapi.middleware.cors import CORSMiddleware
 # importing routes from other files
-from routes import posts, comments, users, login, projects, invites, user_invites, members, teams, team_members, chat
+from routes import posts, comments, users, login, projects, invites, user_invites, members, teams, team_members, chat, tasks
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -35,6 +35,7 @@ app.include_router(members.app)
 app.include_router(teams.app)
 app.include_router(team_members.app)
 app.include_router(chat.app)
+app.include_router(tasks.app)
 
 @app.get("/")
 def read_root():
