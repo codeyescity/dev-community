@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from oauth2 import get_current_user
 
 
-from helper import project_exist, user_member_project, user_admin_project
+from project_helper import project_exist, user_member_project, user_admin_project
 
 # tags are just for the ui
 app = APIRouter(tags=['projects'])

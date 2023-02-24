@@ -3,22 +3,24 @@ from dbhelper import runSQL, Database
 from pydantic import BaseModel
 from oauth2 import get_current_user
 
+from project_helper import user_admin_project
 # tags are just for the ui
 app = APIRouter(tags=['project invites'])
 
 class Invite(BaseModel):
     username : str
 
+
+def validate_user_role(role: str):
+    if(role in ["admin", "member"]):
+        return True
+    else:
+        return False
+
 @app.get("/projects/{project_id}/invites", status_code = status.HTTP_200_OK)
 def get_all_invites_project(project_id: int, user_id : int = Depends(get_current_user)):
-    # check if project exits
-    res = runSQL("""SELECT * FROM projects WHERE project_id = %s""",(project_id,))
-    if not res:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the project with id {project_id} can t be found")
-    # check if user is admin 
-    res = runSQL("""SELECT * FROM members WHERE project_id = %s AND user_id = %s""", (project_id, user_id))
-    if res[0]["member_role"] != "admin":
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="you are not Not authorized in this project with id {project_id}")
+
+    user_admin_project(user_id, project_id)
 
     res = runSQL("""SELECT 
                     i.invite_id,
@@ -49,14 +51,8 @@ def get_all_users_can_be_invited(project_id: int, user_id: int = Depends(get_cur
 
 @app.post("/projects/{project_id}/invites", status_code = status.HTTP_201_CREATED)
 def create_invite_for_user(project_id: int, invite : Invite, user_id : int = Depends(get_current_user)):
-    # check if project exits
-    res = runSQL("""SELECT * FROM projects WHERE project_id = %s""",(project_id,))
-    if not res:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the project with id {project_id} can t be found")
-    # check if user is admin 
-    res = runSQL("""SELECT * FROM members WHERE project_id = %s AND user_id = %s""", (project_id, user_id))
-    if res[0]["member_role"] != "admin":
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="you are not Not authorized in this project with id {project_id}")
+
+    user_admin_project(user_id, project_id)
     # check if the username exists
     res = runSQL("""SELECT * FROM users WHERE username = %s""", (invite.username,))
     if not res:
@@ -72,14 +68,9 @@ def create_invite_for_user(project_id: int, invite : Invite, user_id : int = Dep
 
 @app.delete("/projects/{project_id}/invites/{invite_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_invite(project_id: int, invite_id: int, user_id : int = Depends(get_current_user)):
-    # check if project exits
-    res = runSQL("""SELECT * FROM projects WHERE project_id = %s""",(project_id,))
-    if not res:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the project with id {project_id} can t be found")
-    # check if user is admin 
-    res = runSQL("""SELECT * FROM members WHERE project_id = %s AND user_id = %s""", (project_id, user_id))
-    if res[0]["member_role"] != "admin":
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="you are not Not authorized")
+    
+    user_admin_project(user_id, project_id)
+
     # search for the invite in the invites table
     res  = runSQL("""SELECT * FROM invites WHERE invite_id = %s """, (invite_id,))
     if not res:

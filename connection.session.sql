@@ -163,6 +163,7 @@ CREATE TABLE IF NOT EXISTS tasks
     task_description TEXT,
     task_type VARCHAR(20),
     task_state VARCHAR(20),
+    task_progress INT DEFAULT 0
     FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE,
     FOREIGN KEY(member_id) REFERENCES members(member_id) ON DELETE CASCADE
 );
