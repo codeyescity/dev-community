@@ -3,6 +3,7 @@ from dbhelper import runSQL, Database, runSQL_return_id
 from pydantic import BaseModel
 from oauth2 import get_current_user
 
+from helper import post_exist, user_post_owner
 # tags are just for the ui
 app = APIRouter(tags=['Posts'])
 
@@ -100,11 +101,7 @@ def create_post(post : Post, user_id : int = Depends(get_current_user)):
 
 @app.put("/posts/{post_id}", status_code = status.HTTP_200_OK)
 def edit_post(post_id : int, post : Post, user_id : int = Depends(get_current_user)):
-    res = runSQL("""SELECT post_owner_id FROM posts WHERE post_id = %s""",(post_id,))
-    if not res:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the post with id {post_id} can t be found")
-    if res[0]["post_owner_id"] != user_id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    user_post_owner(user_id, post_id)
     
     res = runSQL("""UPDATE posts SET post_title = %s, post_body = %s, post_code = %s WHERE post_id = %s""",(post.post_title,post.post_body,post.post_code,post_id))
     # return the edited post
@@ -113,11 +110,7 @@ def edit_post(post_id : int, post : Post, user_id : int = Depends(get_current_us
 
 @app.delete("/posts/{post_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(post_id : int, user_id : int = Depends(get_current_user)):
-    res = runSQL("""SELECT post_owner_id FROM posts WHERE post_id = %s""",(post_id,))
-    if not res:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the post with id {post_id} can t be found")
-    if res[0]["post_owner_id"] != user_id:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+    user_post_owner(user_id, post_id)
     
     res = runSQL("""DELETE FROM posts WHERE post_id = %s""",(post_id,))
     return Response(status_code=status.HTTP_204_NO_CONTENT)
@@ -126,10 +119,8 @@ def delete_post(post_id : int, user_id : int = Depends(get_current_user)):
 
 @app.post("/postlike/{post_id}")
 async def like_post(post_id: int, user_id : int = Depends(get_current_user)):
-    # check if the post exists
-    res = runSQL("""SELECT * FROM posts WHERE post_id = %s""",(post_id,))
-    if not res:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the post with id {post_id} can t be found")    
+
+    post_exist(post_id)
     # check if user has liked the post
     res = runSQL("""SELECT * FROM users_likes_posts WHERE post_id = %s AND post_liker_id = %s""",(post_id, user_id))
     if(res):

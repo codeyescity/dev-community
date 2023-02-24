@@ -39,12 +39,12 @@ def get_project(project_id: int, user_id : int = Depends(get_current_user)):
 
 @app.post("/projects", status_code = status.HTTP_201_CREATED)
 def create_project(project : Project, user_id : int = Depends(get_current_user)):
+
     # create project with the as the current user as the admin of the project
     project_id = runSQL_return_id("""INSERT INTO projects (project_owner_id, project_name, project_description, project_creation_date) VALUES (%s,%s,%s,NOW());""" ,(user_id, project.project_name, project.project_description));
     res = runSQL("""INSERT INTO members (member_role, user_id, project_id,member_join_date) VALUES (%s,%s,%s,NOW());""", ("admin", user_id, project_id));
 
-    res = runSQL("""SELECT * FROM projects WHERE project_id = %s""", (project_id,))
-    return res
+    return project_id
 
 
 @app.put("/projects/{project_id}", status_code = status.HTTP_200_OK)
@@ -55,7 +55,6 @@ def edit_project(project_id: int, project: Project, user_id : int = Depends(get_
 
     # update project info and return the new info
     res = runSQL("""UPDATE projects SET project_name = %s, project_description = %s WHERE project_id = %s""",(project.project_name, project.project_description, project_id))
-    res = runSQL("""SELECT * FROM projects WHERE project_id = %s""",(project_id,))
 
     return res
 

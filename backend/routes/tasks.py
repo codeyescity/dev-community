@@ -21,6 +21,12 @@ def validate_task_state(task_state: str):
     else:
         return False
 
+def validate_task_type(task_type: str):
+    if(task_type in ["task", "bug_fix", "feature", "issue"]):
+        return True
+    else:
+        return False
+
 # tasks can be "todo" "inprogress" "invalidation" "completed"
 # tasks need state manegment
 
@@ -39,12 +45,29 @@ def get_user_tasks(project_id: int, user_id : int = Depends(get_current_user)):
 def get_all_project_tasks(project_id: int, user_id : int = Depends(get_current_user)):
     # this route is for the admins only
     project_exist(project_id)
+    sql ="""SELECT 
+                t.task_id,
+                t.member_id,
+                t.task_title,
+                t.task_description,
+                t.task_type,
+                t.task_state,
+                m.member_role,
+                u.user_id,
+                u.username,
+                u.img_url
+            FROM tasks t
+            LEFT JOIN members m ON t.member_id = m.member_id
+            LEFT JOIN users u ON m.user_id = u.user_id
+            WHERE t.project_id = %s
+        """
 
-    res = runSQL("""SELECT * FROM tasks WHERE project_id = %s""", (project_id,))
+    data = ((project_id,))
+    res = runSQL(sql,data)
 
     return res
 
-@app.post("/projects/{project_id}/task", status_code = status.HTTP_200_OK)
+@app.post("/projects/{project_id}/task", status_code = status.HTTP_201_CREATED)
 def create_task(project_id: int, task: Task, user_id : int = Depends(get_current_user)):
     # for admins only
     project_exist(project_id)
@@ -66,7 +89,7 @@ def edit_task(project_id: int, task_id: int, task: Task, user_id : int = Depends
 
     return res
 
-@app.delete("/projects/{project_id}/task/{task_id}", status_code = status.HTTP_200_OK)
+@app.delete("/projects/{project_id}/task/{task_id}", status_code = status.HTTP_204_NO_CONTENT)
 def delete_task(project_id: int, task_id: int, user_id : int = Depends(get_current_user)):
     project_exist(project_id)
 
