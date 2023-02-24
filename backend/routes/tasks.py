@@ -12,6 +12,7 @@ class Task(BaseModel):
     task_title: str
     task_description: str
     task_type: str
+    member_id : int
 
 
 def validate_task_state(task_state: str):
@@ -48,8 +49,8 @@ def create_task(project_id: int, task: Task, user_id : int = Depends(get_current
     # for admins only
     project_exist(project_id)
     #validate task type
-    data = (project_id, task.task_title, task.task_description, task.task_type, "todo")
-    res = runSQL_return_id("""INSERT INTO tasks (project_id, task_title, task_description, task_type, task_state) VALUES (%s,%s,%s,%s,%s)""",data)
+    data = (project_id, task.task_title, task.task_description, task.task_type, "todo", task.member_id)
+    res = runSQL_return_id("""INSERT INTO tasks (project_id, task_title, task_description ,task_type, task_state, member_id) VALUES (%s,%s,%s,%s,%s,%s)""",data)
 
     return res
     
@@ -60,8 +61,8 @@ def create_task(project_id: int, task: Task, user_id : int = Depends(get_current
 def edit_task(project_id: int, task_id: int, task: Task, user_id : int = Depends(get_current_user)):
     project_exist(project_id)
 
-    data = (task.task_title, task.task_description, task.task_type, task_id)
-    res = runSQL_return_id("""UPDATE tasks SET task_title = %s, task_description = %s, task_type = %s WHERE task_id = %s""",data)
+    data = (task.task_title, task.task_description, task.task_type, task_id, task.member_id)
+    res = runSQL_return_id("""UPDATE tasks SET task_title = %s, task_description = %s, task_type = %s , member_id = %s WHERE task_id = %s""",data)
 
     return res
 
@@ -84,11 +85,4 @@ def change_task_state(project_id: int, task_id: int, task_state : str, user_id :
     return res 
 
 
-@app.put("/projects/{project_id}/task/{task_id}/assigne", status_code = status.HTTP_200_OK)
-def assigne_task(project_id: int, task_id: int, member_id : int, user_id : int = Depends(get_current_user)):
-    project_exist(project_id)
-
-    res = runSQL("""UPDATE tasks SET member_id = %s WHERE task_id = %s""",(member_id,task_id))
-
-    return res 
 
