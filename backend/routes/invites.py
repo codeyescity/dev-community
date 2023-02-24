@@ -9,7 +9,7 @@ app = APIRouter(tags=['project invites'])
 
 class Invite(BaseModel):
     username : str
-
+    role : str
 
 def validate_user_role(role: str):
     if(role in ["admin", "member"]):
@@ -63,7 +63,7 @@ def create_invite_for_user(project_id: int, invite : Invite, user_id : int = Dep
     if res:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"User with name: '{invite.username}' is already invited")
     # add invite
-    res = runSQL("""INSERT INTO invites (user_id, project_id, invite_date) VALUES (%s,%s,NOW());""",(invited_user_id, project_id))
+    res = runSQL("""INSERT INTO invites (user_id, project_id, invite_role, invite_date) VALUES (%s,%s,%s,NOW());""",(invited_user_id, project_id, invite.role))
     return res
 
 @app.delete("/projects/{project_id}/invites/{invite_id}", status_code=status.HTTP_204_NO_CONTENT)

@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS invites
     invite_id INT AUTO_INCREMENT PRIMARY KEY, 
     user_id INT,
     project_id INT,
+    invite_role VARCHAR(6),
     invite_date DATETIME,
     FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE
@@ -163,7 +164,7 @@ CREATE TABLE IF NOT EXISTS tasks
     task_description TEXT,
     task_type VARCHAR(20),
     task_state VARCHAR(20),
-    task_progress INT DEFAULT 0
+    task_progress INT DEFAULT 0,
     FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE,
     FOREIGN KEY(member_id) REFERENCES members(member_id) ON DELETE CASCADE
 );
