@@ -85,7 +85,7 @@ def create_task(project_id: int, task: Task, user_id : int = Depends(get_current
 def edit_task(project_id: int, task_id: int, task: Task, user_id : int = Depends(get_current_user)):
     project_exist(project_id)
 
-    data = (task.task_title, task.task_description, task.task_type, task_id, task.member_id)
+    data = (task.task_title, task.task_description, task.task_type, task.member_id, task_id)
     res = runSQL_return_id("""UPDATE tasks SET task_title = %s, task_description = %s, task_type = %s , member_id = %s WHERE task_id = %s""",data)
 
     return res

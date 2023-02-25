@@ -86,9 +86,9 @@ def get_user_posts(id: int, type: str, start: int = 0, limit: int = 20, user_id:
         WHERE u.user_id = %s AND p.post_type = %s
         LIMIT %s, %s;
         """
+    data = (user_id, id, type,start, limit)
 
-    res = runSQL(sql, (user_id, id, type,start, limit))
-
+    res = runSQL(sql, data)
     return res
 
 
