@@ -3,7 +3,7 @@ from dbhelper import runSQL, runSQL_return_id
 from pydantic import BaseModel
 from oauth2 import get_current_user
 
-from project_helper import user_member_project, project_exist, user_admin_project, team_exits
+from project_helper import user_member_project, project_exist, user_admin_project, team_exits, member_not_part_team_in_project, member_id_part_project
 
 # tags are just for the ui
 app = APIRouter(tags=['team_members'])
