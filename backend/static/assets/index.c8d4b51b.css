@@ -1,0 +1,2916 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Mochiy+Pop+P+One&family=Open+Sans:wght@300;400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+
+/* Document
+   ========================================================================== */
+
+/**
+ * 1. Correct the line height in all browsers.
+ * 2. Prevent adjustments of font size after orientation changes in iOS.
+ */
+
+html {
+  line-height: 1.15;
+  line-height: 1.4; /* mine */
+  /* 1 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */
+}
+
+/* Sections
+     ========================================================================== */
+
+/**
+   * Remove the margin in all browsers.
+   */
+
+body {
+  margin: 0;
+}
+
+/**
+   * Render the `main` element consistently in IE.
+   */
+
+main {
+  display: block;
+}
+
+/**
+   * Correct the font size and margin on `h1` elements within `section` and
+   * `article` contexts in Chrome, Firefox, and Safari.
+   */
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+/* Grouping content
+     ========================================================================== */
+
+/**
+   * 1. Add the correct box sizing in Firefox.
+   * 2. Show the overflow in Edge and IE.
+   */
+
+hr {
+  box-sizing: content-box;
+  /* 1 */
+  height: 0;
+  /* 1 */
+  overflow: visible;
+  /* 2 */
+}
+
+/**
+   * 1. Correct the inheritance and scaling of font size in all browsers.
+   * 2. Correct the odd `em` font sizing in all browsers.
+   */
+
+pre {
+  font-family: monospace, monospace;
+  /* 1 */
+  font-size: 1em;
+  /* 2 */
+}
+
+/* Text-level semantics
+     ========================================================================== */
+
+/**
+   * Remove the gray background on active links in IE 10.
+   */
+
+a {
+  background-color: transparent;
+}
+
+/**
+   * 1. Remove the bottom border in Chrome 57-
+   * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+   */
+
+abbr[title] {
+  border-bottom: none;
+  /* 1 */
+  text-decoration: underline;
+  /* 2 */
+  text-decoration: underline dotted;
+  /* 2 */
+}
+
+/**
+   * Add the correct font weight in Chrome, Edge, and Safari.
+   */
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/**
+   * 1. Correct the inheritance and scaling of font size in all browsers.
+   * 2. Correct the odd `em` font sizing in all browsers.
+   */
+
+code,
+kbd,
+samp {
+  font-family: monospace, monospace;
+  /* 1 */
+  font-size: 1em;
+  /* 2 */
+}
+
+/**
+   * Add the correct font size in all browsers.
+   */
+
+small {
+  font-size: 80%;
+}
+
+/**
+   * Prevent `sub` and `sup` elements from affecting the line height in
+   * all browsers.
+   */
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/* Embedded content
+     ========================================================================== */
+
+/**
+   * Remove the border on images inside links in IE 10.
+   */
+
+img {
+  border-style: none;
+}
+
+/* Forms
+     ========================================================================== */
+
+/**
+   * 1. Change the font styles in all browsers.
+   * 2. Remove the margin in Firefox and Safari.
+   */
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  /* 1 */
+  font-size: 100%;
+  /* 1 */
+  line-height: 1.15;
+  /* 1 */
+  margin: 0;
+  /* 2 */
+}
+
+/**
+   * Show the overflow in IE.
+   * 1. Show the overflow in Edge.
+   */
+
+button,
+input {
+  /* 1 */
+  overflow: visible;
+}
+
+/**
+   * Remove the inheritance of text transform in Edge, Firefox, and IE.
+   * 1. Remove the inheritance of text transform in Firefox.
+   */
+
+button,
+select {
+  /* 1 */
+  text-transform: none;
+}
+
+/**
+   * Correct the inability to style clickable types in iOS and Safari.
+   */
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+}
+
+/**
+   * Remove the inner border and padding in Firefox.
+   */
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+/**
+   * Restore the focus styles unset by the previous rule.
+   */
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+/**
+   * Correct the padding in Firefox.
+   */
+
+fieldset {
+  padding: 0.35em 0.75em 0.625em;
+}
+
+/**
+   * 1. Correct the text wrapping in Edge and IE.
+   * 2. Correct the color inheritance from `fieldset` elements in IE.
+   * 3. Remove the padding so developers are not caught out when they zero out
+   *    `fieldset` elements in all browsers.
+   */
+
+legend {
+  box-sizing: border-box;
+  /* 1 */
+  color: inherit;
+  /* 2 */
+  display: table;
+  /* 1 */
+  max-width: 100%;
+  /* 1 */
+  padding: 0;
+  /* 3 */
+  white-space: normal;
+  /* 1 */
+}
+
+/**
+   * Add the correct vertical alignment in Chrome, Firefox, and Opera.
+   */
+
+progress {
+  vertical-align: baseline;
+}
+
+/**
+   * Remove the default vertical scrollbar in IE 10+.
+   */
+
+textarea {
+  overflow: auto;
+}
+
+/**
+   * 1. Add the correct box sizing in IE 10.
+   * 2. Remove the padding in IE 10.
+   */
+
+[type="checkbox"],
+[type="radio"] {
+  box-sizing: border-box;
+  /* 1 */
+  padding: 0;
+  /* 2 */
+}
+
+/**
+   * Correct the cursor style of increment and decrement buttons in Chrome.
+   */
+
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/**
+   * 1. Correct the odd appearance in Chrome and Safari.
+   * 2. Correct the outline style in Safari.
+   */
+
+[type="search"] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  outline-offset: -2px;
+  /* 2 */
+}
+
+/**
+   * Remove the inner padding in Chrome and Safari on macOS.
+   */
+
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/**
+   * 1. Correct the inability to style clickable types in iOS and Safari.
+   * 2. Change font properties to `inherit` in Safari.
+   */
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+}
+
+/* Interactive
+     ========================================================================== */
+
+/*
+   * Add the correct display in Edge, IE 10+, and Firefox.
+   */
+
+details {
+  display: block;
+}
+
+/*
+   * Add the correct display in all browsers.
+   */
+
+summary {
+  display: list-item;
+}
+
+/* Misc
+     ========================================================================== */
+
+/**
+   * Add the correct display in IE 10+.
+   */
+
+template {
+  display: none;
+}
+
+/**
+   * Add the correct display in IE 10.
+   */
+
+[hidden] {
+  display: none;
+}
+
+/********************************************************************/
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+}
+
+input,
+textarea {
+  border: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+body {
+  background: white; 
+  color: black; 
+}
+
+h1 {
+  margin: 0;
+}
+
+img {
+  user-select: none;
+}
+
+input[type="checkbox"] {
+  position: relative;
+  top: 2px;
+}
+
+input[type="checkbox"]+label {
+  font-size: .8em;
+}
+
+button {
+  transition: none!important; 
+  border: none;
+  background: none; 
+  color: #fff;
+  cursor: pointer;
+}
+
+p {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+}
+
+:root {
+  --white: #fff;
+  --black: #000;
+
+  --grey-clr-100: #8a939e;
+  --grey-clr-200: #eef5fc33;
+  --grey-clr-300: #161b22;
+
+  --green-clr-100: #75db8a;
+  --green-clr-200: #49a75a;
+  --green-clr-300: #238636;
+
+  --main-clr: var(--blue-clr-200);
+
+  --blue-clr-100: #1e70eb;
+  --blue-clr-200: #445979;
+  --blue-clr-300: #0d1117;
+  --blue-clr-400: #010409;
+
+  --orange-clr-300: #df3a11;
+  --orange-clr-200: #e9795d;
+  --orange-clr-100: #f7a692;
+
+  --red-clr-100: #fe6767;
+  --red-clr-200: #ff1f1f;
+  --red-clr-300: #cb0101;
+
+  --primary-clr: var(--blue-clr-200);
+  --secondary-clr: var(--blue-clr-100);
+
+  --primary-text-clr: var(--white);
+  --secondary-text-clr: #bbb;
+  
+  --primary-border: 1px solid var(--grey-clr-200);
+  
+  --primary-background-clr: var(--blue-clr-400);
+  --secondary-background-clr: var(--blue-clr-300);
+
+  --box-shadow: #000;
+  --fixed-white: #fff;
+  --fixed-black: #000;
+
+  --fast-transition: .3s;
+  --meduim-transition: .5s;
+  --slow-transition: .7s;
+}
+
+:root[theme="light"] {
+  --primary-text-clr: #000;
+  --primary-background-clr: whitesmoke;
+  --secondary-background-clr: #fff;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 62.5%;
+  /* background: #000; */
+  -webkit-filter: invert(0);
+  filter: invert(0);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--secondary-background-clr);
+  color: var(--primary-text-clr);
+  font-size: 1.3rem;
+  overflow-y: scroll;
+}
+
+#root {
+  padding: 0 15px;
+  margin-inline: auto;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main.main-content {
+  flex-grow: 1; 
+  position: relative;
+}
+
+.page {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.inner-container {
+  padding: 10px 0;
+}
+
+.inner-container.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.page-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* sreen <= 767 */
+
+@media (max-width: 767px) {
+  #root {
+    width: 100%;
+  }
+}
+
+/* 768 <= screen < 992 */
+
+@media (min-width: 768px) {
+  #root {
+    /* width: 750px; */
+    width: 97%;
+  }
+}
+
+/* 992 <= screen < 1200 */
+
+@media (min-width: 992px) {
+  #root {
+    /* width: 970px; */
+    width: 95%
+  }
+}
+
+/* 1200 <= screen */
+
+@media (min-width: 1200px) {
+  #root {
+    /* width: 1170px; */
+  }
+
+  .app {
+    flex-direction: row;
+  }
+
+  nav.nav-bar {
+    width: 20%;
+    height: 100vh;
+  }
+
+  section.working-rooms {
+    width: 30%;
+  }
+
+  .inner-container {
+    padding: 30px 0;
+  }
+}/* Buttons */
+.main-button {
+    padding: .6em 3em;
+    background: var(--primary-clr);
+    color: var(--white);
+    font-weight: 400;
+    transition: var(--fast-transition);
+}
+
+.main-button.cancel-button {
+    background: var(--grey-clr-200);
+}
+
+.main-button.disabled {
+    filter: brightness(0.8);
+    cursor: no-drop;
+}
+
+.link-button {
+    color: #bbb;
+    transition: var(--fast-transition);
+}
+
+.link-button:hover {
+    color: var(--white);
+    text-decoration: underline;
+}
+
+.secondary-button {
+    padding: .6em 3em;
+    color: var(--white);
+    background: var(--blue-clr-400);
+    border: 1px solid var(--blue-clr-100);
+}
+
+.main-button:not(.main-button.disabled):hover {
+    filter: brightness(1.2);
+}
+
+/* Forms */
+
+.main-form-wrapper {
+    padding: 20px;
+    border: var(--primary-border);
+    max-width: 400px;
+    width: 100%;
+    margin: 100px 0;
+}
+
+.main-form-wrapper h1 {
+    text-align: center;
+    font-weight: lighter;
+    font-size: 3.2rem;
+    margin-bottom: 40px;
+}
+
+form {
+    /* max-width: 400px; */
+    /* width: 100%; */
+}
+
+form.main-form {
+    display: flex;
+    flex-direction: column;
+}
+
+form.main-form input,
+form.main-form textarea {
+    margin-bottom: 1.1em;
+}
+
+form.main-form label {
+    font-weight: 200;
+    margin-bottom: 5px;
+}
+
+form.main-form button {
+    margin-top: 10px;
+    align-self: flex-end;
+}
+
+input.main-input,
+textarea.main-textarea {
+    padding: 10px;
+    background: var(--primary-background-clr);
+    color: var(--primary-text-clr);
+    border: var(--primary-border);
+    white-space: pre-wrap;
+    resize: none;
+    width: 100%;
+}
+
+input.main-input:focus,
+textarea.main-textarea:focus {
+    outline: 1px solid var(--secondary-clr);
+}
+
+textarea.main-textarea.code {
+    font-family: monospace;
+}
+
+/* Lists */
+
+ul.main-ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ul.main-ul li {
+    padding: .8em 1.5em;
+    cursor: pointer;
+    position: relative;
+}
+
+ul.main-ul li::before {
+    content: '';
+    height: 2px;
+    background: var(--main-clr);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+ul.main-ul li:hover::before,
+ul.main-ul li.active::before {
+    width: 100%;
+}.reg-success,
+.reg-error {
+    margin: 1.2em 0; 
+    padding: 10px; 
+    background: var(--red-clr-300);
+}
+
+.reg-success {
+    background: var(--green-clr-300);
+}
+
+.reg-success a {
+    text-decoration: underline;
+}form.main-form button {
+    align-self: unset;
+}
+
+.main-form-wrapper a {
+    display: block;
+    width: fit-content;
+    margin: auto;
+    margin-top: 1.2em;
+    transition: var(--fast-transition); 
+}
+
+.main-form-wrapper a:hover {
+    text-decoration: underline;
+}.profile-img {
+    border: 1px solid var(--grey-clr-200);
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    /* background: white; */
+}
+
+.profile-img > img {
+    position: absolute; 
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+}.progress {
+    display: flex;
+    align-items: center;
+    gap: .4em;
+}
+
+.progress .progress-container {
+    height: 1.3em;
+    width: 100%;
+    border: 1px solid var(--blue-clr-100);
+}
+
+.progress .progress-container span {
+    display: block;
+    height: 100%;
+    background: var(--blue-clr-100);
+}.outer {
+    width: 15px;
+    height: 15px;
+    border: 3px solid var(--grey-clr-300);
+    filter: brightness(1.5);
+    border-radius: 50%;
+    position: relative;
+    margin-inline: auto; 
+  }
+  .outer::before {
+    content: '';
+    height:  100%;
+    width: 60%;
+    border: 3px solid transparent;
+    border-top: 3px solid transparent;
+    border-top: 3px solid var(--blue-clr-100);
+    border-radius: 500px;
+    position: absolute;
+    animation: roll .7s ease-in-out infinite;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  
+  
+  @keyframes roll {
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }section.working-rooms {
+    position: sticky;
+    top: 0;
+    border-left: 1px solid var(--grey-clr-200);
+    height: 100vh; 
+    margin-left: 20px; 
+    overflow-y: auto;
+}
+
+section.working-rooms .inner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1em; 
+    padding-inline: 10px;
+}
+
+section.working-rooms .current-projects,
+section.working-rooms .user-invites {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.4em;
+}
+
+section.working-rooms h2 {
+    font-weight: 400;
+}
+
+section.working-rooms .main-button {
+    display: block;
+    padding-right: 1em;
+    padding-left: 1em;
+    margin: 0 auto;
+}
+
+section.working-rooms .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.3em;
+}
+
+a.working-rooms-project {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: .6em .7em;
+    align-items: center;
+    padding: .8em;
+    border: 1px solid var(--grey-clr-200);
+    transition: var(--fast-transition);
+    background: var(--grey-clr-300)
+}
+
+a.working-rooms-project:hover {
+    filter: brightness(1.3)
+}
+
+a.working-rooms-project .profile-img {
+    width: 2.3em;
+    height: 2.3em;
+    grid-row: span 2;
+}
+
+.working-rooms-project h4 {
+    font-weight: 400;
+}
+
+section.working-rooms .user-invites .invites-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+section.working-rooms .user-invites .invites-list .invite {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .454em;
+    border: 1px solid var(--grey-clr-200);
+}
+
+section.working-rooms .user-invites .invites-list .invite .functionalities {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    font-size: .9em;
+}
+
+section.working-rooms .user-invites .invites-list .invite .functionalities button.reject {
+    background: var(--red-clr-300);
+}
+
+@media (max-width: 1199px) {
+    section.working-rooms {
+        display: none;
+    }
+}.overlay {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0 0 0 / .8);
+    z-index: 10000;
+}
+
+.model {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    max-height: 80%;
+    background: var(--grey-clr-300);
+    border: 1px solid var(--grey-clr-200);  
+    padding: 1.2em;
+    max-width: 500px;
+    width: 100%; 
+}
+
+.model .model-container {
+    padding-inline: .5em;
+    max-height: 90%;
+    overflow-y: auto;
+}
+
+.model .model-functionalities {
+    display: flex;
+    gap: 1em; 
+    align-self: flex-end;
+}
+main.main-content .inner-container {
+    /* border: 1px solid; */
+}
+.home-page .profile {
+    width: fit-content;
+}
+
+.home-page {
+    background: var(--blue-clr-400);
+    padding: 15px 30px;
+    margin-inline: auto; 
+    width: min(700px, 100%);
+}
+
+/**************************************  Share Section  **************************************/
+
+.home-page section.share-post {
+    display: grid; 
+    grid-template-columns: auto 1fr;
+    padding: 1.2em 0;
+    grid-gap: 1.5em .8em;
+}
+
+.home-page section.share-post textarea.main-textarea {
+    width: 100%;
+    /* min-height: 100px; */
+    resize: none;
+    font-size: 1.15em;
+    background: none;
+    border: none;
+    border: 1px solid var(--grey-clr-200);
+}
+
+.home-page section.share-post textarea.main-textarea:focus {
+    outline: none;
+}
+
+.home-page section.share-post .functionalities {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    grid-column-start: 2;
+}
+
+.home-page section.other-posts-types .or {
+    display: flex; 
+    align-items: center;
+}
+
+.home-page section.other-posts-types .or hr {
+    width: 100%; 
+    border: 1px solid var(--blue-clr-100);  
+}
+
+.home-page section.other-posts-types .or span {
+    margin: 0 1em;
+}
+
+.home-page section.other-posts-types .functionalities {
+    display: flex; 
+    align-items: center;
+    justify-content: space-around;
+    padding: 1.2em 0; 
+    background: var(--grey-clr-300);
+    margin: 1em 0; 
+}
+
+/**************************************  Posts Section  **************************************/
+
+.home-page section.posts {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+}
+
+.post {
+    padding: 15px;
+    background-color: var(--blue-clr-300);
+    border: 1px solid var(--grey-clr-200);
+    width: 100%;
+}
+
+.post .post-info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: .8em;
+}
+
+.post .post-info .post-main {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    position: relative;
+}
+
+.post .post-info .post-main button.post-funcs {
+    position: absolute; 
+    top: -10px; 
+    right: -10px;  
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    /* background: none; */
+    transition: var(--fast-transition); 
+    color: var(--grey-clr-100); 
+    background: none;
+    display: none;
+}
+
+.post:hover .post-info .post-main button.post-funcs {
+    display: block;
+}
+
+.post .post-info .post-main button.post-funcs:hover {
+    background: var(--grey-clr-300);
+    filter: brightness(1.3); 
+}
+
+.post .post-info .post-main button.post-funcs > svg {
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    font-size: 1.1em;
+}
+
+.post .post-info .post-main button.post-funcs + .funcs-model {
+    position: absolute;
+    top: 10px;
+    right: 10px; 
+    width: fit-content;
+    background: var(--grey-clr-300);
+    border: 1px solid var(--grey-clr-200); 
+    z-index: 500;
+}
+
+.post .post-info .post-main button.post-funcs + .funcs-model li button {
+    width: 100%; 
+    text-align: start;
+    background: none;
+    color: var(--white);
+    padding: 1.2em 1em; 
+    transition: var(--fast-transition);
+}
+
+.post .post-info .post-main button.post-funcs + .funcs-model li button:hover {
+    background: var(--grey-clr-300); 
+    filter: brightness(1.5); 
+}
+
+.post .post-info .post-main button.post-funcs + .funcs-model li button svg {
+    position: relative;
+    top: 3px;
+    font-size: 1.2em;
+    margin-right: .5em;
+}
+
+
+.post .post-info .post-main span.date {
+    color: var(--grey-clr-100);
+}
+
+.post .post-info .post-main p.post-content {
+    margin: .5em 0 1.5em;
+    white-space: pre-wrap;
+    word-break: break-all;
+    width: 100%; 
+    
+}
+
+.post .post-info .post-main p.post-content span.read-more {
+    cursor: pointer;
+    color: var(--grey-clr-100); 
+    transition: .2s;
+    font-size: .9em; 
+}
+.post .post-info .post-main p.post-content span.read-more:hover {
+    text-decoration: underline;
+    color: var(--white); 
+}
+
+.post .functionalities {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid var(--grey-clr-200);
+}
+
+.post .functionalities button {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+    background: none;
+    color: var(--white);
+}
+
+.post .functionalities button.like-post svg {
+    position: relative; 
+    top: -2px;
+}
+
+.post .functionalities button.comment-on-post svg {
+    position: relative; 
+    top: 3px;
+}
+
+.post .post-comments {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.5em 0;
+    gap: 1.5em;
+    border-top: 1px solid var(--grey-clr-200);
+    font-size: .9em;
+}
+
+.post .post-comments .outer {
+    margin: 0 auto;
+}
+
+.post .post-comments h3 {
+    font-weight: 300;
+}
+
+.post .post-comments h3.no-comments {
+    text-align: center;
+    color: #ddd;
+}
+
+.post .post-comments div.comment {
+    padding: 1em 1.5em;
+    margin-bottom: 0px;
+    background: var(--grey-clr-300);
+    border-bottom: 1px solid var(--grey-clr-200);
+}
+
+
+.post .post-comments div.comment .profile-img {
+    width: 2.2em;
+    height: 2.2em;
+}
+
+.post .post-comments div.comment p.post-content {
+    margin-bottom: 1em;
+}
+
+.post .post-comments div.comment button.like-comment {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+    background: none;
+    color: var(--white);
+    width: fit-content;
+}
+
+.post .post-comments div.comment button.like-comment svg {
+    position: relative; 
+    top: -2px;
+}
+
+.post .post-comments form.comment {
+    display: flex; 
+    align-items: center;
+    background: var(--blue-clr-400);
+    width: 100%;
+}
+
+.post .post-comments form.comment textarea {
+    flex: 1;
+    resize: none;
+    background: none;
+    border: none;
+}
+
+.post .post-comments form.comment textarea:focus {
+    outline: none;
+}
+
+.post .post-comments form.comment button.submit-comment {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    color: var(--white);
+    background: none;
+    font-size: 2rem;
+}
+
+section.questions-page {
+    padding-top: 15px;
+}
+
+section.questions-page .questions-page-container {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    gap: 2em;
+    background: var(--blue-clr-400);
+    padding: 15px 30px;
+}
+
+section.questions-page .header {
+    display: flex; 
+    align-items: center;
+    justify-content: space-between;
+}
+
+section.questions-page .filter-questions {
+    height: 100px;
+    border: 1px solid;
+}
+
+section.questions-page section.questions-list {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+}
+
+.question {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px;
+    background-color: var(--blue-clr-300);
+    border: 1px solid var(--grey-clr-200);
+    width: 100%;
+}
+
+.question p {
+    --nbr-lines: 3; 
+    margin: .2em 0 1em;
+    font-size: .95em;
+    color: #ccc;
+    transition: var(--fast-transition);
+    display: -webkit-box;
+    -webkit-line-clamp: var(--nbr-lines); 
+    -webkit-box-orient: vertical; 
+    overflow: hidden;
+}
+
+.question:hover {
+    filter: brightness(1.5);
+}
+
+.question .question-stats {
+    display: flex; 
+    align-items: center;
+    justify-content: space-around;
+    color: #ccc;
+}
+header { 
+    padding: .7em 0; 
+    background: var(--grey-clr-300);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .container {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+}
+
+header input.search {
+    width: 300px; 
+}
+
+header .user {
+    display: flex; 
+    align-items: center;
+    gap: 2em; 
+}
+
+
+header .user button {
+    background: var(--red-clr-300);
+    padding: 5px 10px;
+}
+nav.nav-bar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background: var(--blue-clr-300);
+    border-right: 1px solid var(--grey-clr-200);
+    z-index: 9999;
+    margin-right: 20px;
+    overflow-y: auto;
+}
+
+nav.nav-bar .inner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1em;
+    padding-inline: 10px;
+}
+
+nav.nav-bar a {
+    display: flex;
+    align-items: center;
+    gap: .7em;
+    padding: 1em .5em;
+    transition: var(--fast-transition);
+    filter: brightness(1.3);
+}
+
+nav.nav-bar a:hover,
+nav.nav-bar .user-profile:hover,
+nav.nav-bar ul li a.active {
+    background: var(--grey-clr-300);
+}
+
+nav.nav-bar .user-profile {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+}
+
+nav.nav-bar .user-profile button {
+    background: none;
+    color: var(--white);
+    border: none;
+}
+
+nav.nav-bar .user-profile button svg {
+    position: relative;
+    top: 3px;
+}
+
+nav.nav-bar .user-profile .profile-funcs-model {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--grey-clr-300);
+    border: 1px solid var(--grey-clr-200);
+    z-index: 500;
+    min-width: 100%;
+}
+
+nav.nav-bar .user-profile .profile-funcs-model button {
+    display: flex;
+    align-items: center;
+    background: none;
+    color: var(--white);
+    border: none;
+    width: 100%;
+    text-align: start;
+    background: none;
+    color: var(--white);
+    padding: 1.2em 1em;
+    tr ansition: var(--fast-transition);
+}
+
+nav.nav-bar .user-profile .profile-funcs-model button svg {
+    position: relative;
+    top: 3px;
+    font-size: 1.2em;
+    margin-right: .5em;
+}
+
+nav.nav-bar .user-profile .profile-funcs-model button:hover {
+    background: var(--grey-clr-300);
+    filter: brightness(1.5);
+}
+
+nav.nav-bar ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+nav.nav-bar ul li a {
+    font-size: 1.2em;
+}
+
+nav.nav-bar ul li a#projects {
+    display: none;
+}
+
+
+@media (max-width: 1199px) {
+    nav.nav-bar {
+        border-right: none;
+        border-bottom: 1px solid var(--grey-clr-200);
+        margin: 0;
+    }
+
+    nav.nav-bar .inner-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding-inline: 0;
+    }
+
+    nav.nav-bar ul li a#projects {
+        display: block;
+    }
+
+    nav.nav-bar a span {
+        display: none;
+    }
+
+    nav.nav-bar .user-profile {
+        order: 1;
+    }
+
+    nav.nav-bar ul {
+        flex-direction: row;
+        justify-content: space-evenly;
+        flex-grow: 1;
+    }
+
+    nav.nav-bar ul {
+        font-size: 18px;
+    }
+}form.share-work-form {
+    display: flex; 
+    flex-direction: column;
+    width: 700px;
+    padding: 50px 0;
+}
+
+form.share-work-form > input, 
+form.share-work-form > textarea,
+form.share-work-form > .project-links,
+form.share-work-form > .project-technologies, 
+form.share-work-form .question-code {
+    margin-bottom: 1.1em;
+    margin-top: .5em;
+}
+
+form.share-work-form textarea {
+    resize: none;
+}
+
+form.share-work-form > button {
+    width: fit-content; 
+    align-self: flex-end;
+}
+
+form.share-work-form .project-links,
+form.share-work-form .project-technologies,
+form.share-work-form .question-code {
+    display: flex; 
+    flex-direction: column;
+    gap: .8em;
+}
+
+form.share-work-form .project-links button.add-link-button {
+    padding: .5em 0;
+    background: var(--grey-clr-300);
+    filter: brightness(1.3);
+    border: 1px solid var(--grey-clr-200);
+    color: var(--white);
+}
+
+
+form.share-work-form .project-links .link {
+    display: flex; 
+    align-items: center;
+    justify-content: space-between;
+}
+
+form.share-work-form .project-links .link input.link-type {
+    width: 20%;
+    border: none;
+}
+
+form.share-work-form .project-links .link input.the-link {
+    width: 75%;
+}
+
+button.times-button {
+    height: 20px;
+    width: 20px;
+    font-size: .9em;
+    background: var(--grey-clr-300);
+    filter: brightness(1.3);
+    color: var(--grey-clr-100); 
+    border-radius: 50%;
+    border: 1px solid var(--grey-clr-200);
+    position: relative;
+}
+
+button.times-button svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+form.share-work-form .project-technologies .project-technologies-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5em;
+    background: var(--blue-clr-400);
+    border: 1px solid var(--grey-clr-200);
+    padding: 10px;
+}
+
+form.share-work-form .project-technologies .technologies-tags {
+    display: flex; 
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .6em;
+}
+
+form.share-work-form .project-technologies .technologies-tags .technology {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+    padding: .5em;
+    background: var(--grey-clr-300);
+    filter: brightness(1.3);
+    border: 1px solid var(--grey-clr-200);
+    font-size: .8em;
+}
+
+form.share-work-form .project-technologies .technologies-tags input {
+    flex: 1; 
+    border: none;
+}
+
+form.share-work-form .project-technologies .technologies-tags input:focus {
+    outline: none; 
+}
+
+form.share-work-form .project-technologies li {
+    padding: 10px; 
+    cursor: pointer; 
+}
+
+form.share-work-form .project-technologies li:hover {
+    background: var(--grey-clr-300);
+    filter: brightness(1.3);
+}
+
+
+form.share-work-form .question-code pre.code {
+    padding: 10px;
+    background: var(--blue-clr-400);
+    border: 1px solid var(--grey-clr-200);
+    min-height: 100px;
+    max-height: 250px;
+}
+
+form.share-work-form .question-code pre.code:focus {
+    outline: 1px solid var(--blue-clr-100); 
+}
+
+.not-found {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;  
+    grid-column: span 2;
+    width: 100%;
+    height: 100%;
+    
+}
+
+.not-found h1:first-child {
+    font-size: 5em;
+    line-height: 100%;
+}
+
+.not-found h1:nth-child(2) {
+    margin-bottom: .7em;
+}pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}/*!
+  Theme: a11y-dark
+  Author: @ericwbailey
+  Maintainer: @ericwbailey
+
+  Based on the Tomorrow Night Eighties theme: https://github.com/isagalaev/highlight.js/blob/master/src/styles/tomorrow-night-eighties.css
+*/.hljs{background:#2b2b2b;color:#f8f8f2}.hljs-comment,.hljs-quote{color:#d4d0ab}.hljs-deletion,.hljs-name,.hljs-regexp,.hljs-selector-class,.hljs-selector-id,.hljs-tag,.hljs-template-variable,.hljs-variable{color:#ffa07a}.hljs-built_in,.hljs-link,.hljs-literal,.hljs-meta,.hljs-number,.hljs-params,.hljs-type{color:#f5ab35}.hljs-attribute{color:gold}.hljs-addition,.hljs-bullet,.hljs-string,.hljs-symbol{color:#abe338}.hljs-section,.hljs-title{color:#00e0e0}.hljs-keyword,.hljs-selector-tag{color:#dcc6e0}.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:700}@media screen and (-ms-high-contrast:active){.hljs-addition,.hljs-attribute,.hljs-built_in,.hljs-bullet,.hljs-comment,.hljs-link,.hljs-literal,.hljs-meta,.hljs-number,.hljs-params,.hljs-quote,.hljs-string,.hljs-symbol,.hljs-type{color:highlight}.hljs-keyword,.hljs-selector-tag{font-weight:700}}
+.question-page {
+    grid-column: span 2; 
+    width: 70%;  
+}
+
+.question-page .question-container {
+    padding: 50px 0;
+    display: flex; 
+    flex-direction: column;
+    gap: 2em;
+    justify-content: center;
+}
+
+.question-page .question-info {
+    display: flex;
+    flex-direction: column; 
+    gap: 2em;
+}
+
+.question-page .question-more-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid var(--grey-clr-200);
+    border-right: none;
+    border-left: none;
+    padding: 1em 0;
+}
+
+.question-page .question-more-info button.like-question {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .7em;
+    background: none;
+    color: var(--white);
+}
+
+.question-page .question-functionalities {
+    display: flex; 
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1em;
+}
+
+.question-page .question-functionalities > * {
+    padding: .5em;
+    background: none;
+    color: var(--grey-clr-100);
+    font-size: .9em;
+    transition: var(--fast-transition);
+}
+
+.question-page .question-functionalities > *:hover {
+    color: var(--white);
+}
+
+.question-page .question-answers {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    gap: 1em;
+}
+
+.question-page .question-answers .question-answer {
+    display: grid; 
+    grid-gap: 1em;
+    padding: 1.5em;
+    background: var(--grey-clr-300);
+}
+
+.question-page .question-answers .question-answer .profile {
+    display: flex; 
+    align-items: center;
+    gap: .6em;
+    width: fit-content;
+}
+
+.question-page form.share-answer {
+    display: flex; 
+    flex-direction: column;
+}
+
+.question-page form.share-answer textarea {
+    margin-bottom: 1.1em;
+    margin-top: .5em;
+    resize: none;
+}
+.question-page form.share-answer > button {
+    width: fit-content; 
+    align-self: flex-end;
+}.dev-community-loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    width: fit-content;
+    margin: 100px auto; 
+}
+
+.dev-community-loader h1 {
+    text-align: center;
+}form.new-project {
+    display: flex; 
+    flex-direction: column;
+    padding: 50px 0; 
+}
+
+form.new-project > input, 
+form.new-project > textarea {
+    margin-bottom: 1.1em;
+    margin-top: .5em;
+    resize: none;
+}
+
+form.new-project > button.main-button {
+    align-self: flex-end;
+}.projects-page {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    gap: 2em; 
+}
+
+@media (max-width: 767px) {
+    .projects-page {
+        
+    grid-template-columns: 1fr;
+    }
+}
+
+.current-projects,
+.invites {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.current-projects h1,
+.invites h1 {
+    text-align: center;
+}
+
+.current-projects .projects-list,
+.invites {
+    display: flex;
+    flex-direction: column;
+    gap: 1em; 
+}
+
+.profile-page section.hero {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+}
+
+.profile-page section.hero .user-pic {
+    position: relative;
+    border: 5px solid var(--white);
+    border-radius: 50%;
+}
+
+.profile-page section.hero .user-pic button.upload-pic {
+    --dim: 2.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--dim);
+    width: var(--dim);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translate(-20%, -20%);
+}
+
+.profile-page section.hero .user-pic button.upload-pic svg {
+    width: 100%;
+    height: 100%;
+}
+
+.profile-page section.hero .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1em;
+}
+
+.profile-page section.hero .main .basic-info {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.profile-page section.hero .main .basic-info .username {
+    color: var(--grey-clr-100)
+}
+
+.profile-page section.hero .main a.edit-profile {
+    color: #bbb;
+    transition: var(--fast-transition);
+}
+
+.profile-page section.hero .main a.edit-profile:hover {
+    color: var(--white);
+    text-decoration: underline;
+}
+.profile-page section.hero .main nav {
+    width: fit-content;
+}
+
+.profile-page section.profile-content {
+    display: flex; 
+    justify-content: center;
+    margin: 3em 0;
+}
+
+.profile-page section.profile-content .profile-content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    width: 60%;
+}.flex-app {
+    background: red; 
+}.column {
+    min-width: 200px;
+    flex: 1;
+    padding: .8em .6em;
+}
+
+
+.kanban-board {
+    display: grid;
+    border: 1px solid var(--grey-clr-200);
+    padding: .5em;
+    gap: .8em;
+    overflow-x: auto;
+
+}
+
+.kanban-board .headings,
+.kanban-board .content {
+    display: flex;
+    gap: .8em;
+    justify-content: space-around;
+}
+
+.kanban-board .headings h2,
+.kanban-board .content .tasks-container {
+    border: 1px solid var(--grey-clr-200);
+}
+
+.kanban-board .headings h2 {
+    text-align: center;
+}
+
+.kanban-board .content .tasks-container {
+    display: flex;
+    flex-direction: column;
+    gap: .8em;
+}
+
+.kanban-board .content .tasks-container .task {
+    padding: .8em;
+    border: 1px solid var(--grey-clr-200);
+    position: relative;
+    cursor: pointer;
+}
+
+.kanban-board .content .tasks-container .member-task-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 100%;
+
+}
+
+span.task-status small {
+    display: inline-block;
+    padding: .4em;
+    background: #444;
+}
+
+.kanban-board .content .tasks-container .member-task-info .progress {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.range-input {
+    display: block;
+    flex: 1;
+}
+
+.kanban-board .content .tasks-container .member-task-info button {
+    align-self: flex-end;
+}
+
+.kanban-board .content .tasks-container .admin-task-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 100%;
+}
+
+.kanban-board .content .tasks-container .admin-task-info .info {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.kanban-board .content .tasks-container .admin-task-info .info>div {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.kanban-board .content .tasks-container .admin-task-info .info .title h2,
+.kanban-board .content .tasks-container .admin-task-info .info .title input,
+.kanban-board .content .tasks-container .admin-task-info .info .description p,
+.kanban-board .content .tasks-container .admin-task-info .info .description textarea,
+.kanban-board .content .tasks-container .admin-task-info .info .assignment .project-member {
+    flex: 1;
+}
+
+.kanban-board .content .tasks-container .admin-task-info button.link-button {
+    align-self: flex-start;
+}
+
+.kanban-board .content .tasks-container .admin-task-info .members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.7em;
+}
+
+.kanban-board .content .tasks-container .admin-task-info .members-list button.back-button {
+    display: block;
+    align-self: flex-start;
+    font-size: 1.6em;
+}
+
+
+.kanban-board .content .tasks-container .admin-task-info .members-list .list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+
+/* for version 1 */
+/* .range-input {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0; 
+    appearance: none;
+    opacity: 0;
+}
+
+span.progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--blue-clr-100);
+    opacity: .3;
+    z-index: -1;
+}
+
+.set-progress-btn {
+    all: unset;
+    display: flex;
+    align-items: center;
+    gap: .2em;
+    position: absolute;
+    top: 50%;
+    right: 2%;
+    transform: translateY(-50%);
+    z-index: 2;
+    font-size: 1.18em;
+    cursor: pointer;
+}
+
+.set-progress-btn svg {
+    display: block;
+}
+
+.set-progress-btn small {
+    position: relative; 
+    top: 1px; 
+}*/.radio {
+    display: flex; 
+    align-items: center;
+    gap: .5em; 
+    cursor: pointer;
+}
+
+.radio label {
+    cursor: pointer;
+}
+
+.radio input[type=radio] {
+    display: none;
+}
+
+.radio .check {
+    border: 3px solid var(--white);
+    border-radius: 50%;
+    height: 1.4em;
+    width: 1.4em;
+    position: relative; 
+}
+
+
+.radio .check::before {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    height: .8em;
+    width: .8em;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+input[type=radio]:checked~.check::before {
+    background: var(--white);
+}.react-calendar {
+  width: 350px;
+  max-width: 100%;
+  background: white;
+  border: 1px solid #a0a096;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.125em;
+}
+.react-calendar--doubleView {
+  width: 700px;
+}
+.react-calendar--doubleView .react-calendar__viewContainer {
+  display: flex;
+  margin: -0.5em;
+}
+.react-calendar--doubleView .react-calendar__viewContainer > * {
+  width: 50%;
+  margin: 0.5em;
+}
+.react-calendar,
+.react-calendar *,
+.react-calendar *:before,
+.react-calendar *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.react-calendar button {
+  margin: 0;
+  border: 0;
+  outline: none;
+}
+.react-calendar button:enabled:hover {
+  cursor: pointer;
+}
+.react-calendar__navigation {
+  display: flex;
+  height: 44px;
+  margin-bottom: 1em;
+}
+.react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+}
+.react-calendar__navigation button:disabled {
+  background-color: #f0f0f0;
+}
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: #e6e6e6;
+}
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.75em;
+}
+.react-calendar__month-view__weekdays__weekday {
+  padding: 0.5em;
+}
+.react-calendar__month-view__weekNumbers .react-calendar__tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75em;
+  font-weight: bold;
+}
+.react-calendar__month-view__days__day--weekend {
+  color: #d10000;
+}
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #757575;
+}
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view .react-calendar__tile,
+.react-calendar__century-view .react-calendar__tile {
+  padding: 2em 0.5em;
+}
+.react-calendar__tile {
+  max-width: 100%;
+  padding: 10px 6.6667px;
+  background: none;
+  text-align: center;
+  line-height: 16px;
+}
+.react-calendar__tile:disabled {
+  background-color: #f0f0f0;
+}
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #e6e6e6;
+}
+.react-calendar__tile--now {
+  background: #ffff76;
+}
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  background: #ffffa9;
+}
+.react-calendar__tile--hasActive {
+  background: #76baff;
+}
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
+  background: #a9d4ff;
+}
+.react-calendar__tile--active {
+  background: #006edc;
+  color: white;
+}
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #1087ff;
+}
+.react-calendar--selectRange .react-calendar__tile--hover {
+  background-color: #e6e6e6;
+}
+.react-date-picker {
+  display: inline-flex;
+  position: relative;
+}
+
+.react-date-picker,
+.react-date-picker *,
+.react-date-picker *:before,
+.react-date-picker *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.react-date-picker--disabled {
+  background-color: #f0f0f0;
+  color: #6d6d6d;
+}
+
+.react-date-picker__wrapper {
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 0;
+  border: thin solid gray;
+}
+
+.react-date-picker__inputGroup {
+  min-width: calc((4px * 3) + 0.54em * 8 + 0.217em * 2);
+  flex-grow: 1;
+  padding: 0 2px;
+  box-sizing: content-box;
+}
+
+.react-date-picker__inputGroup__divider {
+  padding: 1px 0;
+  white-space: pre;
+}
+
+.react-date-picker__inputGroup__divider,
+.react-date-picker__inputGroup__leadingZero {
+  display: inline-block;
+}
+
+.react-date-picker__inputGroup__input {
+  min-width: 0.54em;
+  height: 100%;
+  position: relative;
+  padding: 0 1px;
+  border: 0;
+  background: none;
+  font: inherit;
+  box-sizing: content-box;
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.react-date-picker__inputGroup__input::-webkit-outer-spin-button,
+.react-date-picker__inputGroup__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.react-date-picker__inputGroup__input:invalid {
+  background: rgba(255, 0, 0, 0.1);
+}
+
+.react-date-picker__inputGroup__input--hasLeadingZero {
+  margin-left: -0.54em;
+  padding-left: calc(1px + 0.54em);
+}
+
+.react-date-picker__button {
+  border: 0;
+  background: transparent;
+  padding: 4px 6px;
+}
+
+.react-date-picker__button:enabled {
+  cursor: pointer;
+}
+
+.react-date-picker__button:enabled:hover .react-date-picker__button__icon,
+.react-date-picker__button:enabled:focus .react-date-picker__button__icon {
+  stroke: #0078d7;
+}
+
+.react-date-picker__button:disabled .react-date-picker__button__icon {
+  stroke: #6d6d6d;
+}
+
+.react-date-picker__button svg {
+  display: inherit;
+}
+
+.react-date-picker__calendar {
+  width: 350px;
+  max-width: 100vw;
+  z-index: 1;
+}
+
+.react-date-picker__calendar--closed {
+  display: none;
+}
+
+.react-date-picker__calendar .react-calendar {
+  border-width: thin;
+}
+.react-date-picker {
+    background: var(--blue-clr-300);
+}
+
+.react-date-picker--disabled {
+    background-color: red;
+    color: red;
+}
+
+.react-date-picker__inputGroup__input {
+    color: var(--primary-text-clr)
+}
+
+.react-date-picker__inputGroup__input:focus {
+    outline: none;
+}
+
+.react-date-picker__wrapper {
+    border: var(--primary-border);
+    padding: .4em;
+}
+
+.react-date-picker__inputGroup__input:invalid {
+    background: rgba(255, 0, 0, 0.1);
+}
+
+
+.react-date-picker__button:enabled .react-date-picker__button__icon,
+.react-date-picker__button:enabled .react-date-picker__button__icon,
+.react-date-picker__button:enabled:hover .react-date-picker__button__icon,
+.react-date-picker__button:enabled:focus .react-date-picker__button__icon,
+.react-date-picker__button:disabled .react-date-picker__button__icon {
+    stroke: var(--primary-text-clr);
+}
+
+.react-calendar {
+    background: var(--blue-clr-300);
+    border: var(--primary-border);
+    font-family: inherit;
+    padding: .8em;
+}
+
+.react-calendar__month-view__days__day--weekend {
+    color: var(--red-clr-200);
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+    color: #757575;
+}
+
+.react-calendar__tile:disabled {
+    background-color: red;
+}
+
+/* today */
+.react-calendar__tile--now {
+    background: none;
+}
+
+.react-calendar__navigation button:disabled,
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus,
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus,
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus,
+.react-calendar__tile--hasActive,
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus,
+.react-calendar__tile--active {
+    background: var(--primary-clr);
+}
+
+.react-calendar__tile--active {
+    color: var(--primary-text-clr);
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+    filter: brightness(1.2);
+}
+
+.react-calendar--selectRange .react-calendar__tile--hover {
+    background-color: red;
+}section.project-dashboard .inner-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+section.project-dashboard .inner-container .dashboard-content {
+    flex: 1;
+    position: relative;
+}
+
+
+section.project-dashboard .heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5em;
+    padding-bottom: 1.7em;
+    border-bottom: 1px solid var(--grey-clr-200);
+}
+
+section.project-dashboard .heading>button.main-button {
+    padding-inline: 1.3em;
+}
+
+.heading button.back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30.54px;
+    padding-inline: 1.3em;
+    font-size: 1.6em;
+    background: none;
+    color: var(--white);
+}
+
+section.project-dashboard .project-member,
+section.project-dashboard .project-team {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .454em;
+    border: 1px solid var(--grey-clr-200);
+}
+
+section.project-dashboard .project-member .member-info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    grid-gap: 0 .8em;
+}
+
+section.project-dashboard .project-member .member-info.role a.profile-img {
+    grid-row: span 2;
+}
+
+
+section.project-dashboard .project-member span.user-role {
+    font-size: .8em;
+}
+
+section.project-dashboard .project-member .functionalities,
+section.project-dashboard .project-team .functionalities {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: .2s;
+}
+
+section.project-dashboard .project-member:hover .functionalities,
+section.project-dashboard .project-team:hover .functionalities {
+    display: flex;
+}
+
+section.project-dashboard .project-member .functionalities>button,
+section.project-dashboard .project-team .functionalities>button {
+    --dim: 2em;
+    height: var(--dim) !important;
+    width: var(--dim) !important;
+    color: var(--white) !important;
+    position: relative !important;
+    background: none;
+}
+
+
+section.project-dashboard .project-member .functionalities>button>svg,
+section.project-dashboard .project-team .functionalities>button>svg {
+    position: absolute !important;
+    top: calc(50% + 1px) !important;
+    left: calc(50% + 1px) !important;
+    transform: translate(-50%, -50%) !important;
+    height: 60% !important;
+    width: 60% !important;
+
+}
+
+/****************************************** Dashboard Page ***************************************/
+
+section.project-dashboard .inner-container>.heading .project-title {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    grid-gap: .5em 1em;
+}
+
+section.project-dashboard .inner-container>.heading .project-title a.profile-img {
+    grid-row: span 2;
+}
+
+section.project-dashboard .inner-container>.heading .project-title .settings {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    grid-column-start: 2;
+}
+
+section.project-dashboard .inner-container>.heading .project-title .settings>* {
+    background: none;
+    color: var(--grey-clr-100);
+    transition: .2s;
+}
+
+section.project-dashboard .inner-container>.heading .project-title .settings>*:hover {
+    color: var(--white);
+    text-decoration: underline;
+}
+
+section.project-dashboard .inner-container>.heading .progress {
+    display: flex;
+    align-items: center;
+    gap: .4em;
+}
+
+section.project-dashboard .inner-container>.heading .progress .progress-container {
+    height: 1.3em;
+    min-width: 200px;
+    border: 1px solid var(--blue-clr-100);
+}
+
+section.project-dashboard .inner-container>.heading .progress .progress-container span {
+    display: block;
+    height: 100%;
+    background: var(--blue-clr-100);
+}
+
+section.project-dashboard .project-nav-tabs ul.tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+section.project-dashboard .project-nav-tabs ul.tabs li {
+    padding: .8em 1.5em;
+    margin: 0 1em;
+    cursor: pointer;
+    position: relative;
+}
+
+section.project-dashboard .project-nav-tabs ul.tabs li::before {
+    content: '';
+    height: 2px;
+    background: var(--main-clr);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+section.project-dashboard .project-nav-tabs ul.tabs li:hover::before,
+section.project-dashboard .project-nav-tabs ul.tabs li.active::before {
+    width: 100%;
+}
+
+/****************************************** Project Tasks Tab ***************************************/
+
+section.tasks .heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.heading button {
+    align-self: center;
+}
+
+/****************************************** Project Members Tab ***************************************/
+
+
+section.members>.heading {
+    padding: 0;
+}
+
+section.members>.heading ul.members-roles {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+section.members>.heading ul.members-roles li {
+    padding: .8em 1.5em;
+    margin: 0 1em;
+    cursor: pointer;
+    position: relative;
+}
+
+section.members>.heading ul.members-roles li::before {
+    content: '';
+    height: 2px;
+    background: var(--main-clr);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+section.members>.heading ul.members-roles li.active::before,
+section.members>.heading ul.members-roles li:hover::before {
+    width: 100%;
+}
+
+section.members .members-list-container>* {
+    width: 70%;
+    margin-inline: auto;
+}
+
+section.members .members-list-container .overlay {
+    width: 100%;
+}
+
+section.members .members-list-container .members-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .7em;
+}
+
+section.members .members-list-container .invite-members {
+    display: flex;
+    justify-content: center;
+}
+
+section.members .members-list-container .invite-members.active {
+    justify-content: space-between;
+    width: 100%;
+}
+
+section.members .members-list-container .invite-members .recommanded-members,
+section.members .members-list-container .teams-list-container .team-members-list .search-members {
+    display: flex;
+    flex-direction: column;
+    gap: 1.7em;
+    width: 70%;
+}
+
+section.members .members-list-container .invite-members .recommanded-members .recommanded-members-list button {
+    background: none;
+    border: none;
+    color: var(--white);
+    width: 100%;
+    text-align: start;
+}
+
+section.members .members-list-container .invite-members.active .recommanded-members {
+    width: 44%;
+}
+
+section.members .members-list-container .invite-members .recommanded-members input,
+section.members .members-list-container .teams-list-container .team-members-list .search-members input {
+    width: 50%;
+    align-self: center;
+}
+
+section.members .members-list-container .invite-members.active .recommanded-members input {
+    width: 100%;
+}
+
+section.members .members-list-container .invite-members form.invite-member-form {
+    width: 49%;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+section.members .members-list-container .invite-members form.invite-member-form .roles {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+
+section.members .members-list-container .teams-list-container.active {
+    display: grid;
+    grid-template-columns: repeat(2, 49%);
+    align-items: flex-start;
+    width: 100%;
+    justify-content: space-between;
+}
+
+section.members .members-list-container .teams-list-container .teams-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .7em;
+}
+
+section.members .members-list-container .teams-list-container .teams-list>button {
+    background: none;
+    border: none;
+    color: var(--white);
+    text-align: start;
+
+}
+
+section.members .members-list-container .teams-list-container .teams-list .project-team {
+    border: 1px solid var(--grey-clr-200);
+    padding: .454em;
+}
+
+section.members .members-list-container .teams-list-container .team-members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+section.members .members-list-container .teams-list-container .team-members-list .search-members {
+    margin-inline: auto;
+}
+
+section.members .members-list-container form.create-team-form {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+section.members .members-list-container form.create-team-form>input {
+    flex: 1;
+}
+
+/****************************************** Chat Tab ***************************************/
+
+.chat-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 2em;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    min-height: 300px;
+    width: 100%;
+    max-width: 700px;
+    border: 1px solid var(--grey-clr-200);
+}
+
+.chat-content .messages {
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column;
+    gap: 1em;
+    padding: .7em 1em;
+}
+
+.chat-content .messages .message {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .6em;
+    padding: .4em;
+}
+
+.chat-content .messages .message .message-info {
+    display: flex;
+    flex-direction: column;
+    gap: .3em;
+    font-size: .9em;
+}
+
+.chat-content .messages .message .message-info .sender-username {
+    display: flex;
+    align-items: center;
+}
+
+.chat-content .messages .message .message-info .sender-username small {
+    margin-inline: .7em;
+    color: var(--grey-clr-100)
+}
+
+.chat-content .messages .message .message-info p.message-body {
+    color: #ddd;
+}
+
+.chat-content form {
+    display: flex;
+    align-items: center;
+    background: var(--blue-clr-400);
+    max-height: 20%;
+}
+
+.chat-content form textarea {
+    width: 100%;
+    resize: none;
+    max-height: 100%;
+}
+
+.chat-content form button {
+    all: unset;
+    font-size: 1.3em;
+    position: relative;
+    top: 4px;
+    margin-inline: 1em;
+    cursor: pointer;
+}
+
+
+/****************************************** Overview Tab ***************************************/
+
+form.create-task {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+    width: 100%;
+    max-width: 500px;
+    margin-inline: auto;
+}
+
+form.create-task>div.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: .8em;
+}
+
+form.create-task>.assignment {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--grey-clr-200);
+}
+
+form.create-task>.assignment .members-list {
+    display: flex;
+    flex-direction: column;
+    gap: .8em;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: .6em;
+}
+
+form.create-task>.task-dates {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+form.create-task>.task-dates>div {
+    display: flex;
+    align-items: center;
+    gap: .7em;
+}
+
+form.create-task>.assignment .drop-icon {
+    display: block;
+    font-size: 1.1em;
+}
+
+form.create-task>div.inputs textarea {
+    resize: none;
+    min-width: 100%;
+}
+
+form.create-task button.main-button {
+    align-self: flex-end;
+}
+section.edit-profile-page {
+    padding: 55px 0;
+    grid-column: span 2;
+}
+
+section.edit-profile-page .model .model-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+.edit-profile-page form.edit-profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    width: 60%;
+    margin-inline: auto;
+}
+
+.edit-profile-page form.edit-profile-form > div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    justify-content: flex-start;
+    gap: 1em;
+}
+
+.edit-profile-page form.edit-profile-form .edit-profile-image {
+    width: fit-content;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 0 .7em;
+}
+
+.edit-profile-page form.edit-profile-form .edit-profile-image .profile-img {
+    grid-row: span 2;
+}
+
+.edit-profile-page form.edit-profile-form .edit-profile-image button {
+    background: none; 
+    color: #bbb;
+    transition: var(--fast-transition);
+}
+
+.edit-profile-page form.edit-profile-form .edit-profile-image button:hover {
+    color: var(--white);
+    text-decoration: underline;
+}
+
+
+.edit-profile-page form.edit-profile-form > div input.main-input {
+    width: 100%; 
+}
+
+.edit-profile-page form.edit-profile-form > div textarea.main-textarea {
+    resize: none;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.edit-profile-page form.edit-profile-form .functionalities {
+    display: flex; 
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1em; 
+}
+

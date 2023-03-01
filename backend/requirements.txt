@@ -1,8 +1,10 @@
 fastapi
 uvicorn[standard]
+gunicorn
 mysql-connector-python
 python-multipart
 python-jose[cryptography]
 passlib[bcrypt]
 httpx
 pytest
+jinja2

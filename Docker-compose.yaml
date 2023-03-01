@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+    backend:
+        build:
+            context: backend
+        ports:
+            - "80"
+    nginx:
+        build:
+            context: nginx
+        depends_on:
+            - backend
+        ports:
+            - "80:80"

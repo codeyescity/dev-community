@@ -9,12 +9,17 @@ import json
 #image hosting
 from fastapi.staticfiles import StaticFiles
 
+#temp
+from fastapi.templating import Jinja2Templates
+
 from fastapi.middleware.cors import CORSMiddleware
 # importing routes from other files
 from routes import posts, comments, users, login, projects, invites, user_invites, members, teams, team_members, chat, tasks
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
+#temp
+templates = Jinja2Templates(directory="templates")
 
 app.add_middleware(
     CORSMiddleware,
@@ -38,8 +43,10 @@ app.include_router(chat.app)
 app.include_router(tasks.app)
 
 @app.get("/")
-def read_root():
-    return {"data":"data"}
+def read_root(request: Request):
+
+
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 
@@ -104,4 +111,4 @@ async def websocket_endpoint(websocket: WebSocket, project_id: int):
         #await manager.broadcast_project(json.dumps(message), project_id)
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host = "127.0.0.1", port = 3000, reload=True)
+    uvicorn.run("main:app", host = "127.0.0.1", port = 80, reload=True)
