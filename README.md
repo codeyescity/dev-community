@@ -35,6 +35,11 @@ npm install
 npm run dev
 ```
 
+## seting up docker 
+```sh
+docker-compose up --build --scale backend=3
+```
+
 ## License
 
 
