@@ -25,6 +25,7 @@ def get_project(project_id: int, user_id : int = Depends(get_current_user)):
                     p.project_id,
                     p.project_owner_id,
                     p.project_name,
+                    p.project_progress,
                     p.project_description,
                     m.member_id,
                     m.member_role,
