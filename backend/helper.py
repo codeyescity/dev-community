@@ -53,3 +53,9 @@ def user_post_owner(user_id: int, post_id: int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"the post with id {post_id} can t be found")
     if res[0]["post_owner_id"] != user_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to perform requested action")
+
+def valide_technologies(technologie):
+    if(technologie in technologies.values()):
+        return true
+    else:
+        return false

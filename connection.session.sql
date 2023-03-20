@@ -198,7 +198,7 @@ INSERT INTO users(username) VALUES ("user1"), ("user2"), ("user3");
 --@block
 INSERT INTO users_technologies (user_id, technology_id, technology_experience) VALUES 
 (1, 1, 2), (1, 2, 2), (1, 3, 2),
-(2, 1, 4), (2, 2, 3), (2, 3, 2),
+(2, 1, 4), (2, 2, 3), (2, 3, 3),
 (3, 1, 3), (3, 2, 3), (3, 3, 4);
 
 

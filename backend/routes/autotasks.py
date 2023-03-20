@@ -3,11 +3,8 @@ from dbhelper import runSQL, runSQL_return_id
 from pydantic import BaseModel
 from oauth2 import get_current_user
 
-from project_helper import project_exist
-
 import numpy as np
-import warnings
-
+from project_helper import project_exist, user_admin_project
 
 
 
@@ -17,15 +14,8 @@ import warnings
 # tags are just for the ui
 app = APIRouter(tags=['autotasks'])
 
-class Task(BaseModel):
-    task_title: str
-    task_description: str
-    task_type: str
-    member_id : int
-    task_start_date: str = None
-    task_end_date: str = None
-    task_needed_time: int = None
-    task_skills : dict[str,int]
+class TaskSkills(BaseModel):
+    task_skills : dict[int,int]
 
 
 class Topsis():
@@ -178,35 +168,10 @@ class Topsis():
 
 
 
-def estimate_task_complexity(tasks, task):
-    needed_times_sum = 0
-    for t in tasks: 
-        needed_times_sum += t["task_needed_time"]
-        
-    task_complexity = task["task_needed_time"] / needed_times_sum
-    return task_complexity
- 
-def estimate_needed_time(task_progress, dif_sd_sp):
-    if task_progress == 0: return dif_sd_sp
-    task_needed_time = 100 * dif_sd_sp / task_progress
-    return task_needed_time
-
-def update_project_progress(project_id):
-    tasks = runSQL("""SELECT * FROM tasks WHERE project_id = %s""", (project_id,))
-    project_progress = 0
-
-    for task in tasks: 
-        project_progress += task['task_progress'] * estimate_task_complexity(tasks, task)
-    # update the new calculated progress
-    runSQL_return_id("""UPDATE projects SET project_progress = %s WHERE project_id = %s""", (project_progress,project_id))
-
-    return project_progress
 
 
 
-
-
-def get_weights(task: Task):
+def get_weights(task: TaskSkills):
     weights = []
     sum_weights = sum(task.task_skills.values())
 
@@ -216,32 +181,40 @@ def get_weights(task: Task):
     return weights
 
 
-def get_criterias_preference_to_maximise(task: Task):
+def get_criterias_preference_to_maximise(task: TaskSkills):
     l = [True]
     l = l * len(task.task_skills)
     return np.array(l) 
     #return np.array(l + [False])
 
 
-def get_evaluation_matrix(task: Task, users):
+def get_evaluation_matrix(task: TaskSkills, users):
 
     #get the list of the skills 
     skills  = list(task.task_skills.keys())
+
+    print("skills", skills)
 
     # this generates %s,%s,%s, ... depending on the len of array
     format_strings = ','.join(['%s'] * len(skills))
 
     # this returns {"technology_id": 3 , "technology_id": 14, ...}
-    tech_ids = runSQL("""SELECT technology_id FROM technologies WHERE technology_name IN (""" + format_strings + ")", tuple(skills))
-    query_pars = []
+    #tech_ids = runSQL("""SELECT technology_id FROM technologies WHERE technology_name IN (""" + format_strings + ")", tuple(skills))
+    #query_pars = []
+
+    #get the list of the skills 
+    query_pars = list(task.task_skills.keys())
+    tech_ids = list(task.task_skills.keys())
     # make list 
-    for element in tech_ids:
-        query_pars.append(element["technology_id"])
+    
+    #for element in tech_ids:
+    #    query_pars.append(element)
 
     matrix = []
     for user in users:
 
         matrix_line = runSQL("""SELECT technology_experience FROM users_technologies WHERE user_id = %s AND technology_id IN (""" + format_strings + ")", tuple([user["user_id"]] + query_pars))
+        print("m",matrix_line)
         matrix.append(list(matrix_line[0].values()))
 
     evaluation_matrix = np.array(matrix)
@@ -256,18 +229,34 @@ def get_evaluation_matrix(task: Task, users):
 
 
 
-@app.post("/projects/{project_id}/tasks/{task_id}/", status_code = status.HTTP_201_CREATED)
-def create_task(project_id: int, task: Task, user_id : int = Depends(get_current_user)):
+@app.post("/projects/{project_id}/recommand_user", status_code = status.HTTP_201_CREATED)
+def create_task(project_id: int, task: TaskSkills, user_id : int = Depends(get_current_user)):
     # for admins only
 
     #project_exist(project_id)
-    #validate task type
+    #user_admin_project(project_id, user_id)
 
-    #data = (project_id, task.task_title, task.task_description, task.task_type, "todo", task.member_id, task.task_start_date, task.task_end_date, task.task_needed_time)
-    #res = runSQL_return_id("""INSERT INTO tasks (project_id, task_title, task_description ,task_type, task_state, member_id, task_start_date, task_end_date, task_needed_time) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",data)
+    #users = runSQL("""SELECT user_id,username FROM users""")
+
+    print(task)
+
+    sql ="""SELECT 
+            u.user_id,
+            m.member_id,
+            m.member_role,
+            u.username,
+            u.img_url
+            FROM members m
+            LEFT JOIN users u ON m.user_id = u.user_id
+        """
+    #data = (project_id,)
+
+    users = runSQL(sql)
+
+    if(not users):
+        return "no users in project"
 
 
-    users = runSQL("""SELECT user_id,username FROM users WHERE username LIKE 'user%' """)
 
     evaluation_matrix = get_evaluation_matrix(task, users)
 
@@ -294,5 +283,9 @@ def create_task(project_id: int, task: Task, user_id : int = Depends(get_current
 
     #update_project_progress(project_id)
 
-    return "data"
+    index = max(t.rank_to_best_similarity()) - 1
+
+    print(users[index])
+
+    return users[index]
     
