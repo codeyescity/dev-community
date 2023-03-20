@@ -75,6 +75,7 @@ CREATE TABLE IF NOT EXISTS projects
     project_owner_id INT,
     project_name TEXT,
     project_description TEXT,
+    project_progress INT DEFAULT 0,
     project_creation_date DATETIME,
     FOREIGN KEY(project_owner_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
@@ -122,14 +123,15 @@ CREATE TABLE IF NOT EXISTS team_members
 
 CREATE TABLE IF NOT EXISTS technologies
 (
-    technology_id INT AUTO_INCREMENT PRIMARY KEY,
-    technology_name TEXT
+    technology_id INT PRIMARY KEY,
+    technology_name VARCHAR(50)
 );
 
 CREATE TABLE IF NOT EXISTS users_technologies
 (
-    user_id INT,
+    user_id INT ,
     technology_id INT, 
+    technology_experience FLOAT DEFAULT 0.0,
     PRIMARY KEY(user_id, technology_id),
     FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY(technology_id) REFERENCES technologies(technology_id) ON DELETE CASCADE
@@ -165,6 +167,9 @@ CREATE TABLE IF NOT EXISTS tasks
     task_type VARCHAR(20),
     task_state VARCHAR(20),
     task_progress INT DEFAULT 0,
+    task_start_date VARCHAR(200),
+    task_end_date VARCHAR(200),
+    task_needed_time INT,
     FOREIGN KEY(project_id) REFERENCES projects(project_id) ON DELETE CASCADE,
     FOREIGN KEY(member_id) REFERENCES members(member_id) ON DELETE CASCADE
 );
@@ -172,37 +177,42 @@ CREATE TABLE IF NOT EXISTS tasks
 
 
 --@block
+DELETE from users;
+DELETE from technologies;
+DELETE from users_technologies;
+
+--@block
 USE DevCommunityTest;
-INSERT INTO users (username, first_name, last_name, email, phone_number) VALUES
-("bob","Drake" ,"Carroll","lorem@outlook.org","9824061330"),
-("Yoko","Marsden", "Jefferson","at.arcu@outlook.com","9824061330"),
-("star", "Palmer", "Barnes","nisi.sem@gmail.ca","9844061330"),
-("Palmer" ,"Yoko", "Donaldson","vulputate.velit@gmail.com","9824061330"),
-("Jefferson", "Fritz", "Joseph","eget.nisi.dictum@outlook.com","9824061330")
-;
-
-INSERT INTO posts (post_owner_id, post_type, post_title, post_body, post_code, post_creation_date) VALUES
-(1,"post", "", "Lorem ipsum dolor sit amet", "", NOW()),
-(1,"post", "", "Lorem ipsum dolor sit amet", "", NOW()),
-(2,"question", "title", "Lorem ipsum dolor sit amet", "x = x+1", NOW()),
-(3,"question", "title", "Lorem ipsum dolor sit amet", "let v = 5", NOW()),
-(4,"job_offer", "", "Lorem ipsum dolor sit amet", "", NOW()),
-(5,"job_offer", "", "Lorem ipsum dolor sit amet", "", NOW())
-;
-
-
-INSERT INTO users_comments_posts (comment_owner_id, post_id, comment_body, comment_date) VALUES
-(1,1,"Lorem ipsum dolor sit amet",NOW()),
-(2,1,"Lorem ipsum dolor sit amet",NOW()),
-(3,1,"Lorem ipsum dolor sit amet",NOW()),
-(1,2,"Lorem ipsum dolor sit amet",NOW()),
-(1,3,"Lorem ipsum dolor sit amet",NOW()),
-(1,4,"Lorem ipsum dolor sit amet",NOW())
-;
+--@block
+SELECT * FROM technologies;
+--@block
+SELECT * FROM users;
+--@block 
+SELECT * FROM users_technologies;
 
 
 --@block
-INSERT INTO teams (team_name) VALUES ("team1");
+INSERT INTO technologies (technology_id, technology_name) VALUES (1 ,"html"), (2 ,"css") , (3 ,"javascript"), (4 ,"c++"), (5 ,"java"), (6 ,"sql"), (7 ,"php"), (8 ,"python"), (9 ,"c"), (10 ,"c#"), (11 ,"go");
+INSERT INTO users(username) VALUES ("user1"), ("user2"), ("user3");
+
+--@block
+INSERT INTO users_technologies (user_id, technology_id, technology_experience) VALUES 
+(1, 1, 2), (1, 2, 2), (1, 3, 2),
+(2, 1, 4), (2, 2, 3), (2, 3, 2),
+(3, 1, 3), (3, 2, 3), (3, 3, 4);
+
+
+
+--@block
+USE DevCommunityTest;
+--@block
+SELECT * from chatlogs;
+
+
+
+
+
+
 
 
 --@block

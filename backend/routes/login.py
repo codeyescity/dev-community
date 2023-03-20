@@ -1,6 +1,6 @@
 from fastapi import status, HTTPException, Depends, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
-from dbhelper import runSQL, Database
+from dbhelper import runSQL, runSQL_return_id
 from pydantic import BaseModel
 
 # weird hack to import 
@@ -8,6 +8,7 @@ import sys
 sys.path.append("..")
 from utiles import hash,verify
 from oauth2 import create_access_token
+from helper import technologies
 
 app = APIRouter(tags=['login'])
 
@@ -34,9 +35,14 @@ def register_user(user: User):
     
     # hash the password and ass password to the db
     user.password = hash(user.password)
-    res = runSQL("""INSERT INTO users (username, password, first_name, last_name, email, phone_number) VALUES (%s,%s,%s,%s,%s,%s)""",(user.username, user.password,user.first_name, user.last_name, user.email, user.phone_number))
+    user_id = runSQL_return_id("""INSERT INTO users (username, password, first_name, last_name, email, phone_number) VALUES (%s,%s,%s,%s,%s,%s)""",(user.username, user.password,user.first_name, user.last_name, user.email, user.phone_number))
 
-    return res
+    list_technologies = list(technologies.keys())
+
+    for tech in list_technologies:
+        runSQL("INSERT INTO users_technologies (user_id, technology_id) VALUES (%s,%s)", tuple([(user_id)] + [tech]))
+
+    return user_id
 
 
 @app.post('/login')

@@ -2,7 +2,6 @@ from fastapi import status, HTTPException, Depends, APIRouter, Response
 from dbhelper import runSQL, runSQL_return_id
 from pydantic import BaseModel
 from oauth2 import get_current_user
-from utiles import estimate_needed_time, estimate_project_progress
 
 from project_helper import project_exist
 
@@ -19,20 +18,46 @@ class Task(BaseModel):
     task_needed_time: int = None
 
 
+# tasks can be "todo" "inprogress" "invalidation" "completed"
+# tasks need state manegment
+
 def validate_task_state(task_state: str):
-    if(task_state in ["todo", "inprogress", "invalidation", "completed"]):
+    if (task_state in ["todo", "inprogress", "invalidation", "completed"] ):
         return True
     else:
         return False
 
 def validate_task_type(task_type: str):
-    if(task_type in ["task", "bug_fix", "feature", "issue"]):
+    if (task_type in ["task", "bug_fix", "feature", "issue"] ):
         return True
     else:
         return False
 
-# tasks can be "todo" "inprogress" "invalidation" "completed"
-# tasks need state manegment
+
+def estimate_task_complexity(tasks, task):
+    needed_times_sum = 0
+    for t in tasks: 
+        needed_times_sum += t["task_needed_time"]
+        
+    task_complexity = task["task_needed_time"] / needed_times_sum
+    return task_complexity
+ 
+def estimate_needed_time(task_progress, dif_sd_sp):
+    if task_progress == 0: return dif_sd_sp
+    task_needed_time = 100 * dif_sd_sp / task_progress
+    return task_needed_time
+
+def update_project_progress(project_id):
+    tasks = runSQL("""SELECT * FROM tasks WHERE project_id = %s""", (project_id,))
+    project_progress = 0
+
+    for task in tasks: 
+        project_progress += task['task_progress'] * estimate_task_complexity(tasks, task)
+    # update the new calculated progress
+    runSQL_return_id("""UPDATE projects SET project_progress = %s WHERE project_id = %s""", (project_progress,project_id))
+
+    return project_progress
+
 
 
 @app.get("/projects/{project_id}/task", status_code = status.HTTP_200_OK)
@@ -80,7 +105,7 @@ def create_task(project_id: int, task: Task, user_id : int = Depends(get_current
     data = (project_id, task.task_title, task.task_description, task.task_type, "todo", task.member_id, task.task_start_date, task.task_end_date, task.task_needed_time)
     res = runSQL_return_id("""INSERT INTO tasks (project_id, task_title, task_description ,task_type, task_state, member_id, task_start_date, task_end_date, task_needed_time) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",data)
 
-    estimate_project_progress(project_id)
+    update_project_progress(project_id)
 
     return res
     
@@ -102,7 +127,7 @@ def delete_task(project_id: int, task_id: int, user_id : int = Depends(get_curre
 
     res = runSQL_return_id("""DELETE FROM tasks WHERE task_id = %s""", (task_id,))
 
-    estimate_project_progress(project_id)
+    update_project_progress(project_id)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -123,7 +148,7 @@ def change_task_state(project_id: int, task_id: int, task_progress : int, dif_sd
     needed_time = estimate_needed_time(task_progress, dif_sd_sp)
     res = runSQL("""UPDATE tasks SET task_progress = %s, task_needed_time = %s WHERE task_id = %s""",(task_progress, needed_time,task_id))
 
-    estimate_project_progress(project_id)
+    update_project_progress(project_id)
 
     return res 
 

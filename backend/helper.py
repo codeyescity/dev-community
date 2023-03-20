@@ -2,6 +2,8 @@ from fastapi import HTTPException, status
 from dbhelper import runSQL, Database
 
 
+technologies = {1 : "html", 2 : "css" , 3 : "javascript", 4 : "c++", 5 :"java", 6 :"sql", 7: "php", 8: "python", 9 : "c", 10 : "c#", 11 : "go" }
+
 def project_exist(project_id : int):
     # check if project exits
     res = runSQL("""SELECT * FROM projects WHERE project_id = %s""",(project_id,))

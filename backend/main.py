@@ -14,7 +14,7 @@ from fastapi.templating import Jinja2Templates
 
 from fastapi.middleware.cors import CORSMiddleware
 # importing routes from other files
-from routes import posts, comments, users, login, projects, invites, user_invites, members, teams, team_members, chat, tasks
+from routes import posts, comments, users, login, projects, invites, user_invites, members, teams, team_members, chat, tasks, autotasks, technologies
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -41,13 +41,16 @@ app.include_router(teams.app)
 app.include_router(team_members.app)
 app.include_router(chat.app)
 app.include_router(tasks.app)
+app.include_router(autotasks.app)
+app.include_router(technologies.app)
 
+"""
 @app.get("/")
 def read_root(request: Request):
 
 
     return templates.TemplateResponse("index.html", {"request": request})
-
+"""
 
 
 class ConnectionManager:
@@ -96,7 +99,7 @@ async def websocket_endpoint(websocket: WebSocket, project_id: int):
     try:
         while True:
             data = json.loads(await websocket.receive_text())
-            message_time = datetime.now().strftime("%H:%M")
+            message_time = str(datetime.now())
             print(data)
             payload = { "user_id" : data['senderId'], 'message': data['message'],'sender_username': data['senderUsername'], 'sender_profile_img': data['senderProfileImg'], 'message_time': message_time }
             runSQL("""INSERT INTO chatlogs (user_id, project_id, message, message_date) VALUES (%s,%s,%s,NOW())""",(data['senderId'], project_id, data['message']))
