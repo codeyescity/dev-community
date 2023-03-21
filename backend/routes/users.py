@@ -64,6 +64,13 @@ def get_user(id: int, user_id: int = Depends(get_current_user)):
 
     if not res:
         raise HTTPException(status_code = 404, detail=f"User with id: {id} does not exist")
+
+
+    res[0]["user_skills"] = runSQL("""SELECT technologies.technology_id, technology_experience, technology_name
+                                        FROM users_technologies 
+                                        LEFT JOIN technologies ON users_technologies.technology_id = technologies.technology_id
+                                        WHERE user_id = %s AND technology_experience > %s""",(id,0))
+
     return res
 
 @app.get("/user/{id}/posts", status_code = status.HTTP_200_OK)
