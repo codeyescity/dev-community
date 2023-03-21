@@ -16,6 +16,7 @@ class Task(BaseModel):
     task_start_date: str = None
     task_end_date: str = None
     task_needed_time: int = None
+    task_skills : dict[int,int]
 
 
 # tasks can be "todo" "inprogress" "invalidation" "completed"
@@ -95,6 +96,15 @@ def get_all_project_tasks(project_id: int, user_id : int = Depends(get_current_u
     data = ((project_id,))
     res = runSQL(sql,data)
 
+    for element in res:
+        element["task_skills"] = runSQL("""SELECT 
+                                            task_tech.technology_id,
+                                            task_tech.technology_level,
+                                            t.technology_name
+                                        FROM tasks_technologies task_tech
+                                        LEFT JOIN technologies t ON t.technology_id = task_tech.technology_id
+                                        WHERE task_id = %s""", (element["task_id"],))
+
     return res
 
 @app.post("/projects/{project_id}/task", status_code = status.HTTP_201_CREATED)
@@ -103,21 +113,31 @@ def create_task(project_id: int, task: Task, user_id : int = Depends(get_current
     project_exist(project_id)
     #validate task type
     data = (project_id, task.task_title, task.task_description, task.task_type, "todo", task.member_id, task.task_start_date, task.task_end_date, task.task_needed_time)
-    res = runSQL_return_id("""INSERT INTO tasks (project_id, task_title, task_description ,task_type, task_state, member_id, task_start_date, task_end_date, task_needed_time) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",data)
+    task_id = runSQL_return_id("""INSERT INTO tasks (project_id, task_title, task_description ,task_type, task_state, member_id, task_start_date, task_end_date, task_needed_time) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",data)
+
+
+    for element in task.task_skills.items():
+        runSQL("INSERT INTO tasks_technologies (task_id, technology_id, technology_level) VALUES (%s,%s,%s)",(task_id, element[0], element[1]))
+
+
 
     update_project_progress(project_id)
 
-    return res
+    return task_id
     
 
 
 
 @app.put("/projects/{project_id}/task/{task_id}", status_code = status.HTTP_200_OK)
 def edit_task(project_id: int, task_id: int, task: Task, user_id : int = Depends(get_current_user)):
-    project_exist(project_id)
+    #project_exist(project_id)
 
     data = (task.task_title, task.task_description, task.task_type, task.member_id, task_id)
-    res = runSQL_return_id("""UPDATE tasks SET task_title = %s, task_description = %s, task_type = %s , member_id = %s WHERE task_id = %s""",data)
+    res = runSQL("""UPDATE tasks SET task_title = %s, task_description = %s, task_type = %s , member_id = %s WHERE task_id = %s""",data)
+
+    for element in task.task_skills.items():
+        runSQL("UPDATE tasks_technologies SET technology_level = %s WHERE technology_id = %s AND task_id = %s",(element[1], element[0], task_id))
+
 
     return res
 

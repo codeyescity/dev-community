@@ -174,6 +174,16 @@ CREATE TABLE IF NOT EXISTS tasks
     FOREIGN KEY(member_id) REFERENCES members(member_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS tasks_technologies
+(
+    task_id INT ,
+    technology_id INT, 
+    technology_level FLOAT DEFAULT 0.0,
+    PRIMARY KEY(task_id, technology_id),
+    FOREIGN KEY(task_id) REFERENCES tasks(task_id) ON DELETE CASCADE,
+    FOREIGN KEY(technology_id) REFERENCES technologies(technology_id) ON DELETE CASCADE
+);
+
 
 
 --@block
@@ -189,6 +199,8 @@ SELECT * FROM technologies;
 SELECT * FROM users;
 --@block 
 SELECT * FROM users_technologies;
+--@block
+SELECT * from tasks_technologies;
 
 
 --@block
