@@ -12,7 +12,7 @@ class Post(BaseModel):
     post_title: str | None = None
     post_body: str
     post_code: str | None = None
-
+    post_skills : list[int] | None = None
 
 @app.get("/posts", status_code=200)
 def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: int = 20, type: str = "all"):
@@ -59,6 +59,12 @@ def get_posts(user_id : int = Depends(get_current_user), start: int = 0, limit: 
             WHERE p.post_type = %s
             LIMIT %s, %s;"""
         res = runSQL(sql, (user_id, type, start, limit))
+    
+    for post in res:
+        post["post_skills"] = runSQL("""SELECT posts_technologies.technology_id, technology_name
+                                        FROM posts_technologies 
+                                        LEFT JOIN technologies ON posts_technologies.technology_id = technologies.technology_id
+                                        WHERE post_id = %s""",(post["post_id"],))
 
     return res
 
@@ -86,6 +92,11 @@ def get_post(post_id : int, user_id : int = Depends(get_current_user)):
     # check if post exists and returns
     if not res:
         raise HTTPException(status_code=404, detail=f"the post with id {post_id} can t be found")
+
+    res[0]["post_skills"] = runSQL("""SELECT posts_technologies.technology_id, technology_name
+                                        FROM posts_technologies 
+                                        LEFT JOIN technologies ON posts_technologies.technology_id = technologies.technology_id
+                                        WHERE post_id = %s""",(post_id,))
     return res
 
 @app.post("/posts", status_code = status.HTTP_201_CREATED)
@@ -94,10 +105,14 @@ def create_post(post : Post, user_id : int = Depends(get_current_user)):
         raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail=f"the post with type {post.post_type} can t be created")
 
     # add the post to the db 
-    res = runSQL_return_id("""INSERT INTO posts (post_owner_id , post_type, post_title, post_body, post_code, post_creation_date) VALUES 
+    post_id = runSQL_return_id("""INSERT INTO posts (post_owner_id , post_type, post_title, post_body, post_code, post_creation_date) VALUES 
             (%s,%s,%s,%s,%s,NOW());""" ,(user_id, post.post_type, post.post_title, post.post_body, post.post_code))
 
-    return res
+    if(post.post_skills):
+        for element in post.post_skills:
+            runSQL("INSERT INTO posts_technologies (post_id, technology_id) VALUES (%s,%s)",(post_id, element))
+
+    return post_id
 
 @app.put("/posts/{post_id}", status_code = status.HTTP_200_OK)
 def edit_post(post_id : int, post : Post, user_id : int = Depends(get_current_user)):
