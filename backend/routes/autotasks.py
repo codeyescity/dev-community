@@ -19,17 +19,6 @@ class TaskSkills(BaseModel):
 
 
 class Topsis():
-    #evaluation_matrix = np.array([])  # Matrix
-    #weighted_normalized = np.array([])  # Weight matrix
-    #normalized_decision = np.array([])  # Normalisation matrix
-    #M = 0  # Number of rows
-    #N = 0  # Number of columns
-
-    '''
-	Create an evaluation matrix consisting of m alternatives and n criteria,
-	with the intersection of each alternative and criteria given as {\displaystyle x_{ij}}x_{ij},
-	we therefore have a matrix {\displaystyle (x_{ij})_{m\times n}}(x_{{ij}})_{{m\times n}}.
-	'''
 
     def __init__(self, evaluation_matrix, weight_matrix, criteria):
         # M×N matrix
@@ -68,7 +57,6 @@ class Topsis():
 	'''
 
     def step_3(self):
-        from pdb import set_trace
         self.weighted_normalized = np.copy(self.normalized_decision)
         for i in range(self.row_size):
             for j in range(self.column_size):
@@ -161,13 +149,7 @@ class Topsis():
         self.step_5()
         print("Step 5\n", self.worst_distance, self.best_distance, end="\n\n")
         self.step_6()
-        print("Step 6\n", self.worst_similarity,
-              self.best_similarity, end="\n\n")
-
-
-
-
-
+        print("Step 6\n", self.worst_similarity, self.best_similarity, end="\n\n")
 
 
 
@@ -194,27 +176,24 @@ def get_evaluation_matrix(task: TaskSkills, users):
     skills  = list(task.task_skills.keys())
 
     print("skills", skills)
+    print(len(skills))
 
     # this generates %s,%s,%s, ... depending on the len of array
     format_strings = ','.join(['%s'] * len(skills))
 
     # this returns {"technology_id": 3 , "technology_id": 14, ...}
     #tech_ids = runSQL("""SELECT technology_id FROM technologies WHERE technology_name IN (""" + format_strings + ")", tuple(skills))
-    #query_pars = []
 
     #get the list of the skills 
     query_pars = list(task.task_skills.keys())
     tech_ids = list(task.task_skills.keys())
     # make list 
-    
-    #for element in tech_ids:
-    #    query_pars.append(element)
 
     matrix = []
     for user in users:
 
         matrix_line = runSQL("""SELECT technology_experience FROM users_technologies WHERE user_id = %s AND technology_id IN (""" + format_strings + ")", tuple([user["user_id"]] + query_pars))
-        print("m",matrix_line)
+        print("m", matrix_line)
         matrix.append(list(matrix_line[0].values()))
 
     evaluation_matrix = np.array(matrix)
@@ -236,10 +215,6 @@ def create_task(project_id: int, task: TaskSkills, user_id : int = Depends(get_c
     #project_exist(project_id)
     #user_admin_project(project_id, user_id)
 
-    #users = runSQL("""SELECT user_id,username FROM users""")
-
-    print(task)
-
     sql ="""SELECT 
             u.user_id,
             m.member_id,
@@ -248,15 +223,17 @@ def create_task(project_id: int, task: TaskSkills, user_id : int = Depends(get_c
             u.img_url
             FROM members m
             LEFT JOIN users u ON m.user_id = u.user_id
+            WHERE project_id = %s
         """
     #data = (project_id,)
 
-    users = runSQL(sql)
+    users = runSQL(sql,(project_id,))
 
     if(not users):
         return "no users in project"
 
-
+    if(len(task.task_skills) == 0):
+        return users[0]
 
     evaluation_matrix = get_evaluation_matrix(task, users)
 
@@ -269,17 +246,9 @@ def create_task(project_id: int, task: TaskSkills, user_id : int = Depends(get_c
 
     t.calc()
 
-    #print("best_distance\t", t.best_distance)
-    #print("worst_distance\t", t.worst_distance)
-
-    # print("weighted_normalized",t.weighted_normalized)
-
-    #print("worst_similarity\t", t.worst_similarity)
-    #print("rank_to_worst_similarity\t", t.rank_to_worst_similarity())
 
     print("best_similarity\t", t.best_similarity)
     print("rank_to_best_similarity\t", t.rank_to_best_similarity())
-
 
     #update_project_progress(project_id)
 

@@ -15,7 +15,9 @@ app = APIRouter(tags=['users_invites'])
 @app.get("/user/invites/", status_code = status.HTTP_200_OK)
 def get_user_invites(user_id : int = Depends(get_current_user)):
     # get all the invites of the current user
-    res = runSQL(""" SELECT * FROM invites WHERE user_id = %s""", (user_id,))
+    res = runSQL(""" SELECT * FROM invites 
+                     LEFT JOIN projects ON invites.project_id = projects.project_id
+                     WHERE user_id = %s""", (user_id,))
     return res
 
 @app.post("/user/invites/{invite_id}", status_code = status.HTTP_201_CREATED)

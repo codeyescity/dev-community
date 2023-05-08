@@ -109,6 +109,7 @@ def get_user_projects(id: int, user_id : int = Depends(get_current_user)):
                     SELECT 
                         p.project_id, 
                         p.project_name,
+                        p.project_progress,
                         u.img_url
                     FROM projects p
                     LEFT JOIN members m ON p.project_id = m.project_id  
@@ -118,8 +119,7 @@ def get_user_projects(id: int, user_id : int = Depends(get_current_user)):
 
     return res
 
-#SELECT username FROM users WHERE user_id = (SELECT user_id FROM members WHERE project_id = ( SELECT project_id FROM projects WHERE  ))  
-
+"""
 @app.post("/user_profile_img/", status_code = status.HTTP_200_OK)
 def change_user_profile_img(image: UploadFile, user_id : int = Depends(get_current_user)):
     #image.content_type image/png image/jpeg
@@ -144,6 +144,7 @@ def change_user_profile_img(image: UploadFile, user_id : int = Depends(get_curre
         image.file.close()
 
     path = "http://127.0.0.1:3000/static/img/" + filename
-    runSQL("""UPDATE users SET img_url = %s WHERE user_id = %s """,(path, user_id))
+    runSQL("UPDATE users SET img_url = %s WHERE user_id = %s",(path, user_id))
 
     return {"path": path }
+"""

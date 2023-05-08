@@ -19,9 +19,18 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 # tags are just for the ui
-app = APIRouter(tags=['chat'])
+#app = APIRouter(tags=['chat'])
 
-"""
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 class ConnectionManager:
     
     def __init__(self) -> None:
@@ -71,7 +80,7 @@ async def websocket_endpoint(websocket: WebSocket, project_id: int):
             message_time = str(datetime.now())
             print(data)
             payload = { "user_id" : data['senderId'], 'message': data['message'],'sender_username': data['senderUsername'], 'sender_profile_img': data['senderProfileImg'], 'message_time': message_time }
-            runSQL("INSERT INTO chatlogs (user_id, project_id, message, message_date) VALUES (%s,%s,%s,NOW())",(data['senderId'], project_id, data['message']))
+            runSQL("""INSERT INTO chatlogs (user_id, project_id, message, message_date) VALUES (%s,%s,%s,NOW())""",(data['senderId'], project_id, data['message']))
             
             
             await manager.broadcast_project(json.dumps(payload), project_id)
@@ -83,23 +92,9 @@ async def websocket_endpoint(websocket: WebSocket, project_id: int):
         #await manager.broadcast_project(json.dumps(message), project_id)
 
 
-"""
-
-
-@app.get("/projects/{project_id}/chat", status_code = status.HTTP_200_OK)
-def get_chat_log(project_id: int, start: int = 0, limit: int = 20, user_id : int = Depends(get_current_user)):
-    # add checks later
-
-    data = (project_id,)
-    sql ="SELECT c.user_id, c.message, u.username, u.img_url, message_date FROM chatlogs c LEFT JOIN users u ON c.user_id = u.user_id WHERE c.project_id = %s"
-    res = runSQL(sql,data)
-
-    return res
-
-
-
     
-
+if __name__ == "__main__":
+    uvicorn.run("chat:app", host = "127.0.0.1", port = 5000, reload=True)
 
 
 
