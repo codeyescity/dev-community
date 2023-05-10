@@ -12,8 +12,8 @@ app = APIRouter(tags=['tasks'])
 
 class Task(BaseModel):
     task_title: str = Field(..., min_length=1)
-    task_description: str  = Field(..., min_length=1)
-    task_type: str  = Field(..., min_length=1)
+    task_description: str  
+    task_type: str  
     member_id : int
     task_start_date: str = None
     task_end_date: str = None

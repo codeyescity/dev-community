@@ -11,7 +11,7 @@ app = APIRouter(tags=['projects'])
 
 class Project(BaseModel):
     project_name: str = Field(..., min_length=1)
-    project_description: str = Field(..., min_length=1)
+    project_description: str 
 
 
 @app.get("/projects/{project_id}", status_code = status.HTTP_200_OK)
