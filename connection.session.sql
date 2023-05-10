@@ -183,4 +183,5 @@ CREATE TABLE IF NOT EXISTS tasks_technologies
     FOREIGN KEY(technology_id) REFERENCES technologies(technology_id) ON DELETE CASCADE
 );
 
+INSERT INTO technologies (technology_id, technology_name) VALUES (1 ,"html"), (2 ,"css") , (3 ,"javascript"), (4 ,"c++"), (5 ,"java"), (6 ,"sql"), (7 ,"php"), (8 ,"python"), (9 ,"c"), (10 ,"c#"), (11 ,"go");
 
