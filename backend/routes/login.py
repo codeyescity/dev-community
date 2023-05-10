@@ -1,7 +1,7 @@
 from fastapi import status, HTTPException, Depends, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
 from dbhelper import runSQL, runSQL_return_id
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 # weird hack to import 
 import sys
@@ -13,8 +13,8 @@ from helper import technologies
 app = APIRouter(tags=['login'])
 
 class User(BaseModel):
-    username : str
-    password : str
+    username : str = Field(..., min_length=1)
+    password : str = Field(..., min_length=1)
     first_name: str
     last_name: str
     email: str

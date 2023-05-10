@@ -1,6 +1,6 @@
 from fastapi import status, HTTPException, Depends, APIRouter, Response
 from dbhelper import runSQL, runSQL_return_id
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from oauth2 import get_current_user
 
 
@@ -10,8 +10,8 @@ from project_helper import project_exist, user_member_project, user_admin_projec
 app = APIRouter(tags=['projects'])
 
 class Project(BaseModel):
-    project_name: str
-    project_description: str
+    project_name: str = Field(..., min_length=1)
+    project_description: str = Field(..., min_length=1)
 
 
 @app.get("/projects/{project_id}", status_code = status.HTTP_200_OK)

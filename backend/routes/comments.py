@@ -1,12 +1,12 @@
 from fastapi import status, HTTPException, Depends, APIRouter, Response
 from dbhelper import runSQL, Database, runSQL_return_id
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from oauth2 import get_current_user
 
 from helper import user_comment_owner, comment_exist
 
 class Comment(BaseModel):
-    comment_body: str
+    comment_body: str = Field(..., min_length=1)
     comment_code: str | None = None
 
 

@@ -1,6 +1,6 @@
 from fastapi import status, HTTPException, Depends, APIRouter, Response
 from dbhelper import runSQL, Database
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from oauth2 import get_current_user
 
 from project_helper import user_admin_project
@@ -8,8 +8,8 @@ from project_helper import user_admin_project
 app = APIRouter(tags=['project invites'])
 
 class Invite(BaseModel):
-    username : str
-    role : str
+    username : str = Field(..., min_length=1)
+    role : str = Field(..., min_length=1)
 
 def validate_user_role(role: str):
     if(role in ["admin", "member"]):

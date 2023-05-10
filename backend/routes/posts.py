@@ -1,6 +1,6 @@
 from fastapi import status, HTTPException, Depends, APIRouter, Response
 from dbhelper import runSQL, Database, runSQL_return_id
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from oauth2 import get_current_user
 
 from helper import post_exist, user_post_owner
@@ -10,7 +10,7 @@ app = APIRouter(tags=['Posts'])
 class Post(BaseModel):
     post_type: str
     post_title: str | None = None
-    post_body: str
+    post_body: str = Field(..., min_length=1)
     post_code: str | None = None
     post_skills : list[int] | None = None
 

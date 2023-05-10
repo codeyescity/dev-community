@@ -1,6 +1,6 @@
 from fastapi import status, HTTPException, Depends, APIRouter, Response
 from dbhelper import runSQL, Database
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 #to generate random file name
 import uuid
 # temp 
@@ -15,9 +15,9 @@ from utiles import hash,verify
 app = APIRouter(tags=['users'])
 
 class User(BaseModel):
-    first_name: str
-    last_name: str
-    username : str
+    first_name: str = Field(..., min_length=1)
+    last_name: str = Field(..., min_length=1)
+    username : str = Field(..., min_length=1)
     email: str
     about : str
     password : str | None = None
