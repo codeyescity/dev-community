@@ -10,7 +10,7 @@ app = APIRouter(tags=['Posts'])
 class Post(BaseModel):
     post_type: str
     post_title: str | None = None
-    post_body: str = Field(..., min_length=1, regex="^[^\n*]")
+    post_body: str = Field(..., min_length=1)
     post_code: str | None = None
     post_skills : list[int] | None = None
 

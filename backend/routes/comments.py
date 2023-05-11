@@ -6,7 +6,7 @@ from oauth2 import get_current_user
 from helper import user_comment_owner, comment_exist
 
 class Comment(BaseModel):
-    comment_body: str = Field(..., min_length=1, regex="^[^\n*]")
+    comment_body: str = Field(..., min_length=1)
     comment_code: str | None = None
 
 
