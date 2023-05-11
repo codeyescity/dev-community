@@ -80,12 +80,7 @@ class Topsis():
 
     '''
 	# Step 5
-	Calculate the L2-distance between the target alternative {\displaystyle i}i and the worst condition {\displaystyle A_{w}}A_{w}
-	{\displaystyle d_{iw}={\sqrt {\sum _{j=1}^{n}(t_{ij}-t_{wj})^{2}}},\quad i=1,2,\ldots ,m,}
-	and the distance between the alternative {\displaystyle i}i and the best condition {\displaystyle A_{b}}A_b
-	{\displaystyle d_{ib}={\sqrt {\sum _{j=1}^{n}(t_{ij}-t_{bj})^{2}}},\quad i=1,2,\ldots ,m}
-	where {\displaystyle d_{iw}}d_{{iw}} and {\displaystyle d_{ib}}d_{{ib}} are L2-norm distances 
-	from the target alternative {\displaystyle i}i to the worst and best conditions, respectively.
+	Calculate the L2-distance
 	'''
 
     def step_5(self):

@@ -43,6 +43,9 @@ def edit_user_info(user: User, user_id : int = Depends(get_current_user)):
  
     if(user.password):
         if(user.new_password):
+            if len(str(user.password)) < 8 or len(str(user.new_password)) < 8:
+                raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"password too short")
+
             password = user.password
             hashed_password = res[0]["password"]
 
