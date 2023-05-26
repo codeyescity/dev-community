@@ -1,5 +1,5 @@
 from fastapi import status, HTTPException, Depends, APIRouter, Response
-from dbhelper import runSQL, Database
+from dbhelper import runSQL, Database, runSQL_return_id
 from pydantic import BaseModel, Field
 from oauth2 import get_current_user
 
@@ -63,7 +63,7 @@ def create_invite_for_user(project_id: int, invite : Invite, user_id : int = Dep
     if res:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"User with name: '{invite.username}' is already invited")
     # add invite
-    res = runSQL("""INSERT INTO invites (user_id, project_id, invite_role, invite_date) VALUES (%s,%s,%s,NOW());""",(invited_user_id, project_id, invite.role))
+    res = runSQL_return_id("""INSERT INTO invites (user_id, project_id, invite_role, invite_date) VALUES (%s,%s,%s,NOW());""",(invited_user_id, project_id, invite.role))
     return res
 
 @app.delete("/projects/{project_id}/invites/{invite_id}", status_code=status.HTTP_204_NO_CONTENT)

@@ -15,7 +15,7 @@ users = [
         "phone_number" : "0556023158"
     },
     {
-        "username": "Gabriel", 
+        "username": "john", 
         "password": "password",
         "first_name" : "Salim",
         "last_name" : "khelindi",
@@ -23,7 +23,7 @@ users = [
         "phone_number" : "0556023158"
     },
     {
-        "username": "Bricon", 
+        "username": "James", 
         "password": "password",
         "first_name" : "Yoyo",
         "last_name" : "Drake",
@@ -31,7 +31,7 @@ users = [
         "phone_number" : "0556023158"
     },
     {
-        "username": "Brade", 
+        "username": "David", 
         "password": "password",
         "first_name" : "ZOZ",
         "last_name" : "LE",
@@ -283,17 +283,121 @@ projects[1]["project_id"] = r.json()
 
 invites = [
     {
-        "username" : "BOB",
+        "username" : users[0]["username"],
         "role" : "member"
     },
     {
         "username" : users[1]["username"],
         "role" : "member"
     },
+    {
+        "username" : users[2]["username"],
+        "role" : "member"
+    },
+    {
+        "username" : users[3]["username"],
+        "role" : "member"
+    }
 ]
 
 #create invite
 r = requests.post(URL + "/projects/" + str(projects[1]["project_id"]) + "/invites" , json = invites[0],headers = {"Authorization": str("Bearer " + users[1]["access_token"]) });
-
-
+print(r.json())
+invites[0]["invite_id"] = r.json()
+# user 1 invites users2 user3 user4
 r = requests.post(URL + "/projects/" + str(projects[0]["project_id"]) + "/invites" , json = invites[1],headers = {"Authorization": str("Bearer " + users[0]["access_token"]) });
+print(r.json())
+invites[1]["invite_id"] = r.json()
+
+r = requests.post(URL + "/projects/" + str(projects[0]["project_id"]) + "/invites" , json = invites[2],headers = {"Authorization": str("Bearer " + users[0]["access_token"]) });
+print(r.json())
+invites[2]["invite_id"] = r.json()
+
+r = requests.post(URL + "/projects/" + str(projects[0]["project_id"]) + "/invites" , json = invites[3],headers = {"Authorization": str("Bearer " + users[0]["access_token"]) });
+print(r.json())
+invites[3]["invite_id"] = r.json()
+
+
+#accept invites
+r = requests.post(URL + "/user/invites/" + str(invites[1]["invite_id"]) , json = invites[0],headers = {"Authorization": str("Bearer " + users[1]["access_token"]) });
+print(r)
+r = requests.post(URL + "/user/invites/" + str(invites[2]["invite_id"]) , json = invites[0],headers = {"Authorization": str("Bearer " + users[2]["access_token"]) });
+print(r)
+
+# get the project members
+r = requests.get(URL + "/projects/" + str(projects[0]["project_id"]) + "/members" ,headers = {"Authorization": str("Bearer " + users[0]["access_token"]) });
+print(r.json())
+
+members = r.json()
+
+
+tasks = [
+    {
+    "task_title": "Conduct research on the project",
+    "task_description": "research",
+    "task_type": "test",
+    "member_id" : members[0]["member_id"],
+    "task_start_date": "Fri May 26 2023 11:13:35 GMT+0100 (Central European Standard Time)",
+    "task_end_date": "Sat May 27 2023 23:59:59 GMT+0100 (Central European Standard Time)",
+    "task_needed_time": 45084,
+    "task_skills" : {}
+    },
+    {
+    "task_title": "Define business objectives and goals",
+    "task_description": "define the core objectives",
+    "task_type": "test" ,
+    "member_id" : members[0]["member_id"],
+    "task_start_date": "Fri May 26 2023 11:13:35 GMT+0100 (Central European Standard Time)",
+    "task_end_date": "Sat May 27 2023 23:59:59 GMT+0100 (Central European Standard Time)",
+    "task_needed_time": 45084,
+    "task_skills" : {}
+    },
+    {
+    "task_title": "Prototyping",
+    "task_description": "make prototype with the main features"  ,
+    "task_type": "test" ,
+    "member_id" : members[1]["member_id"],
+    "task_start_date": "Fri May 26 2023 11:13:35 GMT+0100 (Central European Standard Time)",
+    "task_end_date": "Sat May 27 2023 23:59:59 GMT+0100 (Central European Standard Time)",
+    "task_needed_time": 45084,
+    "task_skills" : { 1 : 5, 2: 5, 3: 5 }
+    },
+    {
+    "task_title": "Test proptotype",
+    "task_description": "make tasts for the proptotype"  ,
+    "task_type": "test" ,
+    "member_id" : members[2]["member_id"],
+    "task_start_date": "Fri May 26 2023 11:13:35 GMT+0100 (Central European Standard Time)",
+    "task_end_date": "Sat May 27 2023 23:59:59 GMT+0100 (Central European Standard Time)",
+    "task_needed_time": 45084,
+    "task_skills" : { 1 : 5, 2: 5, 3: 5 }
+    }
+
+]
+
+
+
+# create tasks
+
+r = requests.post(URL + "/projects/" + str(projects[0]["project_id"]) + "/task" , json = tasks[0],headers = {"Authorization": str("Bearer " + users[0]["access_token"]) });
+print(r.json())
+tasks[0]["task_id"] = r.json()
+r = requests.post(URL + "/projects/" + str(projects[0]["project_id"]) + "/task" , json = tasks[1],headers = {"Authorization": str("Bearer " + users[0]["access_token"]) });
+print(r.json())
+tasks[1]["task_id"] = r.json()
+r = requests.post(URL + "/projects/" + str(projects[0]["project_id"]) + "/task" , json = tasks[2],headers = {"Authorization": str("Bearer " + users[0]["access_token"]) });
+print(r.json())
+tasks[2]["task_id"] = r.json()
+r = requests.post(URL + "/projects/" + str(projects[0]["project_id"]) + "/task" , json = tasks[3],headers = {"Authorization": str("Bearer " + users[0]["access_token"]) });
+print(r.json())
+tasks[3]["task_id"] = r.json()
+
+
+# change state
+r = requests.put(URL + "/projects/" + str(projects[0]["project_id"]) + "/task/" + str(tasks[0]["task_id"]) + "/state" + "?task_state=in-progress" , json = tasks[3],headers = {"Authorization": str("Bearer " + users[0]["access_token"]) });
+print(r)
+# change progress
+r = requests.put(URL + "/projects/" + str(projects[0]["project_id"]) + "/task/" + str(tasks[0]["task_id"]) + "/progress" + "?task_progress=65&dif_sd_sp=18738" , json = tasks[3],headers = {"Authorization": str("Bearer " + users[0]["access_token"]) });
+print(r)
+
+

@@ -1,5 +1,5 @@
 from fastapi import status, HTTPException, Depends, APIRouter, Response
-from dbhelper import runSQL, Database
+from dbhelper import runSQL, Database, runSQL_return_id
 from pydantic import BaseModel
 
 
@@ -33,7 +33,7 @@ def accept_invite(invite_id: int, user_id : int = Depends(get_current_user)):
     invited_user_id = res[0]["user_id"]
     project_id = res[0]["project_id"]
     member_role = res[0]["invite_role"]
-    res = runSQL("""INSERT INTO members (user_id, project_id, member_role, member_join_date) VALUES (%s,%s,%s,NOW());""", (invited_user_id, project_id, member_role))
+    res = runSQL_return_id("""INSERT INTO members (user_id, project_id, member_role, member_join_date) VALUES (%s,%s,%s,NOW());""", (invited_user_id, project_id, member_role))
     runSQL(""" DELETE FROM invites WHERE invite_id = %s""", (invite_id,))
 
     return res
