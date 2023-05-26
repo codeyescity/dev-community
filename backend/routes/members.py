@@ -35,7 +35,16 @@ def remove_member_from_project(project_id: int, member_id: int, user_id : int = 
     
     project_exist(project_id)
     user_admin_project(user_id, project_id)
-    user_member_project(member_id, project_id)
+
+
+    res = runSQL("""SELECT user_id FROM members WHERE project_id = %s AND member_id = %s""", (project_id, member_id))
+    if not res:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="the user is not member of this project")
+
+    member_user_id = res[0]["user_id"]
+
+    #user_member_project(member_id, project_id)
+    user_member_project(member_user_id, project_id)
 
     # remove member from the project
     runSQL("""DELETE FROM members WHERE member_id = %s""", (member_id,))
